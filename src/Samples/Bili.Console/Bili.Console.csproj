@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+  	<PackageReference Include="Microsoft.Extensions.Hosting" />
+  	<PackageReference Include="Spectre.Console" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BiliKernel.Abstractions\BiliKernel.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Authorizers\Authorizers.Tv\Authorizers.TV.csproj" />
+    <ProjectReference Include="..\..\BiliKernel.Core\BiliKernel.Core.csproj" />
+    <ProjectReference Include="..\..\Resolvers\Resolvers.NativeCookies\Resolvers.NativeCookies.csproj" />
+    <ProjectReference Include="..\..\Resolvers\Resolvers.NativeQRCode\Resolvers.NativeQRCode.csproj" />
+    <ProjectReference Include="..\..\Resolvers\Resolvers.NativeToken\Resolvers.NativeToken.csproj" />
+    <ProjectReference Include="..\..\Services\Services.Article\Services.Article.csproj" />
+    <ProjectReference Include="..\..\Services\Services.Media\Services.Media.csproj" />
+    <ProjectReference Include="..\..\Services\Services.Moment\Services.Moment.csproj" />
+    <ProjectReference Include="..\..\Services\Services.Search\Services.Search.csproj" />
+    <ProjectReference Include="..\..\Services\Services.User\Services.User.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,162 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+      <AssemblyName>Richasy.BiliKernel.Grpc</AssemblyName>
+      <RootNamespace>Richasy.BiliKernel</RootNamespace>
+      <TargetFrameworks>netstandard2.0</TargetFrameworks>
+      <NoWarn>$(NoWarn);SKEXP0001;CS1570;CS1587</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- NuGet Package Settings -->
+    <Title>哔哩核心 - gRPC</Title>
+    <Description>包含 BiliBili 的核心 gRPC 服务定义，用于与 BiliBili 的 gRPC 服务进行通信.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Grpc.Net.Client" />
+    <PackageReference Include="Grpc.Tools">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="bilibili\metadata.proto" />
+    <Protobuf Include="bilibili\pagination.proto" />
+    <Protobuf Include="bilibili\playershared.proto" />
+    <Protobuf Include="bilibili\rpc.proto" />
+    <Protobuf Include="bilibili\account\fission\v1.proto" />
+    <Protobuf Include="bilibili\account\interfaces\v1.proto" />
+    <Protobuf Include="bilibili\account\service\v1.proto" />
+    <Protobuf Include="bilibili\ad\v1.proto" />
+    <Protobuf Include="bilibili\api\player\v1.proto" />
+    <Protobuf Include="bilibili\api\probe\v1.proto" />
+    <Protobuf Include="bilibili\api\ticket\v1.proto" />
+    <Protobuf Include="bilibili\app\distribution.proto" />
+    <Protobuf Include="bilibili\app\archive\v1.proto" />
+    <Protobuf Include="bilibili\app\archive\middleware\v1.proto" />
+    <Protobuf Include="bilibili\app\card\v1.proto" />
+    <Protobuf Include="bilibili\app\click\v1.proto" />
+    <Protobuf Include="bilibili\app\distribution\setting\download.proto" />
+    <Protobuf Include="bilibili\app\distribution\setting\dynamic.proto" />
+    <Protobuf Include="bilibili\app\distribution\setting\experimental.proto" />
+    <Protobuf Include="bilibili\app\distribution\setting\home.proto" />
+    <Protobuf Include="bilibili\app\distribution\setting\internaldevice.proto" />
+    <Protobuf Include="bilibili\app\distribution\setting\night.proto" />
+    <Protobuf Include="bilibili\app\distribution\setting\other.proto" />
+    <Protobuf Include="bilibili\app\distribution\setting\pegasus.proto" />
+    <Protobuf Include="bilibili\app\distribution\setting\play.proto" />
+    <Protobuf Include="bilibili\app\distribution\setting\privacy.proto" />
+    <Protobuf Include="bilibili\app\distribution\setting\search.proto" />
+    <Protobuf Include="bilibili\app\distribution\setting\story.proto" />
+    <Protobuf Include="bilibili\app\dynamic\common.proto" />
+    <Protobuf Include="bilibili\app\dynamic\v1.proto" />
+    <Protobuf Include="bilibili\app\dynamic\v2.proto" />
+    <Protobuf Include="bilibili\app\home\v1.proto" />
+    <Protobuf Include="bilibili\app\interfaces\v1.proto" />
+    <Protobuf Include="bilibili\app\listener\v1.proto" />
+    <Protobuf Include="bilibili\app\mine\v1.proto" />
+    <Protobuf Include="bilibili\app\playeronline\v1.proto" />
+    <Protobuf Include="bilibili\app\playerunite\pgcanymodel.proto" />
+    <Protobuf Include="bilibili\app\playerunite\pugvanymodel.proto" />
+    <Protobuf Include="bilibili\app\playerunite\ugcanymodel.proto" />
+    <Protobuf Include="bilibili\app\playerunite\v1.proto" />
+    <Protobuf Include="bilibili\app\playurl\v1.proto" />
+    <Protobuf Include="bilibili\app\resource\v1.proto" />
+    <Protobuf Include="bilibili\app\resource\privacy\v1.proto" />
+    <Protobuf Include="bilibili\app\search\v2.proto" />
+    <Protobuf Include="bilibili\app\show\gateway\v1.proto" />
+    <Protobuf Include="bilibili\app\show\mixture\v1.proto" />
+    <Protobuf Include="bilibili\app\show\popular\v1.proto" />
+    <Protobuf Include="bilibili\app\show\rank\v1.proto" />
+    <Protobuf Include="bilibili\app\show\region\v1.proto" />
+    <Protobuf Include="bilibili\app\space\v1.proto" />
+    <Protobuf Include="bilibili\app\splash\v1.proto" />
+    <Protobuf Include="bilibili\app\topic\v1.proto" />
+    <Protobuf Include="bilibili\app\view\v1.proto" />
+    <Protobuf Include="bilibili\app\viewunite\common.proto" />
+    <Protobuf Include="bilibili\app\viewunite\pgcanymodel.proto" />
+    <Protobuf Include="bilibili\app\viewunite\pugvanymodel.proto" />
+    <Protobuf Include="bilibili\app\viewunite\ugcanymodel.proto" />
+    <Protobuf Include="bilibili\app\viewunite\v1.proto" />
+    <Protobuf Include="bilibili\app\wall\v1.proto" />
+    <Protobuf Include="bilibili\broadcast\live.proto" />
+    <Protobuf Include="bilibili\broadcast\v1.proto" />
+    <Protobuf Include="bilibili\broadcast\v2.proto" />
+    <Protobuf Include="bilibili\broadcast\live\multi_conn.proto" />
+    <Protobuf Include="bilibili\broadcast\live\pk.proto" />
+    <Protobuf Include="bilibili\broadcast\live\pmms.proto" />
+    <Protobuf Include="bilibili\broadcast\live\universal_interact.proto" />
+    <Protobuf Include="bilibili\broadcast\live\voice_room.proto" />
+    <Protobuf Include="bilibili\broadcast\message\archive.proto" />
+    <Protobuf Include="bilibili\broadcast\message\bgroup.proto" />
+    <Protobuf Include="bilibili\broadcast\message\gamecenter.proto" />
+    <Protobuf Include="bilibili\broadcast\message\im.proto" />
+    <Protobuf Include="bilibili\broadcast\message\main.proto" />
+    <Protobuf Include="bilibili\broadcast\message\mall.proto" />
+    <Protobuf Include="bilibili\broadcast\message\push.proto" />
+    <Protobuf Include="bilibili\broadcast\message\reply.proto" />
+    <Protobuf Include="bilibili\broadcast\message\topic.proto" />
+    <Protobuf Include="bilibili\broadcast\message\tv.proto" />
+    <Protobuf Include="bilibili\cheese\gateway\player\v1.proto" />
+    <Protobuf Include="bilibili\community\interfacess\biligram\v1.proto" />
+    <Protobuf Include="bilibili\community\interfacess\cosmoconn\v1.proto" />
+    <Protobuf Include="bilibili\community\service\cert\v1.proto" />
+    <Protobuf Include="bilibili\community\service\dm\v1.proto" />
+    <Protobuf Include="bilibili\community\service\govern\v1.proto" />
+    <Protobuf Include="bilibili\creative_tool\editor\v2.proto" />
+    <Protobuf Include="bilibili\dagw\component\avatar\common.proto" />
+    <Protobuf Include="bilibili\dagw\component\avatar\v1.proto" />
+    <Protobuf Include="bilibili\dagw\component\avatar\v1\plugin.proto" />
+    <Protobuf Include="bilibili\dynamic\common.proto" />
+    <Protobuf Include="bilibili\dynamic\interfaces\campus\v1.proto" />
+    <Protobuf Include="bilibili\dynamic\interfaces\feed\v1.proto" />
+    <Protobuf Include="bilibili\dynamic\interfaces\vote\v1.proto" />
+    <Protobuf Include="bilibili\gaia\gw.proto" />
+    <Protobuf Include="bilibili\im\type.proto" />
+    <Protobuf Include="bilibili\im\customer\independent.proto" />
+    <Protobuf Include="bilibili\im\customer\interfaces.proto" />
+    <Protobuf Include="bilibili\im\customer\model.proto" />
+    <Protobuf Include="bilibili\im\gateway\interfaces\v1.proto" />
+    <Protobuf Include="bilibili\im\interfaces\v1.proto" />
+    <Protobuf Include="bilibili\live\rtc.proto" />
+    <Protobuf Include="bilibili\live\app\interfaces\api\grpc\v1.proto" />
+    <Protobuf Include="bilibili\live\app\room\v1.proto" />
+    <Protobuf Include="bilibili\live\approom\api\grpc\v1.proto" />
+    <Protobuf Include="bilibili\live\rtc\datachannel.proto" />
+    <Protobuf Include="bilibili\live\rtc\datachannel\report.proto" />
+    <Protobuf Include="bilibili\live\xroom_extend\api\v1.proto" />
+    <Protobuf Include="bilibili\main\community\reply\v1.proto" />
+    <Protobuf Include="bilibili\main\community\reply\v2.proto" />
+    <Protobuf Include="bilibili\mall\tab3\dynamic\v1.proto" />
+    <Protobuf Include="bilibili\mall\tab3\playerunite\ugcanymodel.proto" />
+    <Protobuf Include="bilibili\mall\tab3\playerunite\v1.proto" />
+    <Protobuf Include="bilibili\mall\tab3\viewunite\common.proto" />
+    <Protobuf Include="bilibili\mall\tab3\viewunite\ugcanymodel.proto" />
+    <Protobuf Include="bilibili\mall\tab3\viewunite\v1.proto" />
+    <Protobuf Include="bilibili\metadata\device.proto" />
+    <Protobuf Include="bilibili\metadata\fawkes.proto" />
+    <Protobuf Include="bilibili\metadata\locale.proto" />
+    <Protobuf Include="bilibili\metadata\network.proto" />
+    <Protobuf Include="bilibili\metadata\parabox.proto" />
+    <Protobuf Include="bilibili\metadata\restriction.proto" />
+    <Protobuf Include="bilibili\pangu\gallery\v1.proto" />
+    <Protobuf Include="bilibili\pgc\gateway\player\v1.proto" />
+    <Protobuf Include="bilibili\pgc\gateway\player\v2.proto" />
+    <Protobuf Include="bilibili\pmms\v1.proto" />
+    <Protobuf Include="bilibili\polymer\contract.proto" />
+    <Protobuf Include="bilibili\polymer\list.proto" />
+    <Protobuf Include="bilibili\polymer\app\search\v1.proto" />
+    <Protobuf Include="bilibili\polymer\chronos\v1.proto" />
+    <Protobuf Include="bilibili\polymer\community\govern\v1.proto" />
+    <Protobuf Include="bilibili\relation\interfaces.proto" />
+    <Protobuf Include="bilibili\vas\garb\model.proto" />
+    <Protobuf Include="bilibili\vas\garb\service.proto" />
+    <Protobuf Include="bilibili\vega\deneb\v1.proto" />
+    <Protobuf Include="datacenter\hakase\protobuf\android_device_info.proto" />
+    <Protobuf Include="pgc\biz.proto" />
+    <Protobuf Include="pgc\gateway\vega\v1.proto" />
+  </ItemGroup>
+</Project>
