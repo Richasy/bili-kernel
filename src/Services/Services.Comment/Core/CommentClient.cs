@@ -9,13 +9,11 @@ using System.Threading.Tasks;
 using Bilibili.Main.Community.Reply.V1;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
-using Richasy.BiliKernel.Content;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Appearance;
 using Richasy.BiliKernel.Models.Comment;
 using Richasy.BiliKernel.Services.Comment.Core.Adapters;
-using Richasy.BiliKernel.Services.Comment.Core.Models;
 
 namespace Richasy.BiliKernel.Services.Comment.Core;
 
@@ -59,7 +57,7 @@ internal sealed class CommentClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new System.Uri(BiliApis.Community.Emotes));
         _authenticator.AuthroizeRestRequest(request, parameters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<EmoteResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseEmoteResponse).ConfigureAwait(false);
         return responseObj.Data.Packages.Select(p => p.ToEmotePackage()).ToList()
             ?? throw new KernelException("获取表情包失败");
     }
