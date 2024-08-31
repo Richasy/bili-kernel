@@ -2,6 +2,7 @@
 
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Richasy.BiliKernel.Bili.Authorization;
 using Richasy.BiliKernel.Models.Authorization;
 
@@ -10,7 +11,7 @@ namespace Richasy.BiliKernel.Resolvers.NativeToken;
 /// <summary>
 /// 本地令牌解析器.
 /// </summary>
-public sealed class NativeBiliTokenResolver : IBiliTokenResolver
+public sealed partial class NativeBiliTokenResolver : IBiliTokenResolver
 {
     private const string TokenFileName = "token.json";
     private BiliToken? _cacheToken;
@@ -26,7 +27,7 @@ public sealed class NativeBiliTokenResolver : IBiliTokenResolver
         if (File.Exists(TokenFileName))
         {
             var json = File.ReadAllText(TokenFileName);
-            _cacheToken = JsonSerializer.Deserialize<BiliToken>(json);
+            _cacheToken = JsonSerializer.Deserialize(json, JsonContext.Default.BiliToken);
         }
 
         return _cacheToken;
@@ -48,6 +49,12 @@ public sealed class NativeBiliTokenResolver : IBiliTokenResolver
     public void SaveToken(BiliToken token)
     {
         _cacheToken = token;
-        File.WriteAllText(TokenFileName, JsonSerializer.Serialize(token));
+        File.WriteAllText(TokenFileName, JsonSerializer.Serialize(token, JsonContext.Default.BiliToken));
+    }
+
+    [JsonSerializable(typeof(BiliToken))]
+    internal partial class JsonContext : JsonSerializerContext
+    {
+
     }
 }

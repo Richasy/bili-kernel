@@ -85,7 +85,7 @@ public sealed class CommentInformation
     public string CommentId { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is CommentInformation information && Id == information.Id;
+    public override bool Equals(object? obj) => obj is CommentInformation information && Id == information.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

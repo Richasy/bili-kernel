@@ -91,7 +91,7 @@ public sealed class MomentInformation
     public object? Data { get; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is MomentInformation information && Id == information.Id;
+    public override bool Equals(object? obj) => obj is MomentInformation information && Id == information.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using Google.Protobuf;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 
 namespace Richasy.BiliKernel.Http;
 
@@ -113,12 +114,13 @@ public sealed partial class BiliHttpClient
     /// </summary>
     /// <typeparam name="T">数据类型.</typeparam>
     /// <param name="response">响应.</param>
+    /// <param name="typeInfo">类型上下文</param>
     /// <returns><see cref="Task{T}"/></returns>
-    public static async Task<T> ParseAsync<T>(IFlurlResponse response)
+    public static async Task<T> ParseAsync<T>(IFlurlResponse response, JsonTypeInfo<T> typeInfo)
     {
         Verify.NotNull(response, nameof(response));
         var contentText = await response.ResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-        return JsonSerializer.Deserialize<T>(contentText);
+        return JsonSerializer.Deserialize(contentText, typeInfo);
     }
 
     /// <summary>

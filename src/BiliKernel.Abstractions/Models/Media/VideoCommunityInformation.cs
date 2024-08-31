@@ -98,7 +98,7 @@ public sealed class VideoCommunityInformation
     public double? TrackCount { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is VideoCommunityInformation information && Id == information.Id;
+    public override bool Equals(object? obj) => obj is VideoCommunityInformation information && Id == information.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

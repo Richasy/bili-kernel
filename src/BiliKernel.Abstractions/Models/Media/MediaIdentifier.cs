@@ -54,7 +54,7 @@ public readonly struct MediaIdentifier
         => !(left == right);
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is MediaIdentifier identifier && Id == identifier.Id;
+    public override bool Equals(object? obj) => obj is MediaIdentifier identifier && Id == identifier.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);
@@ -64,8 +64,12 @@ public readonly struct MediaIdentifier
         => $"{Title} | {Id}";
 }
 
-internal sealed class MediaIdentifierJsonConverter : JsonConverter<MediaIdentifier>
+/// <summary>
+/// MediaIdentifier 类型转换器
+/// </summary>
+public sealed partial class MediaIdentifierJsonConverter : JsonConverter<MediaIdentifier>
 {
+    /// <inheritdoc />
     public override MediaIdentifier Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
@@ -102,7 +106,7 @@ internal sealed class MediaIdentifierJsonConverter : JsonConverter<MediaIdentifi
                     title = reader.GetString();
                     break;
                 case nameof(MediaIdentifier.Cover):
-                    cover = JsonSerializer.Deserialize<BiliImage>(ref reader, options);
+                    cover = JsonSerializer.Deserialize(ref reader, JsonContext.Default.BiliImage);
                     break;
             }
         }
@@ -115,13 +119,19 @@ internal sealed class MediaIdentifierJsonConverter : JsonConverter<MediaIdentifi
         return new MediaIdentifier(id, title, cover);
     }
 
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, MediaIdentifier value, JsonSerializerOptions options)
     {
         writer.WriteStartObject();
         writer.WriteString(nameof(MediaIdentifier.Id), value.Id);
         writer.WriteString(nameof(MediaIdentifier.Title), value.Title);
         writer.WritePropertyName(nameof(MediaIdentifier.Cover));
-        JsonSerializer.Serialize(writer, value.Cover, options);
+        JsonSerializer.Serialize(writer, value.Cover!, JsonContext.Default.BiliImage);
         writer.WriteEndObject();
+    }
+
+    [JsonSerializable(typeof(BiliImage))]
+    internal partial class JsonContext : JsonSerializerContext
+    {
     }
 }

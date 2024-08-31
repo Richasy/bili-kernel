@@ -58,7 +58,7 @@ public sealed class VideoFavoriteFolderGroup
     public int TotalCount { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is VideoFavoriteFolderGroup group && Id == group.Id;
+    public override bool Equals(object? obj) => obj is VideoFavoriteFolderGroup group && Id == group.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

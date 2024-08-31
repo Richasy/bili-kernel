@@ -49,7 +49,7 @@ public sealed class CommentCommunityInformation
     public bool IsLiked { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is CommentCommunityInformation information && Id == information.Id;
+    public override bool Equals(object? obj) => obj is CommentCommunityInformation information && Id == information.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

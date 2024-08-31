@@ -38,7 +38,7 @@ public sealed class Emote
     public BiliImage Image { get; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is Emote emote && Id == emote.Id;
+    public override bool Equals(object? obj) => obj is Emote emote && Id == emote.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

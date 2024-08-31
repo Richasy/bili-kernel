@@ -12,6 +12,7 @@ using Richasy.BiliKernel.Bili.Authorization;
 using System.Text.Json;
 using Richasy.BiliKernel.Content;
 using System.IO;
+using System.Text.Json.Serialization;
 
 namespace Richasy.BiliKernel.Authenticator;
 
@@ -180,7 +181,7 @@ public sealed partial class BiliAuthenticator
 
         var response = await client.SendAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
         var responseText = await response.ResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-        var result = JsonSerializer.Deserialize<BiliDataResponse<WebNavResponse>>(responseText);
+        var result = JsonSerializer.Deserialize(responseText, BiliAuthenticatorJsonSerializerContext.Default.BiliDataResponseWebNavResponse);
         var img = result?.Data?.Img?.ImgUrl ?? string.Empty;
         var sub = result?.Data?.Img?.SubUrl ?? string.Empty;
         _img = Path.GetFileNameWithoutExtension(img);
@@ -217,5 +218,10 @@ public sealed partial class BiliAuthenticator
         }
 
         return csrfToken;
+    }
+
+    [JsonSerializable(typeof(BiliDataResponse<WebNavResponse>))]
+    internal partial class BiliAuthenticatorJsonSerializerContext : JsonSerializerContext
+    {
     }
 }

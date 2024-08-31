@@ -56,7 +56,7 @@ public sealed class TimelineInformation
     public IList<SeasonInformation>? Seasons { get; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is TimelineInformation information && TimeStamp == information.TimeStamp;
+    public override bool Equals(object? obj) => obj is TimelineInformation information && TimeStamp == information.TimeStamp;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Date);

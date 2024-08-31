@@ -369,7 +369,7 @@ internal sealed class LiveQualityDescription
     public string? Description { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is LiveQualityDescription description && Quality == description.Quality;
+    public override bool Equals(object? obj) => obj is LiveQualityDescription description && Quality == description.Quality;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Quality);

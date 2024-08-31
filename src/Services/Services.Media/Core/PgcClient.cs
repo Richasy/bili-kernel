@@ -8,12 +8,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
-using Richasy.BiliKernel.Content;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Appearance;
 using Richasy.BiliKernel.Models.Media;
-using Richasy.BiliKernel.Services.Media.Core.Models;
 
 namespace Richasy.BiliKernel.Services.Media.Core;
 
@@ -44,7 +42,7 @@ internal sealed class PgcClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Pgc.TimeLine));
         _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliResultResponse<PgcTimeLineResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliResultResponsePgcTimeLineResponse).ConfigureAwait(false);
         var title = responseObj.Result.Title;
         var description = responseObj.Result.Subtitle;
         var timelineItems = responseObj.Result.Data.Select(p => p.ToTimelineInformation()).ToList().AsReadOnly();
@@ -87,7 +85,7 @@ internal sealed class PgcClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Pgc.IndexCondition));
         _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<PgcIndexConditionResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponsePgcIndexConditionResponse).ConfigureAwait(false);
         var filters = responseObj.Data.FilterList.Select(p => p.ToFilter()).ToList();
         if (responseObj.Data?.OrderList?.Count > 0)
         {
@@ -113,7 +111,7 @@ internal sealed class PgcClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Pgc.IndexResult));
         _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<PgcIndexResultResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponsePgcIndexResultResponse).ConfigureAwait(false);
         var seasons = responseObj.Data.List.Select(p => p.ToSeasonInformation()).ToList().AsReadOnly();
         return seasons.Count == 0
             ? throw new KernelException("无法获取到有效的剧集列表，请检查参数或稍后重试")

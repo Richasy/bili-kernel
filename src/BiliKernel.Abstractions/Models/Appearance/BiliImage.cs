@@ -74,14 +74,18 @@ public sealed class BiliImage
     public Uri SourceUri => _sourceUri ?? Uri;
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is BiliImage image && _sourceUri == image._sourceUri;
+    public override bool Equals(object? obj) => obj is BiliImage image && _sourceUri == image._sourceUri;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(_sourceUri);
 }
 
-internal sealed class BiliImageJsonConverter : JsonConverter<BiliImage>
+/// <summary>
+/// BiliImageJsonConverter
+/// </summary>
+public sealed class BiliImageJsonConverter : JsonConverter<BiliImage>
 {
+    /// <inheritdoc/>
     public override BiliImage Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
@@ -130,6 +134,7 @@ internal sealed class BiliImageJsonConverter : JsonConverter<BiliImage>
         return new BiliImage(uri, width, height, (w, h) => string.Empty); // Assuming no need for resolution resolver during deserialization
     }
 
+    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, BiliImage value, JsonSerializerOptions options)
     {
         writer.WriteStartObject();

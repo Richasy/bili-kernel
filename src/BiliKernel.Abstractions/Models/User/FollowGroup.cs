@@ -38,7 +38,7 @@ public sealed class UserGroup
     public int TotalCount { get; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is UserGroup group && Id == group.Id;
+    public override bool Equals(object? obj) => obj is UserGroup group && Id == group.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

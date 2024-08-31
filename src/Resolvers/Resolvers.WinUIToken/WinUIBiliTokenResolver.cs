@@ -26,7 +26,7 @@ public sealed class WinUIBiliTokenResolver : IBiliTokenResolver
         var container = GetContainer();
         if (container.Values.TryGetValue(TokenKey, out var token))
         {
-            _cacheToken = JsonSerializer.Deserialize<BiliToken>(token.ToString());
+            _cacheToken = JsonSerializer.Deserialize(token.ToString(), JsonContext.Default.BiliToken);
         }
 
         return _cacheToken;
@@ -45,7 +45,7 @@ public sealed class WinUIBiliTokenResolver : IBiliTokenResolver
     {
         _cacheToken = token;
         var container = GetContainer();
-        container.Values[TokenKey] = JsonSerializer.Serialize(token);
+        container.Values[TokenKey] = JsonSerializer.Serialize(token, JsonContext.Default.BiliToken);
     }
 
     private static ApplicationDataContainer GetContainer()

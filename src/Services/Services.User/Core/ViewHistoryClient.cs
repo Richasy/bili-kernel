@@ -9,7 +9,6 @@ using Bilibili.App.Interfaces.V1;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
 using Richasy.BiliKernel.Bili.Authorization;
-using Richasy.BiliKernel.Content;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Article;
@@ -96,7 +95,7 @@ internal sealed class ViewHistoryClient
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(BiliApis.Account.HistoryRecordOption));
         _authenticator.AuthroizeRestRequest(request, default, new BiliAuthorizeExecutionSettings { ApiType = BiliApiType.Web, RequireCookie = true, ForceNoToken = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<bool>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponseBoolean).ConfigureAwait(false);
         return !responseObj.Data;
     }
 

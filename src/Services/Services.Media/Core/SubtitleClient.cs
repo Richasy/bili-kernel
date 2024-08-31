@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -11,11 +10,10 @@ using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models.Subtitle;
-using Richasy.BiliKernel.Services.Media.Core.Models;
 
 namespace Richasy.BiliKernel.Services.Media.Core;
 
-internal sealed class SubtitleClient
+internal sealed partial class SubtitleClient
 {
     private readonly BiliHttpClient _httpClient;
     private readonly BiliAuthenticator _authenticator;
@@ -44,9 +42,9 @@ internal sealed class SubtitleClient
             throw new KernelException("获取字幕元数据失败");
         }
 
-        var json = Regex.Match(text, @"<subtitle>(.*?)</subtitle>").Groups[1].Value;
-        var index = JsonSerializer.Deserialize<SubtitleIndexResponse>(json);
-        return index.Subtitles.Select(p => new SubtitleMeta(p.Id.ToString(), p.DisplayLanguage, p.Url)).ToList();
+        var json = SubtitleRegex().Match(text).Groups[1].Value;
+        var index = JsonSerializer.Deserialize(json, JsonContext.Default.SubtitleIndexResponse);
+        return index.Subtitles.ConvertAll(p => new SubtitleMeta(p.Id.ToString(), p.DisplayLanguage, p.Url));
     }
 
     public async Task<IReadOnlyList<SubtitleInformation>> GetSubtitleDetailAsync(SubtitleMeta meta, CancellationToken cancellationToken)
@@ -59,7 +57,10 @@ internal sealed class SubtitleClient
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new System.Uri(url));
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<SubtitleDetailResponse>(response).ConfigureAwait(false);
-        return responseObj.Body.Select(p => new SubtitleInformation(p.From, p.To, p.Content)).ToList();
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.SubtitleDetailResponse).ConfigureAwait(false);
+        return responseObj.Body.ConvertAll(p => new SubtitleInformation(p.From, p.To, p.Content));
     }
+
+    [GeneratedRegex(@"<subtitle>(.*?)</subtitle>")]
+    private static partial Regex SubtitleRegex();
 }

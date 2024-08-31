@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Richasy.BiliKernel;
@@ -27,6 +28,7 @@ internal sealed class EmptyServiceProvider : IServiceProvider, IKeyedServiceProv
             $"No service for type '{serviceType}' has been registered." :
             $"No service for type '{serviceType}' and service key '{serviceKey}' has been registered.");
 
+    [UnconditionalSuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.", Justification = "<Pending>")]
     private static object? GetEmpty(Type serviceType)
     {
         if (serviceType.IsConstructedGenericType &&

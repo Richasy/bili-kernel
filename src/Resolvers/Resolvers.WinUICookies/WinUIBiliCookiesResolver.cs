@@ -27,7 +27,7 @@ public sealed class WinUIBiliCookiesResolver : IBiliCookiesResolver
         var container = GetContainer();
         if (container.Values.TryGetValue(CookiesKey, out var cookies))
         {
-            _cacheCookies = JsonSerializer.Deserialize<Dictionary<string, string>>(cookies.ToString());
+            _cacheCookies = JsonSerializer.Deserialize(cookies.ToString(), JsonContext.Default.DictionaryStringString);
         }
 
         return _cacheCookies;
@@ -54,7 +54,7 @@ public sealed class WinUIBiliCookiesResolver : IBiliCookiesResolver
     {
         _cacheCookies = cookies;
         var container = GetContainer();
-        container.Values[CookiesKey] = JsonSerializer.Serialize(cookies);
+        container.Values[CookiesKey] = JsonSerializer.Serialize(cookies, JsonContext.Default.IDictionaryStringString);
     }
 
     private static ApplicationDataContainer GetContainer()

@@ -14,7 +14,7 @@ using Richasy.BiliKernel.Services.Article.Core.Models;
 
 namespace Richasy.BiliKernel.Services.Article.Core;
 
-internal static class ArticleAdapter
+internal static partial class ArticleAdapter
 {
     public static Partition ToPartition(this ArticleCategory category)
     {
@@ -118,7 +118,7 @@ internal static class ArticleAdapter
             }
             else
             {
-                Debug.WriteLine(JsonSerializer.Serialize(item));
+                Debug.WriteLine(JsonSerializer.Serialize(item, JsonContext.Default.OpusParagraph));
             }
         }
 

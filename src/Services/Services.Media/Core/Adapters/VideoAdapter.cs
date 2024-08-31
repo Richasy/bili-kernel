@@ -52,7 +52,7 @@ internal static class VideoAdapter
         {
             Id = p.Type,
             Title = p.Title,
-            Options = p.Reasons.ToDictionary(r => r.Id.ToString(), r => r.Name ?? string.Empty),
+            Options = p.Reasons.ToDictionary(r => r.Id.ToString() ?? string.Empty, r => r.Name ?? string.Empty),
         }).ToList();
 
         info.AddExtensionIfNotNull(VideoExtensionDataId.Cid, card.PlayerArgs?.Cid);

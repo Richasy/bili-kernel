@@ -37,7 +37,7 @@ public sealed class SeasonInformation : VideoBase
     public bool? IsTracking { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is SeasonInformation information && EqualityComparer<MediaIdentifier>.Default.Equals(Identifier, information.Identifier);
+    public override bool Equals(object? obj) => obj is SeasonInformation information && EqualityComparer<MediaIdentifier>.Default.Equals(Identifier, information.Identifier);
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Identifier);

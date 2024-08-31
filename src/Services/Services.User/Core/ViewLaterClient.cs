@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
 using Richasy.BiliKernel.Bili.Authorization;
-using Richasy.BiliKernel.Content;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Media;
@@ -40,7 +40,7 @@ internal sealed class ViewLaterClient
             { "ps", "40" },
         };
 
-        var responseObj = await GetAsync<BiliDataResponse<ViewLaterSetResponse>>(BiliApis.Account.ViewLaterList, parameters, cancellationToken).ConfigureAwait(false);
+        var responseObj = await GetAsync(BiliApis.Account.ViewLaterList, JsonContext.Default.BiliDataResponseViewLaterSetResponse, parameters, cancellationToken).ConfigureAwait(false);
         var videos = responseObj.Data?.List?.Select(p => p.ToVideoInformation()).ToList().AsReadOnly();
         return (videos, responseObj.Data.Count);
     }
@@ -85,12 +85,12 @@ internal sealed class ViewLaterClient
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
-    private async Task<T> GetAsync<T>(string url, Dictionary<string, string>? paramters = default, CancellationToken cancellationToken = default)
+    private async Task<T> GetAsync<T>(string url, JsonTypeInfo<T> typeInfo, Dictionary<string, string>? paramters = default, CancellationToken cancellationToken = default)
     {
         await _authenticationService.EnsureTokenAsync(cancellationToken).ConfigureAwait(false);
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(url));
         _authenticator.AuthroizeRestRequest(request, paramters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        return await BiliHttpClient.ParseAsync<T>(response).ConfigureAwait(false);
+        return await BiliHttpClient.ParseAsync<T>(response, typeInfo).ConfigureAwait(false);
     }
 }

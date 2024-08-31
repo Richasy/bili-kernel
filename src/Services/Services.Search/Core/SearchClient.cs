@@ -10,7 +10,6 @@ using Bilibili.App.Interfaces.V1;
 using Bilibili.Polymer.App.Search.V1;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
-using Richasy.BiliKernel.Content;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Media;
@@ -41,7 +40,7 @@ internal sealed class SearchClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Search.HotSearch));
         _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false, ForceNoToken = true, NeedCSRF = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<HotSearchResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponseHotSearchResponse).ConfigureAwait(false);
         return responseObj.Data.List.Select(p => p.ToHotSearchItem()).ToList().AsReadOnly()
             ?? throw new KernelException("无法获取到有效的热搜榜单");
     }
@@ -51,7 +50,7 @@ internal sealed class SearchClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Search.RecommendSearch));
         _authenticator.AuthroizeRestRequest(request, default, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<SearchRecommendResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponseSearchRecommendResponse).ConfigureAwait(false);
         return responseObj.Data.List.Select(p => p.ToSearchRecommendItem()).ToList().AsReadOnly()
             ?? throw new KernelException("无法获取到有效的搜索推荐");
     }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili.Authorization;
@@ -35,7 +36,7 @@ public static class KernelExtensions
     /// <summary>
     /// 添加默认的认证服务.
     /// </summary>
-    public static IKernelBuilder UseDefaultAuthenticationService<T>(this IKernelBuilder builder)
+    public static IKernelBuilder UseDefaultAuthenticationService<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(this IKernelBuilder builder)
         where T : class, IAuthenticationService
     {
         builder.Services.AddSingleton<IAuthenticationService, T>();

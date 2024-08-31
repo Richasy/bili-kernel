@@ -4,7 +4,7 @@
         <!-- THIS PROPERTY GROUP MUST COME FIRST -->
         <AssemblyName>Richasy.BiliKernel.Core</AssemblyName>
         <RootNamespace>Richasy.BiliKernel</RootNamespace>
-        <TargetFrameworks>netstandard2.0</TargetFrameworks>
+        <TargetFramework>net8.0</TargetFramework>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <NoWarn>$(NoWarn);SKEXP0001</NoWarn>

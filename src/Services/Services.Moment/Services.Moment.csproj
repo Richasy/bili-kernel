@@ -4,7 +4,7 @@
         <!-- THIS PROPERTY GROUP MUST COME FIRST -->
         <AssemblyName>Richasy.BiliKernel.Services.Moment</AssemblyName>
         <RootNamespace>$(AssemblyName)</RootNamespace>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <VersionSuffix>alpha</VersionSuffix>
         <NoWarn>NU1507</NoWarn>
         <Platforms>AnyCPU</Platforms>

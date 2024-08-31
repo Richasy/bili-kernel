@@ -10,6 +10,8 @@ using System.Net.Http;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,7 +21,6 @@ using Bilibili.App.View.V1;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
 using Richasy.BiliKernel.Bili.Authorization;
-using Richasy.BiliKernel.Content;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Media;
@@ -120,7 +121,7 @@ internal sealed class PlayerClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Video.PlayInformation));
         _authenticator.AuthroizeRestRequest(request, queryParameters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<PlayerInformation>>(response).ConfigureAwait(false)
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponsePlayerInformation).ConfigureAwait(false)
             ?? throw new KernelException("解析视频播放详情失败");
         return responseObj.Data.ToDashMediaInformation();
     }
@@ -156,7 +157,7 @@ internal sealed class PlayerClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Live.RoomDetail));
         _authenticator.AuthroizeRestRequest(request, parameters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<LiveRoomDetailResponse>>(response).ConfigureAwait(false)
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponseLiveRoomDetailResponse).ConfigureAwait(false)
             ?? throw new KernelException("解析直播间详情失败");
         return responseObj.Data.ToLivePlayerView();
     }
@@ -180,7 +181,7 @@ internal sealed class PlayerClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Live.WebPlayInformation));
         _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { NeedCSRF = true, ForceNoToken = true, RequireCookie = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<LiveAppPlayResponse>>(response).ConfigureAwait(false)
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponseLiveAppPlayResponse).ConfigureAwait(false)
             ?? throw new KernelException("解析直播播放详情失败");
 
         return responseObj.Data.ToLiveMediaInformation();
@@ -207,7 +208,7 @@ internal sealed class PlayerClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Pgc.SeasonDetail()));
         _authenticator.AuthroizeRestRequest(request, parameters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<PgcDetailResponse>>(response).ConfigureAwait(false)
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponsePgcDetailResponse).ConfigureAwait(false)
             ?? throw new KernelException("解析PGC详情失败");
         return responseObj.Data.ToPgcPlayerView();
     }
@@ -230,7 +231,7 @@ internal sealed class PlayerClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Pgc.PlayInformation()));
         _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { ApiType = BiliApiType.Web });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliResultResponse<PlayerInformation>>(response).ConfigureAwait(false)
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliResultResponsePlayerInformation).ConfigureAwait(false)
             ?? throw new KernelException("解析PGC播放详情失败");
 
         return responseObj.Result.ToDashMediaInformation();
@@ -361,7 +362,7 @@ internal sealed class PlayerClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Pgc.EpisodeInteraction));
         _authenticator.AuthroizeRestRequest(request, parameters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<EpisodeInteractionResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponseEpisodeInteractionResponse).ConfigureAwait(false);
         return new VideoOperationInformation(episodeId, responseObj.Data.IsLike == 1, responseObj.Data.CoinNumber > 0, responseObj.Data.IsFavorite == 1);
     }
 
@@ -393,14 +394,14 @@ internal sealed class PlayerClient
         var buvid = await GetBuvidAsync(cancellationToken).ConfigureAwait(false);
         await SendLiveMessageAsync(
             socket,
-            new
-            {
-                roomid = Convert.ToInt32(roomId),
-                uid = _tokenResolver.GetToken().UserId,
+            new LiveRoomInfo(
+                Convert.ToInt32(roomId),
+                _tokenResolver.GetToken().UserId,
                 buvid,
-                protover = 2,
-                key = liveDanmakuInfo.Token,
-            },
+                2,
+                liveDanmakuInfo.Token
+            ),
+            JsonContext.Default.LiveRoomInfo,
             7,
             cancellationToken).ConfigureAwait(false);
         await SendLiveHeartBeatAsync(socket, cancellationToken).ConfigureAwait(false);
@@ -408,11 +409,11 @@ internal sealed class PlayerClient
     }
 
     public static Task SendLiveHeartBeatAsync(ClientWebSocket socket, CancellationToken cancellationToken)
-        => SendLiveMessageAsync(socket, string.Empty, 2, cancellationToken);
+        => SendLiveMessageAsync(socket, string.Empty, JsonContext.Default.String, 2, cancellationToken);
 
-    public static async Task SendLiveMessageAsync(ClientWebSocket socket, object data, int action, CancellationToken cancellationToken)
+    public static async Task SendLiveMessageAsync<T>(ClientWebSocket socket, T data, JsonTypeInfo<T> typeInfo, int action, CancellationToken cancellationToken)
     {
-        var msg = data is string str ? str : JsonSerializer.Serialize(data);
+        var msg = data is string str ? str : JsonSerializer.Serialize(data, typeInfo);
         var msgData = EncodeLiveData(msg, action);
         await socket.SendAsync(new ArraySegment<byte>(msgData), WebSocketMessageType.Binary, true, cancellationToken).ConfigureAwait(false);
     }
@@ -495,7 +496,7 @@ internal sealed class PlayerClient
                 return default;
             }
 
-            var obj = JsonSerializer.Deserialize<JsonElement>(jsonMessage);
+            var obj = JsonDocument.Parse(jsonMessage).RootElement;
             var cmd = obj.GetProperty("cmd").ToString();
             if (cmd.Contains("DANMU_MSG"))
             {
@@ -665,7 +666,7 @@ internal sealed class PlayerClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Account.Buvid));
         _authenticator.AuthroizeRestRequest(request, default, new BiliAuthorizeExecutionSettings { RequireCookie = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<BuvidResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponseBuvidResponse).ConfigureAwait(false);
         return responseObj.Data.B3;
     }
 
@@ -679,7 +680,7 @@ internal sealed class PlayerClient
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(BiliApis.Live.WebDanmakuInformation));
         _authenticator.AuthroizeRestRequest(request, queryParameters, new BiliAuthorizeExecutionSettings { RequireCookie = true });
         var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
-        var danmakuRes = await BiliHttpClient.ParseAsync<BiliDataResponse<LiveDanmakuResponse>>(response).ConfigureAwait(false);
+        var danmakuRes = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponseLiveDanmakuResponse).ConfigureAwait(false);
         return danmakuRes.Data;
     }
 
@@ -695,7 +696,7 @@ internal sealed class PlayerClient
             var wbiRequest = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Video.PlayerWbi));
             _authenticator.AuthroizeRestRequest(wbiRequest, queryParameters, new BiliAuthorizeExecutionSettings { ApiType = BiliKernel.Models.BiliApiType.Web, ForceNoToken = true, RequireCookie = true, NeedRID = true });
             var wbiResponse = await _httpClient.SendAsync(wbiRequest, cancellationToken).ConfigureAwait(false);
-            var wbiResponseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<PlayerWbiResponse>>(wbiResponse).ConfigureAwait(false);
+            var wbiResponseObj = await BiliHttpClient.ParseAsync(wbiResponse, JsonContext.Default.BiliDataResponsePlayerWbiResponse).ConfigureAwait(false);
             return wbiResponseObj.Data.ToPlayerProgress();
         }
         catch (Exception ex)
@@ -718,7 +719,7 @@ internal sealed class PlayerClient
             var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Video.WebVideoActions));
             _authenticator.AuthroizeRestRequest(request, queryParameters, new BiliAuthorizeExecutionSettings { ApiType = BiliKernel.Models.BiliApiType.Web, ForceNoToken = true, RequireCookie = true, NeedRID = true });
             var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-            var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<ArchiveRelationResponse>>(response).ConfigureAwait(false);
+            var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponseArchiveRelationResponse).ConfigureAwait(false);
             return responseObj.Data.ToVideoOperationInformation(aid);
         }
         catch (Exception ex)
@@ -739,7 +740,33 @@ internal sealed class PlayerClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Video.Detail));
         _authenticator.AuthroizeRestRequest(request, queryParameters, new BiliAuthorizeExecutionSettings { ApiType = BiliKernel.Models.BiliApiType.Web, ForceNoToken = true, RequireCookie = true, NeedRID = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<VideoPageResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponseVideoPageResponse).ConfigureAwait(false);
         return responseObj.Data;
     }
+}
+
+internal class LiveRoomInfo
+{
+    [JsonPropertyName("roomid")]
+    public int Roomid { get; }
+    [JsonPropertyName("uid")]
+    public long Uid { get; }
+    [JsonPropertyName("buvid")]
+    public string Buvid { get; }
+    [JsonPropertyName("protover")]
+    public int Protover { get; }
+    [JsonPropertyName("key")]
+    public string Key { get; }
+
+    public LiveRoomInfo(int roomid, long uid, string buvid, int protover, string key)
+    {
+        Roomid = roomid;
+        Uid = uid;
+        Buvid = buvid;
+        Protover = protover;
+        Key = key;
+    }
+
+    public override bool Equals(object? obj) => obj is LiveRoomInfo other && Roomid == other.Roomid && Uid == other.Uid && Buvid == other.Buvid && Protover == other.Protover && Key == other.Key;
+    public override int GetHashCode() => HashCode.Combine(Roomid, Uid, Buvid, Protover, Key);
 }

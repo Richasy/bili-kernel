@@ -22,7 +22,7 @@ public sealed class Condition(string name, string id)
     public string Id { get; } = id;
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is Condition condition && Id == condition.Id;
+    public override bool Equals(object? obj) => obj is Condition condition && Id == condition.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

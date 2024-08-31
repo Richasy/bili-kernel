@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Net.WebSockets;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using Richasy.BiliKernel.Models.Media;
@@ -101,7 +102,7 @@ public interface IPlayerService
     /// <summary>
     /// 发送直播间消息.
     /// </summary>
-    Task SendLiveMessageAsync(ClientWebSocket client, object data, int action, CancellationToken cancellationToken);
+    Task SendLiveMessageAsync<T>(ClientWebSocket client, T data, JsonTypeInfo<T> typeInfo, int action, CancellationToken cancellationToken);
 
     /// <summary>
     /// 获取直播间消息.

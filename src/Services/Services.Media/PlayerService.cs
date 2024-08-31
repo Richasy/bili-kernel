@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Net.WebSockets;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using Richasy.BiliKernel.Authenticator;
@@ -126,8 +127,8 @@ public sealed class PlayerService : IPlayerService
         => PlayerClient.SendLiveHeartBeatAsync(client, cancellationToken);
 
     /// <inheritdoc/>
-    public Task SendLiveMessageAsync(ClientWebSocket client, object data, int action, CancellationToken cancellationToken)
-        => PlayerClient.SendLiveMessageAsync(client, data, action, cancellationToken);
+    public Task SendLiveMessageAsync<T>(ClientWebSocket client, T data, JsonTypeInfo<T> typeInfo, int action, CancellationToken cancellationToken)
+        => PlayerClient.SendLiveMessageAsync(client, data, typeInfo, action, cancellationToken);
 
     /// <inheritdoc/>
     public Task<IReadOnlyList<LiveMessage>?> GetLiveSocketMessagesAsync(ClientWebSocket client, CancellationToken cancellationToken)

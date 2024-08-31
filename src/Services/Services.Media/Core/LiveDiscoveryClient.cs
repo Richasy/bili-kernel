@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
 using Richasy.BiliKernel.Bili.Authorization;
-using Richasy.BiliKernel.Content;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Media;
@@ -36,7 +35,7 @@ internal sealed class LiveDiscoveryClient
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(BiliApis.Live.LiveArea));
         _authenticator.AuthroizeRestRequest(request, settings: new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<LiveAreaResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponseLiveAreaResponse).ConfigureAwait(false);
         return responseObj.Data is null || responseObj.Data.List.Count == 0
             ? throw new KernelException("直播分区数据为空")
             : (IReadOnlyList<Partition>)responseObj.Data.List.Select(p => p.ToPartition()).ToList().AsReadOnly();
@@ -61,7 +60,7 @@ internal sealed class LiveDiscoveryClient
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(BiliApis.Live.AreaDetail));
         _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<LiveAreaDetailResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponseLiveAreaDetailResponse).ConfigureAwait(false);
         var lives = responseObj.Data.List.Select(p => p.ToLiveInformation()).ToList().AsReadOnly();
         var tags = responseObj.Data.Tags.Select(p => p.ToLiveTag()).ToList().AsReadOnly();
         if (lives.Count == 0)
@@ -88,7 +87,7 @@ internal sealed class LiveDiscoveryClient
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(BiliApis.Live.LiveFeed));
         _authenticator.AuthroizeRestRequest(request, parameters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<LiveFeedResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, JsonContext.Default.BiliDataResponseLiveFeedResponse).ConfigureAwait(false);
         var followList = responseObj.Data.CardList
             .Where(p => p.CardType.Contains("idol"))
             .SelectMany(p => p.CardData?.FollowList?.List)

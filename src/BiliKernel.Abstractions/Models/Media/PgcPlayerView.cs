@@ -48,7 +48,7 @@ public sealed class PgcPlayerView(
     public string? Warning { get; } = warning;
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is PgcPlayerView view && EqualityComparer<SeasonInformation>.Default.Equals(Information, view.Information);
+    public override bool Equals(object? obj) => obj is PgcPlayerView view && EqualityComparer<SeasonInformation>.Default.Equals(Information, view.Information);
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Information);

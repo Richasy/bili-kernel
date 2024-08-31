@@ -57,7 +57,7 @@ public readonly struct ArticleIdentifier
         => !(left == right);
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is ArticleIdentifier identifier && Id == identifier.Id;
+    public override bool Equals(object? obj) => obj is ArticleIdentifier identifier && Id == identifier.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => Id.GetHashCode();

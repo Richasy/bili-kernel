@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Flurl.Http;
 using Richasy.BiliKernel.Content;
@@ -44,11 +45,16 @@ public sealed partial class BiliHttpClient
             return;
         }
 
-        var responseContent = await response.GetJsonAsync<BiliResponse>().ConfigureAwait(false)
+        var responseContent = JsonSerializer.Deserialize(await response.GetStringAsync().ConfigureAwait(false), JsonContext.Default.BiliResponse)
             ?? throw new KernelException("哔哩哔哩返回了一个空的响应");
         if (!responseContent.IsSuccess())
         {
-            throw new KernelException($"哔哩哔哩返回了一个异常响应: {responseContent.Message ?? "N/A"}", new System.Exception(JsonSerializer.Serialize(responseContent)));
+            throw new KernelException($"哔哩哔哩返回了一个异常响应: {responseContent.Message ?? "N/A"}", new System.Exception(JsonSerializer.Serialize(responseContent, JsonContext.Default.BiliResponse)));
         }
+    }
+
+    [JsonSerializable(typeof(BiliResponse))]
+    internal partial class JsonContext : JsonSerializerContext
+    {
     }
 }
