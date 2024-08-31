@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Richasy.BiliKernel.Services.Media.Core;
+namespace Richasy.BiliKernel.Services.Media.Core.Models;
 
 /// <summary>
 /// 直播间分区详情响应结果.
@@ -66,7 +66,7 @@ internal sealed class LiveAreaDetailTag
     public int? Sort { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is LiveAreaDetailTag tag && Id == tag.Id;
+    public override bool Equals(object? obj) => obj is LiveAreaDetailTag tag && Id == tag.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

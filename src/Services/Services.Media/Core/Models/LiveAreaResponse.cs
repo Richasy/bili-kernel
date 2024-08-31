@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Richasy.BiliKernel.Services.Media.Core;
+namespace Richasy.BiliKernel.Services.Media.Core.Models;
 
 internal sealed class LiveAreaResponse
 {
@@ -54,7 +54,7 @@ internal sealed class LiveAreaGroup
     public IList<LiveArea>? AreaList { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is LiveAreaGroup group && Id == group.Id;
+    public override bool Equals(object? obj) => obj is LiveAreaGroup group && Id == group.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

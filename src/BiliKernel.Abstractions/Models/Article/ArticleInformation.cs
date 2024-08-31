@@ -87,7 +87,7 @@ public sealed class ArticleInformation
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is ArticleInformation information && EqualityComparer<ArticleIdentifier>.Default.Equals(Identifier, information.Identifier);
+    public override bool Equals(object? obj) => obj is ArticleInformation information && EqualityComparer<ArticleIdentifier>.Default.Equals(Identifier, information.Identifier);
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Identifier);

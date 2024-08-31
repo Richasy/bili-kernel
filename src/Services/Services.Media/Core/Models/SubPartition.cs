@@ -35,18 +35,6 @@ internal class SubPartition
     public long BottomOffsetId { get; set; }
 }
 
-/// <summary>
-/// 常规子分区.
-/// </summary>
-internal sealed class SubPartitionDefault : SubPartition
-{
-    /// <summary>
-    /// 高频标签.
-    /// </summary>
-    [JsonPropertyName("top_tag")]
-    public List<PartitionTag> TopTags { get; set; }
-}
-
 internal sealed class PartitionTag
 {
     [JsonPropertyName("tid")]

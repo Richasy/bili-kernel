@@ -11,7 +11,6 @@ using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models.Subtitle;
-using Richasy.BiliKernel.Services.Media.Core.Models;
 
 namespace Richasy.BiliKernel.Services.Media.Core;
 
@@ -45,7 +44,7 @@ internal sealed class SubtitleClient
         }
 
         var json = Regex.Match(text, @"<subtitle>(.*?)</subtitle>").Groups[1].Value;
-        var index = JsonSerializer.Deserialize<SubtitleIndexResponse>(json);
+        var index = JsonSerializer.Deserialize(json, SourceGenerationContext.Default.SubtitleIndexResponse);
         return index.Subtitles.Select(p => new SubtitleMeta(p.Id.ToString(), p.DisplayLanguage, p.Url)).ToList();
     }
 
@@ -59,7 +58,7 @@ internal sealed class SubtitleClient
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new System.Uri(url));
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<SubtitleDetailResponse>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.SubtitleDetailResponse).ConfigureAwait(false);
         return responseObj.Body.Select(p => new SubtitleInformation(p.From, p.To, p.Content)).ToList();
     }
 }

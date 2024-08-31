@@ -73,7 +73,7 @@ public sealed class ArticleCommunityInformation
     public int? CoinCount { get; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is ArticleCommunityInformation information && Id == information.Id;
+    public override bool Equals(object? obj) => obj is ArticleCommunityInformation information && Id == information.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

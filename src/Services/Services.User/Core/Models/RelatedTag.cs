@@ -35,7 +35,7 @@ internal sealed class RelatedTag
     public string? Tip { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is RelatedTag tag && TagId == tag.TagId;
+    public override bool Equals(object? obj) => obj is RelatedTag tag && TagId == tag.TagId;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(TagId);

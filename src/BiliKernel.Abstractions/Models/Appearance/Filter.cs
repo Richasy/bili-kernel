@@ -29,7 +29,7 @@ public sealed class Filter(string name, string id, IList<Condition> conditions)
     public IList<Condition> Conditions { get; } = conditions;
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is Filter filter && Id == filter.Id;
+    public override bool Equals(object? obj) => obj is Filter filter && Id == filter.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

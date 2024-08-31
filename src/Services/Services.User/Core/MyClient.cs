@@ -5,18 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
 using Richasy.BiliKernel.Bili.Authorization;
-using Richasy.BiliKernel.Content;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Article;
 using Richasy.BiliKernel.Models.Media;
 using Richasy.BiliKernel.Models.User;
-using Richasy.BiliKernel.Services.User.Core.Models;
 
 namespace Richasy.BiliKernel.Services.User.Core;
 
@@ -41,7 +40,7 @@ internal sealed class MyClient
 
     public async Task<UserDetailProfile> GetMyInformationAsync(CancellationToken cancellationToken)
     {
-        var responseObj = await GetAsync<BiliDataResponse<MyInfo>>(BiliApis.Account.MyInfo, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var responseObj = await GetAsync(BiliApis.Account.MyInfo, SourceGenerationContext.Default.BiliDataResponseMyInfo, cancellationToken: cancellationToken).ConfigureAwait(false);
         var info = responseObj.Data;
         return info == null || string.IsNullOrEmpty(info.Name)
             ? throw new KernelException("返回的用户数据为空")
@@ -50,7 +49,7 @@ internal sealed class MyClient
 
     public async Task<UserCommunityInformation> GetMyCommunityInformationAsync(CancellationToken cancellationToken)
     {
-        var responseObj = await GetAsync<BiliDataResponse<Mine>>(BiliApis.Account.Mine, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var responseObj = await GetAsync(BiliApis.Account.Mine, SourceGenerationContext.Default.BiliDataResponseMine, cancellationToken: cancellationToken).ConfigureAwait(false);
         var mine = responseObj.Data;
         return mine == null || string.IsNullOrEmpty(mine.Name)
             ? throw new KernelException("无法获取用户社区数据")
@@ -59,7 +58,7 @@ internal sealed class MyClient
 
     public async Task<IReadOnlyList<UserGroup>> GetMyFollowUserGroupsAsync(CancellationToken cancellationToken)
     {
-        var responseObj = await GetAsync<BiliDataResponse<List<RelatedTag>>>(BiliApis.Account.MyFollowingTags, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var responseObj = await GetAsync(BiliApis.Account.MyFollowingTags, SourceGenerationContext.Default.BiliDataResponseListRelatedTag, cancellationToken: cancellationToken).ConfigureAwait(false);
         return responseObj.Data?.Select(p => p.ToUserGroup()).ToList().AsReadOnly()
             ?? throw new KernelException("无法获取用户关注的分组数据");
     }
@@ -74,7 +73,7 @@ internal sealed class MyClient
             { "mid", localToken?.UserId.ToString() ?? string.Empty },
         };
 
-        var responseObj = await GetAsync<BiliDataResponse<List<RelatedUser>>>(BiliApis.Account.MyFollowingTagDetail, parameters, cancellationToken).ConfigureAwait(false);
+        var responseObj = await GetAsync(BiliApis.Account.MyFollowingTagDetail, SourceGenerationContext.Default.BiliDataResponseListRelatedUser, parameters, cancellationToken).ConfigureAwait(false);
         var users = responseObj.Data?.Select(p => p.ToUserCard()).ToList().AsReadOnly()
             ?? throw new KernelException("无法获取用户关注的分组详情数据");
         foreach (var user in users)
@@ -94,7 +93,7 @@ internal sealed class MyClient
             { "vmid", localToken.UserId.ToString() },
         };
 
-        var responseObj = await GetAsync<BiliDataResponse<RelatedUserResponse>>(BiliApis.Account.Fans, parameters, cancellationToken).ConfigureAwait(false);
+        var responseObj = await GetAsync(BiliApis.Account.Fans, SourceGenerationContext.Default.BiliDataResponseRelatedUserResponse, parameters, cancellationToken).ConfigureAwait(false);
         var users = responseObj.Data?.UserList?.Select(p => p.ToUserCard()).ToList().AsReadOnly()
             ?? throw new KernelException("无法获取用户粉丝数据");
         return (users, responseObj.Data.TotalCount);
@@ -121,14 +120,14 @@ internal sealed class MyClient
             { "fid", userId },
         };
 
-        var responseObj = await GetAsync<BiliDataResponse<UserRelationResponse>>(BiliApis.Account.Relation, parameters, cancellationToken).ConfigureAwait(false);
+        var responseObj = await GetAsync(BiliApis.Account.Relation, SourceGenerationContext.Default.BiliDataResponseUserRelationResponse, parameters, cancellationToken).ConfigureAwait(false);
         return responseObj.Data?.ToUserRelationStatus()
             ?? throw new KernelException("无法获取用户关系数据");
     }
 
     public async Task<UnreadInformation> GetUnreadInformationAsync(CancellationToken cancellationToken)
     {
-        var responseObj = await GetAsync<BiliDataResponse<UnreadMessage>>(BiliApis.Account.MessageUnread, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var responseObj = await GetAsync(BiliApis.Account.MessageUnread, SourceGenerationContext.Default.BiliDataResponseUnreadMessage, cancellationToken: cancellationToken).ConfigureAwait(false);
         return new(responseObj.Data.At, responseObj.Data.Reply, responseObj.Data.Like, responseObj.Data.Chat);
     }
 
@@ -145,7 +144,7 @@ internal sealed class MyClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Account.ChatMessages));
         _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<ChatMessageResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseChatMessageResponse).ConfigureAwait(false);
         var messages = responseObj.Data?.MessageList.Select(p => p.ToChatMessage(responseObj.Data.EmoteInfos)).ToList().AsReadOnly()
             ?? throw new KernelException("无法获取用户聊天消息数据");
         return (messages.Reverse().ToList(), responseObj.Data.MaxSeqNo, responseObj.Data.HasMore == 1);
@@ -172,7 +171,7 @@ internal sealed class MyClient
         var parameters = new Dictionary<string, string>
         {
             { "msg[msg_type]", "1" },
-            { "msg[content]", JsonSerializer.Serialize(new { content }) },
+            { "msg[content]", JsonSerializer.Serialize(new SendChatMessageContent{ Content = content}, SourceGenerationContext.Default.SendChatMessageContent) },
             { "msg[sender_uid]", localToken.UserId.ToString() },
             { "msg[receiver_id]", user.Id },
             { "msg[receiver_type]", "1" },
@@ -186,7 +185,7 @@ internal sealed class MyClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Account.SendMessage));
         _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true, NeedCSRF = true, });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<SendMessageResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseSendMessageResponse).ConfigureAwait(false);
         var msg = responseObj.Data?.ToChatMessage()
             ?? throw new KernelException("无法发送聊天消息");
         msg.Time = DateTimeOffset.FromUnixTimeSeconds(now).ToLocalTime();
@@ -207,7 +206,7 @@ internal sealed class MyClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Account.ChatSessions));
         _authenticator.AuthroizeRestRequest(request, queryParameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<ChatSessionListResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseChatSessionListResponse).ConfigureAwait(false);
         if (responseObj.Data?.SessionList is null)
         {
             return (Array.Empty<ChatSession>(), 0, false);
@@ -237,7 +236,7 @@ internal sealed class MyClient
         var userRequest = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Account.BatchUserInfo));
         _authenticator.AuthroizeRestRequest(userRequest, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true, ApiType = BiliKernel.Models.BiliApiType.Web });
         var userResponse = await _httpClient.SendAsync(userRequest, cancellationToken).ConfigureAwait(false);
-        var userResponseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<List<BiliChatUser>>>(userResponse).ConfigureAwait(false);
+        var userResponseObj = await BiliHttpClient.ParseAsync(userResponse, SourceGenerationContext.Default.BiliDataResponseListBiliChatUser).ConfigureAwait(false);
         return userResponseObj.Data?.Select(p => p.ToUserProfile()).ToList().AsReadOnly()
             ?? throw new KernelException("无法获取用户信息");
     }
@@ -266,19 +265,19 @@ internal sealed class MyClient
         IReadOnlyList<NotifyMessage> messages = default;
         if (type == NotifyMessageType.Like)
         {
-            var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<LikeMessageResponse>>(response).ConfigureAwait(false);
+            var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseLikeMessageResponse).ConfigureAwait(false);
             cursor = responseObj.Data.Total.Cursor;
             messages = responseObj.Data.ToNotifyMessages();
         }
         else if (type == NotifyMessageType.Reply)
         {
-            var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<ReplyMessageResponse>>(response).ConfigureAwait(false);
+            var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseReplyMessageResponse).ConfigureAwait(false);
             cursor = responseObj.Data.Cursor;
             messages = responseObj.Data.ToNotifyMessages();
         }
         else if (type == NotifyMessageType.At)
         {
-            var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<AtMessageResponse>>(response).ConfigureAwait(false);
+            var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseAtMessageResponse).ConfigureAwait(false);
             cursor = responseObj.Data.Cursor;
             messages = responseObj.Data.ToNotifyMessages();
         }
@@ -297,14 +296,14 @@ internal sealed class MyClient
             { "up_mid", userId },
         };
 
-        var galleryResponse = await GetAsync<BiliDataResponse<VideoFavoriteGalleryResponse>>(BiliApis.Account.VideoFavoriteGallery, parameters, cancellationToken).ConfigureAwait(false);
+        var galleryResponse = await GetAsync(BiliApis.Account.VideoFavoriteGallery, SourceGenerationContext.Default.BiliDataResponseVideoFavoriteGalleryResponse, parameters, cancellationToken).ConfigureAwait(false);
 
         parameters = new Dictionary<string, string>
         {
             { "up_mid", userId },
             { "type", "2" },
         };
-        var defaultFolderResponse = await GetAsync<BiliDataResponse<FavoriteDetailListResponse>>(BiliApis.Account.FavoriteList, parameters, cancellationToken).ConfigureAwait(false);
+        var defaultFolderResponse = await GetAsync(BiliApis.Account.FavoriteList, SourceGenerationContext.Default.BiliDataResponseFavoriteDetailListResponse, parameters, cancellationToken).ConfigureAwait(false);
 
         parameters = new Dictionary<string, string>
         {
@@ -314,8 +313,8 @@ internal sealed class MyClient
         };
         var folderRequest = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Account.CollectList));
         _authenticator.AuthroizeRestRequest(folderRequest, parameters, new BiliAuthorizeExecutionSettings() { ApiType = BiliApiType.Web, RequireCookie = true, NeedRID = true, ForceNoToken = true, });
-        var folderResponse = _httpClient.SendAsync(folderRequest, cancellationToken).ConfigureAwait(false);
-        var folderResponseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<FavoriteDetailListResponse>>(await folderResponse).ConfigureAwait(false);
+        var folderResponse = await _httpClient.SendAsync(folderRequest, cancellationToken).ConfigureAwait(false);
+        var folderResponseObj = await BiliHttpClient.ParseAsync(folderResponse, SourceGenerationContext.Default.BiliDataResponseFavoriteDetailListResponse).ConfigureAwait(false);
         var defaultFolder = galleryResponse.Data.DefaultFavoriteList.ToVideoFavoriteFolderDetail();
         var mineCreateFav = galleryResponse.Data.FavoriteFolderList.FirstOrDefault(ff => ff.Id == 1);
 
@@ -344,7 +343,7 @@ internal sealed class MyClient
             { "ps", "40" },
         };
 
-        var responseObj = await GetAsync<BiliDataResponse<ArticleFavoriteListResponse>>(BiliApis.Account.ArticleFavorite, parameters, cancellationToken).ConfigureAwait(false);
+        var responseObj = await GetAsync(BiliApis.Account.ArticleFavorite, SourceGenerationContext.Default.BiliDataResponseArticleFavoriteListResponse, parameters, cancellationToken).ConfigureAwait(false);
         var articles = responseObj.Data?.Items.Select(p => p.ToArticleInformation()).ToList().AsReadOnly()
             ?? throw new KernelException("无法获取用户收藏的文章数据");
         return (articles, responseObj.Data.Count);
@@ -359,7 +358,7 @@ internal sealed class MyClient
             { "status", ((int)status).ToString() },
         };
 
-        var responseObj = await GetAsync<BiliResultResponse<PgcFavoriteListResponse>>(url, parameters, cancellationToken).ConfigureAwait(false);
+        var responseObj = await GetAsync(url, SourceGenerationContext.Default.BiliResultResponsePgcFavoriteListResponse, parameters, cancellationToken).ConfigureAwait(false);
         var seasons = responseObj.Result.FollowList.Select(p => p.ToSeasonInformation()).ToList().AsReadOnly();
         return (seasons, responseObj.Result.Total ?? 0);
     }
@@ -375,7 +374,7 @@ internal sealed class MyClient
             { "rid", aid },
         };
 
-        var responseObj = await GetAsync<BiliDataResponse<FavoriteListResponse>>(BiliApis.Account.FavoriteList, parameters, cancellationToken).ConfigureAwait(false);
+        var responseObj = await GetAsync(BiliApis.Account.FavoriteList, SourceGenerationContext.Default.BiliDataResponseFavoriteListResponse, parameters, cancellationToken).ConfigureAwait(false);
         var items = responseObj.Data.List.Select(p => p.ToVideoFavoriteFolder());
         var ids = responseObj.Data.List.Where(p => p.FavoriteState == 1).Select(p => p.Id.ToString()).ToList().AsReadOnly();
         return (items.ToList().AsReadOnly(), ids);
@@ -390,7 +389,7 @@ internal sealed class MyClient
             { "pn", pageNumber.ToString() },
         };
 
-        var responseObj = await GetAsync<BiliDataResponse<VideoFavoriteListResponse>>(BiliApis.Account.VideoFavoriteDelta, parameters, cancellationToken).ConfigureAwait(false);
+        var responseObj = await GetAsync(BiliApis.Account.VideoFavoriteDelta, SourceGenerationContext.Default.BiliDataResponseVideoFavoriteListResponse, parameters, cancellationToken).ConfigureAwait(false);
         return responseObj.Data.ToVideoFavoriteFolderDetail();
     }
 
@@ -407,7 +406,7 @@ internal sealed class MyClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Account.UgcSeasonDetail));
         _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireCookie = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<UgcSeasonDetailResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseUgcSeasonDetailResponse).ConfigureAwait(false);
         var videos = responseObj.Data.archives.Select(p => p.ToVideoInformation()).ToList().AsReadOnly();
         var totalCount = responseObj.Data.page.total;
         var isEnd = responseObj.Data.page.page_num * responseObj.Data.page.page_size >= totalCount;
@@ -467,12 +466,12 @@ internal sealed class MyClient
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
-    private async Task<T> GetAsync<T>(string url, Dictionary<string, string>? parameters = default, CancellationToken cancellationToken = default)
+    private async Task<T> GetAsync<T>(string url, JsonTypeInfo<T> converter, Dictionary<string, string>? parameters = default, CancellationToken cancellationToken = default)
     {
         await _authenticationService.EnsureTokenAsync(cancellationToken).ConfigureAwait(false);
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(url));
         _authenticator.AuthroizeRestRequest(request, parameters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        return await BiliHttpClient.ParseAsync<T>(response).ConfigureAwait(false);
+        return await BiliHttpClient.ParseAsync(response, converter).ConfigureAwait(false);
     }
 }

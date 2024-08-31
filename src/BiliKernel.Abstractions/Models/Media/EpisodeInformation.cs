@@ -53,7 +53,7 @@ public sealed class EpisodeInformation : VideoBase
     public VideoCommunityInformation? CommunityInformation { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is EpisodeInformation information && EqualityComparer<MediaIdentifier>.Default.Equals(Identifier, information.Identifier);
+    public override bool Equals(object? obj) => obj is EpisodeInformation information && EqualityComparer<MediaIdentifier>.Default.Equals(Identifier, information.Identifier);
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Identifier);

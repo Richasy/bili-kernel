@@ -4,10 +4,11 @@
       <!-- THIS PROPERTY GROUP MUST COME FIRST -->
       <AssemblyName>Richasy.BiliKernel.Services.User</AssemblyName>
       <RootNamespace>$(AssemblyName)</RootNamespace>
-      <TargetFramework>netstandard2.0</TargetFramework>
+      <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
       <VersionSuffix>alpha</VersionSuffix>
       <NoWarn>NU1507</NoWarn>
       <Platforms>AnyCPU</Platforms>
+      <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
     </PropertyGroup>
 
     <PropertyGroup>

@@ -36,7 +36,7 @@ public sealed class ChatMessage
     public ChatMessageType Type { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is ChatMessage message && Key == message.Key;
+    public override bool Equals(object? obj) => obj is ChatMessage message && Key == message.Key;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Key);

@@ -59,3 +59,11 @@ public sealed class BiliResultResponse<T> : BiliResponse
     [JsonPropertyName("result")]
     public T? Result { get; set; }
 }
+
+/// <summary>
+/// 序列化上下文.
+/// </summary>
+[JsonSerializable(typeof(BiliResponse))]
+public partial class BiliResponseContext : JsonSerializerContext
+{
+}

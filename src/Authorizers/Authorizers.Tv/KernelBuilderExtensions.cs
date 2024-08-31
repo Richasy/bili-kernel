@@ -16,7 +16,7 @@ public static class KernelBuilderExtensions
     /// </summary>
     public static IKernelBuilder AddTVAuthentication(this IKernelBuilder builder)
     {
-        builder.Services.AddKeyedSingleton<IAuthenticationService, TVAuthenticationService>(nameof(TVAuthenticationService));
+        builder.Services.AddSingleton<IAuthenticationService, TVAuthenticationService>();
         return builder;
     }
 }

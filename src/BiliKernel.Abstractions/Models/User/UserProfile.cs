@@ -61,7 +61,7 @@ public sealed class UserProfile
         && !string.IsNullOrEmpty(Name);
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is UserProfile profile && Id == profile.Id;
+    public override bool Equals(object? obj) => obj is UserProfile profile && Id == profile.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

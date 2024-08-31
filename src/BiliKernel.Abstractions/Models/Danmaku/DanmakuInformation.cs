@@ -57,7 +57,7 @@ public sealed class DanmakuInformation
     public int FontSize { get; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is DanmakuInformation information && Id == information.Id;
+    public override bool Equals(object? obj) => obj is DanmakuInformation information && Id == information.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => Id.GetHashCode();

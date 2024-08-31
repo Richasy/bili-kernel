@@ -10,11 +10,9 @@ using Bilibili.App.Show.Rank.V1;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
 using Richasy.BiliKernel.Bili.Authorization;
-using Richasy.BiliKernel.Content;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Media;
-using Richasy.BiliKernel.Services.Media.Core.Models;
 
 namespace Richasy.BiliKernel.Services.Media.Core;
 
@@ -39,7 +37,7 @@ internal sealed class VideoDiscoveryClient
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(BiliApis.Partition.PartitionIndex));
         _authenticator.AuthroizeRestRequest(request, settings: new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<List<VideoPartition>>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseListVideoPartition).ConfigureAwait(false);
         var items = responseObj.Data.Where(p => p.IsNeedToShow()).Select(p => p.ToPartition()).ToList();
         return items.Count == 0
             ? throw new KernelException("视频分区数据为空")
@@ -79,7 +77,7 @@ internal sealed class VideoDiscoveryClient
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(url));
         _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var data = (await BiliHttpClient.ParseAsync<BiliDataResponse<SubPartition>>(response).ConfigureAwait(false)).Data;
+        var data = (await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseSubPartition).ConfigureAwait(false)).Data;
         var videos = data.NewVideos
             .Concat(data.RecommendVideos ?? new List<PartitionVideo>())
             .Distinct()
@@ -132,7 +130,7 @@ internal sealed class VideoDiscoveryClient
         SubPartition data;
         if (!isDefaultOrder)
         {
-            var videoList = (await BiliHttpClient.ParseAsync<BiliDataResponse<List<PartitionVideo>>>(response).ConfigureAwait(false)).Data;
+            var videoList = (await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseListPartitionVideo).ConfigureAwait(false)).Data;
             data = new SubPartition
             {
                 NewVideos = videoList,
@@ -140,7 +138,7 @@ internal sealed class VideoDiscoveryClient
         }
         else
         {
-            data = (await BiliHttpClient.ParseAsync<BiliDataResponse<SubPartition>>(response).ConfigureAwait(false)).Data;
+            data = (await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseSubPartition).ConfigureAwait(false)).Data;
         }
 
         var videos = data.NewVideos
@@ -171,7 +169,7 @@ internal sealed class VideoDiscoveryClient
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(BiliApis.Home.CuratedPlaylist));
         _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { NeedCSRF = true, RequireCookie = true, ForceNoToken = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<CuratedPlaylistResponse>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseCuratedPlaylistResponse).ConfigureAwait(false);
         return responseObj.Data is null || responseObj.Data.Items is null || responseObj.Data.Items.Count == 0
             ? throw new KernelException("精选视频数据为空")
             : (IReadOnlyList<VideoInformation>)responseObj.Data.Items.Select(p => p.ToVideoInformation()).ToList().AsReadOnly();
@@ -191,7 +189,7 @@ internal sealed class VideoDiscoveryClient
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(BiliApis.Home.Recommend));
         _authenticator.AuthroizeRestRequest(request, parameters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObject = await BiliHttpClient.ParseAsync<BiliDataResponse<RecommendVideoResponse>>(response).ConfigureAwait(false);
+        var responseObject = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseRecommendVideoResponse).ConfigureAwait(false);
         var nextOffset = responseObject.Data.Items.Last().Idx;
         var videos = responseObject.Data.Items.Where(p => p.CardGoto is "av")
             .Select(p => p.ToVideoInformation()).ToList().AsReadOnly();

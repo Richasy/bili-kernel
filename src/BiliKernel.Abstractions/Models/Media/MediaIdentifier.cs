@@ -54,7 +54,7 @@ public readonly struct MediaIdentifier
         => !(left == right);
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is MediaIdentifier identifier && Id == identifier.Id;
+    public override bool Equals(object? obj) => obj is MediaIdentifier identifier && Id == identifier.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);
@@ -62,6 +62,12 @@ public readonly struct MediaIdentifier
     /// <inheritdoc/>
     public override string ToString()
         => $"{Title} | {Id}";
+}
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(BiliImage))]
+internal sealed partial class MediaSerializeContext : JsonSerializerContext
+{
 }
 
 internal sealed class MediaIdentifierJsonConverter : JsonConverter<MediaIdentifier>
@@ -102,7 +108,7 @@ internal sealed class MediaIdentifierJsonConverter : JsonConverter<MediaIdentifi
                     title = reader.GetString();
                     break;
                 case nameof(MediaIdentifier.Cover):
-                    cover = JsonSerializer.Deserialize<BiliImage>(ref reader, options);
+                    cover = JsonSerializer.Deserialize(ref reader, MediaSerializeContext.Default.BiliImage);
                     break;
             }
         }
@@ -121,7 +127,11 @@ internal sealed class MediaIdentifierJsonConverter : JsonConverter<MediaIdentifi
         writer.WriteString(nameof(MediaIdentifier.Id), value.Id);
         writer.WriteString(nameof(MediaIdentifier.Title), value.Title);
         writer.WritePropertyName(nameof(MediaIdentifier.Cover));
-        JsonSerializer.Serialize(writer, value.Cover, options);
+        if (value.Cover is not null)
+        {
+            JsonSerializer.Serialize(writer, value.Cover!, MediaSerializeContext.Default.BiliImage);
+        }
+
         writer.WriteEndObject();
     }
 }

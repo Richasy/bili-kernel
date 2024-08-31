@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Richasy.BiliKernel;
@@ -27,14 +26,5 @@ internal sealed class EmptyServiceProvider : IServiceProvider, IKeyedServiceProv
             $"No service for type '{serviceType}' has been registered." :
             $"No service for type '{serviceType}' and service key '{serviceKey}' has been registered.");
 
-    private static object? GetEmpty(Type serviceType)
-    {
-        if (serviceType.IsConstructedGenericType &&
-            serviceType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-        {
-            return Array.CreateInstance(serviceType.GenericTypeArguments[0], 0);
-        }
-
-        return null;
-    }
+    private static object? GetEmpty(Type serviceType) => null;
 }

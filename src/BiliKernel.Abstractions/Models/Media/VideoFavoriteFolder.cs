@@ -77,7 +77,7 @@ public sealed class VideoFavoriteFolder
     public string? SeasonVideoId { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is VideoFavoriteFolder folder && Id == folder.Id;
+    public override bool Equals(object? obj) => obj is VideoFavoriteFolder folder && Id == folder.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

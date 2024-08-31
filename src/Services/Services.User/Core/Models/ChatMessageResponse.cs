@@ -83,6 +83,12 @@ internal sealed class SendMessageResponse
     public long Key { get; set; }
 }
 
+internal sealed class SendChatMessageContent
+{
+    [JsonPropertyName("content")]
+    public string Content { get; set; }
+}
+
 /// <summary>
 /// 表情信息.
 /// </summary>

@@ -78,7 +78,7 @@ public sealed class DashSegmentInformation(
     public int? CodecId { get; set; } = codecId;
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is DashSegmentInformation information && Id == information.Id;
+    public override bool Equals(object? obj) => obj is DashSegmentInformation information && Id == information.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

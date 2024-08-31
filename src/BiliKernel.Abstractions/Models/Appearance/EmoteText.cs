@@ -39,7 +39,7 @@ public sealed class EmoteText
     public IList<BiliImage>? Pictures { get; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is EmoteText text && Text == text.Text;
+    public override bool Equals(object? obj) => obj is EmoteText text && Text == text.Text;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Text);

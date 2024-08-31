@@ -43,7 +43,7 @@ public sealed class MomentProfile
     public string? LiveRoomId { get; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is MomentProfile uper && EqualityComparer<UserProfile>.Default.Equals(User, uper.User);
+    public override bool Equals(object? obj) => obj is MomentProfile uper && EqualityComparer<UserProfile>.Default.Equals(User, uper.User);
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(User);

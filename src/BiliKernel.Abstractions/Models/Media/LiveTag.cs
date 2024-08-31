@@ -31,7 +31,7 @@ public sealed class LiveTag(string id, string name, string sortType)
     public string SortType { get; } = sortType;
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is LiveTag tag && Id == tag.Id && SortType == tag.SortType;
+    public override bool Equals(object? obj) => obj is LiveTag tag && Id == tag.Id && SortType == tag.SortType;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id, SortType);

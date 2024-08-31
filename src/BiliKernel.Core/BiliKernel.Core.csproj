@@ -4,11 +4,12 @@
         <!-- THIS PROPERTY GROUP MUST COME FIRST -->
         <AssemblyName>Richasy.BiliKernel.Core</AssemblyName>
         <RootNamespace>Richasy.BiliKernel</RootNamespace>
-        <TargetFrameworks>netstandard2.0</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <NoWarn>$(NoWarn);SKEXP0001</NoWarn>
         <EnablePackageValidation>true</EnablePackageValidation>
+        <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
     </PropertyGroup>
 
     <PropertyGroup>

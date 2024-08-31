@@ -44,11 +44,16 @@ public sealed partial class BiliHttpClient
             return;
         }
 
-        var responseContent = await response.GetJsonAsync<BiliResponse>().ConfigureAwait(false)
-            ?? throw new KernelException("哔哩哔哩返回了一个空的响应");
-        if (!responseContent.IsSuccess())
+        var responseContent = await response.ResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+        if (string.IsNullOrWhiteSpace(responseContent))
         {
-            throw new KernelException($"哔哩哔哩返回了一个异常响应: {responseContent.Message ?? "N/A"}", new System.Exception(JsonSerializer.Serialize(responseContent)));
+            throw new KernelException("哔哩哔哩返回了一个空的响应");
+        }
+
+        var responseObj = JsonSerializer.Deserialize(responseContent, BiliResponseContext.Default.BiliResponse);
+        if (!responseObj.IsSuccess())
+        {
+            throw new KernelException($"哔哩哔哩返回了一个异常响应: {responseObj.Message ?? "N/A"}", new System.Exception(responseContent));
         }
     }
 }

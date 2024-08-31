@@ -74,7 +74,7 @@ public sealed class BiliImage
     public Uri SourceUri => _sourceUri ?? Uri;
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is BiliImage image && _sourceUri == image._sourceUri;
+    public override bool Equals(object? obj) => obj is BiliImage image && _sourceUri == image._sourceUri;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(_sourceUri);
