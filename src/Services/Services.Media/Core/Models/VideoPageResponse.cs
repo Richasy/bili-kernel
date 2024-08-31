@@ -126,29 +126,6 @@ internal sealed class Vip
     public int type { get; set; }
 }
 
-internal sealed class Reply1
-{
-    public int rpid { get; set; }
-    public int oid { get; set; }
-    public int type { get; set; }
-    public int mid { get; set; }
-    public int root { get; set; }
-    public int parent { get; set; }
-    public int dialog { get; set; }
-    public int count { get; set; }
-    public int rcount { get; set; }
-    public int state { get; set; }
-    public int fansgrade { get; set; }
-    public int attr { get; set; }
-    public int ctime { get; set; }
-    public int like { get; set; }
-    public int action { get; set; }
-    public object content { get; set; }
-    public object replies { get; set; }
-    public int assist { get; set; }
-    public bool show_follow { get; set; }
-}
-
 internal sealed class VideoPageTag
 {
     public int tag_id { get; set; }

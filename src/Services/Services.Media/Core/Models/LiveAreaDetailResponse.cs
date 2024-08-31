@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Richasy.BiliKernel.Services.Media.Core;
+namespace Richasy.BiliKernel.Services.Media.Core.Models;
 
 /// <summary>
 /// 直播间分区详情响应结果.

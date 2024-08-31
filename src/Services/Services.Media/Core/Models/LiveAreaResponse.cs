@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Richasy.BiliKernel.Services.Media.Core;
+namespace Richasy.BiliKernel.Services.Media.Core.Models;
 
 internal sealed class LiveAreaResponse
 {
