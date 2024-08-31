@@ -8,6 +8,7 @@
       <VersionSuffix>alpha</VersionSuffix>
       <NoWarn>NU1507</NoWarn>
       <Platforms>AnyCPU</Platforms>
+      <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
     </PropertyGroup>
 
     <PropertyGroup>

@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
 using Richasy.BiliKernel.Bili.Authorization;
-using Richasy.BiliKernel.Content;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models.Authorization;
 
@@ -68,7 +67,7 @@ internal sealed class TVAuthorizeClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Passport.QRCode));
         _basicAuthenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings() { ForceNoToken = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<TVQRCode>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseTVQRCode).ConfigureAwait(false);
         return responseObj.Data;
     }
 
@@ -99,7 +98,7 @@ internal sealed class TVAuthorizeClient
 
                 if (ke.InnerException is not null && ke.InnerException.Message.Contains("Code"))
                 {
-                    var error = JsonSerializer.Deserialize<BiliResponse>(ke.InnerException.Message);
+                    var error = JsonSerializer.Deserialize(ke.InnerException.Message, SourceGenerationContext.Default.BiliResponse);
                     if (error != null)
                     {
                         var qrStatus = error.Code is 86090 or 86039
@@ -176,7 +175,7 @@ internal sealed class TVAuthorizeClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Passport.RefreshToken));
         _basicAuthenticator.AuthroizeRestRequest(request, paramters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<BiliToken>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseBiliToken).ConfigureAwait(false);
         var token = responseObj.Data;
         TrySaveCookiesFromToken(token);
 
@@ -195,7 +194,7 @@ internal sealed class TVAuthorizeClient
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Passport.QRCodeCheck));
         _basicAuthenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings() { ForceNoToken = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync<BiliDataResponse<BiliToken>>(response).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseBiliToken).ConfigureAwait(false);
         var token = responseObj?.Data;
         TrySaveCookiesFromToken(token);
         return token;

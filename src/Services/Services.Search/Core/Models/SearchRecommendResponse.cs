@@ -5,7 +5,6 @@ using System.Text.Json.Serialization;
 
 namespace Richasy.BiliKernel.Services.Search.Core;
 
-
 internal sealed class SearchRecommendResponse
 {
     [JsonPropertyName("trackid")]
@@ -47,4 +46,3 @@ internal sealed class WebSearchRecommendItem
     [JsonPropertyName("keyword")]
     public string Keyword { get; set; }
 }
-

@@ -3,7 +3,8 @@
   <PropertyGroup>
       <AssemblyName>Richasy.BiliKernel.Grpc</AssemblyName>
       <RootNamespace>Richasy.BiliKernel</RootNamespace>
-      <TargetFrameworks>netstandard2.0</TargetFrameworks>
+      <TargetFramework>netstandard2.0</TargetFramework>
+      <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
       <NoWarn>$(NoWarn);SKEXP0001;CS1570;CS1587</NoWarn>
   </PropertyGroup>
 

@@ -110,7 +110,7 @@ internal sealed class Article
 /// <summary>
 /// 发布者信息.
 /// </summary>
-public class PublisherInfo
+internal sealed class PublisherInfo
 {
     /// <summary>
     /// 视频发布者的Id.
@@ -134,7 +134,7 @@ public class PublisherInfo
 /// <summary>
 /// 文章参数.
 /// </summary>
-public class ArticleStats
+internal sealed class ArticleStats
 {
     /// <summary>
     /// 阅读次数.

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 namespace Richasy.BiliKernel.Services.Article.Core.Models;
 
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
 internal sealed class ArticleContentResponse
 {
     public Readinfo readInfo { get; set; }
@@ -184,4 +183,3 @@ internal sealed class ArticleTag
     public int tid { get; set; }
     public string name { get; set; }
 }
-#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释

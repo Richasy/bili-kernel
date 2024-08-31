@@ -137,6 +137,6 @@ namespace Richasy.BiliKernel;
 [JsonSerializable(typeof(BiliDataResponse<List<PartitionVideo>>))]
 [JsonSerializable(typeof(BiliDataResponse<CuratedPlaylistResponse>))]
 [JsonSerializable(typeof(BiliDataResponse<RecommendVideoResponse>))]
-internal partial class SourceGenerationContext : JsonSerializerContext
+internal sealed partial class SourceGenerationContext : JsonSerializerContext
 {
 }
