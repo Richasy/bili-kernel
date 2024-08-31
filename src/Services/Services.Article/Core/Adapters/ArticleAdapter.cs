@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Text.Json;
 using Richasy.BiliKernel.Adapters;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Article;
@@ -115,10 +113,6 @@ internal static class ArticleAdapter
                     <img src="{line.pic.url}" style="max-width: 100%; width: auto; display: block; margin: 0 auto;" height="{line.pic.height}" />
                     """;
                 htmlContent += imgTag;
-            }
-            else
-            {
-                Debug.WriteLine(JsonSerializer.Serialize(item));
             }
         }
 

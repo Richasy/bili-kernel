@@ -68,7 +68,7 @@ internal sealed class VideoPartition
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is VideoPartition partition && Tid == partition.Tid;
+    public override bool Equals(object? obj) => obj is VideoPartition partition && Tid == partition.Tid;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Tid);

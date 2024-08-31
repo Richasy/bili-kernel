@@ -1,7 +1,6 @@
 ﻿using Bili.Console.Models;
 using Microsoft.Extensions.Hosting;
 using Richasy.BiliKernel;
-using Richasy.BiliKernel.Authorizers.TV;
 using Spectre.Console;
 
 namespace Bili.Console;
@@ -21,7 +20,6 @@ internal sealed class BiliService : IHostedService
             .AddHttpClient()
             .AddBasicAuthenticator()
             .AddTVAuthentication()
-            .UseDefaultAuthenticationService<TVAuthenticationService>()
             .AddMyProfileService()
             .AddRelationshipService()
             .AddViewLaterService()

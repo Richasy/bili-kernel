@@ -66,7 +66,7 @@ internal sealed class LiveAreaDetailTag
     public int? Sort { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is LiveAreaDetailTag tag && Id == tag.Id;
+    public override bool Equals(object? obj) => obj is LiveAreaDetailTag tag && Id == tag.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);

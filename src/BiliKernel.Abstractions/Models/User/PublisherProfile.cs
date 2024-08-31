@@ -49,7 +49,7 @@ public sealed class PublisherProfile
     public string? Role { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is PublisherProfile profile && EqualityComparer<UserProfile>.Default.Equals(User, profile.User);
+    public override bool Equals(object? obj) => obj is PublisherProfile profile && EqualityComparer<UserProfile>.Default.Equals(User, profile.User);
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(User);

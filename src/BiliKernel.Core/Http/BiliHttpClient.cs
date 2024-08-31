@@ -116,11 +116,11 @@ public sealed partial class BiliHttpClient
     /// <param name="response">响应.</param>
     /// <param name="deserializeContext">反序列化上下文（用于AOT）.</param>
     /// <returns><see cref="Task{T}"/></returns>
-    public static async Task<T> ParseAsync<T>(IFlurlResponse response, JsonTypeInfo<T>? deserializeContext = default)
+    public static async Task<T> ParseAsync<T>(IFlurlResponse response, JsonTypeInfo<T> deserializeContext)
     {
         Verify.NotNull(response, nameof(response));
         var contentText = await response.ResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-        return deserializeContext is null ? JsonSerializer.Deserialize<T>(contentText) : JsonSerializer.Deserialize<T>(contentText, deserializeContext);
+        return JsonSerializer.Deserialize<T>(contentText, deserializeContext);
     }
 
     /// <summary>

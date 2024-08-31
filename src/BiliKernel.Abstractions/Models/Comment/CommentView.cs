@@ -58,7 +58,7 @@ public sealed class CommentView
     public long NextOffset { get; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is CommentView view && TargetId == view.TargetId;
+    public override bool Equals(object? obj) => obj is CommentView view && TargetId == view.TargetId;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(TargetId);

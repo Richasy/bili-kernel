@@ -392,11 +392,11 @@ internal sealed class PlayerClient
         var buvid = await GetBuvidAsync(cancellationToken).ConfigureAwait(false);
         await SendLiveMessageAsync(
             socket,
-            new
+            new EnterRoomMessage
             {
                 roomid = Convert.ToInt32(roomId),
                 uid = _tokenResolver.GetToken().UserId,
-                buvid,
+                buvid = buvid,
                 protover = 2,
                 key = liveDanmakuInfo.Token,
             },
@@ -411,7 +411,17 @@ internal sealed class PlayerClient
 
     public static async Task SendLiveMessageAsync(ClientWebSocket socket, object data, int action, CancellationToken cancellationToken)
     {
-        var msg = data is string str ? str : JsonSerializer.Serialize(data);
+        var msg = data is string str ? str : string.Empty;
+        if (data is EnterRoomMessage erm)
+        {
+            msg = JsonSerializer.Serialize(erm, SourceGenerationContext.Default.EnterRoomMessage);
+        }
+
+        if (string.IsNullOrEmpty(msg))
+        {
+            throw new KernelException("无法序列化消息内容");
+        }
+
         var msgData = EncodeLiveData(msg, action);
         await socket.SendAsync(new ArraySegment<byte>(msgData), WebSocketMessageType.Binary, true, cancellationToken).ConfigureAwait(false);
     }
@@ -494,7 +504,8 @@ internal sealed class PlayerClient
                 return default;
             }
 
-            var obj = JsonSerializer.Deserialize<JsonElement>(jsonMessage);
+            var doc = JsonDocument.Parse(jsonMessage);
+            var obj = doc.RootElement;
             var cmd = obj.GetProperty("cmd").ToString();
             if (cmd.Contains("DANMU_MSG"))
             {

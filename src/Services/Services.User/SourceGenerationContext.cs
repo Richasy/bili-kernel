@@ -67,6 +67,7 @@ namespace Richasy.BiliKernel.Services.User;
 [JsonSerializable(typeof(VideoStatusInfo))]
 [JsonSerializable(typeof(ViewLaterSetResponse))]
 [JsonSerializable(typeof(ViewLaterVideo))]
+[JsonSerializable(typeof(SendChatMessageContent))]
 [JsonSerializable(typeof(BiliDataResponse<MyInfo>))]
 [JsonSerializable(typeof(BiliDataResponse<Mine>))]
 [JsonSerializable(typeof(BiliDataResponse<List<RelatedTag>>))]

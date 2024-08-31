@@ -171,7 +171,7 @@ internal sealed class MyClient
         var parameters = new Dictionary<string, string>
         {
             { "msg[msg_type]", "1" },
-            { "msg[content]", JsonSerializer.Serialize(new { content }) },
+            { "msg[content]", JsonSerializer.Serialize(new SendChatMessageContent{ Content = content}, SourceGenerationContext.Default.SendChatMessageContent) },
             { "msg[sender_uid]", localToken.UserId.ToString() },
             { "msg[receiver_id]", user.Id },
             { "msg[receiver_type]", "1" },

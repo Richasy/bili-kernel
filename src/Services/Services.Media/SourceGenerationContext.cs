@@ -115,6 +115,7 @@ namespace Richasy.BiliKernel;
 [JsonSerializable(typeof(VideoEpisodeArc))]
 [JsonSerializable(typeof(VideoPartition))]
 [JsonSerializable(typeof(VideoStatusInfo))]
+[JsonSerializable(typeof(EnterRoomMessage))]
 [JsonSerializable(typeof(BiliDataResponse<LiveAreaResponse>))]
 [JsonSerializable(typeof(BiliDataResponse<LiveAreaDetailResponse>))]
 [JsonSerializable(typeof(BiliDataResponse<LiveFeedResponse>))]

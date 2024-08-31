@@ -30,7 +30,7 @@ public sealed class PlayerFormatInformation(int quality, string description, boo
     public bool NeedLogin { get; } = needLogin;
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is PlayerFormatInformation information && Quality == information.Quality;
+    public override bool Equals(object? obj) => obj is PlayerFormatInformation information && Quality == information.Quality;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Quality);

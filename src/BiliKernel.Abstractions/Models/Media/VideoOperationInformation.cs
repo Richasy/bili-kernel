@@ -41,7 +41,7 @@ public sealed class VideoOperationInformation(
     public bool? IsFollowed { get; } = isFollowed;
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is VideoOperationInformation information && Id == information.Id;
+    public override bool Equals(object? obj) => obj is VideoOperationInformation information && Id == information.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);
