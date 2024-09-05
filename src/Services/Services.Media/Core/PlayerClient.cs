@@ -417,11 +417,6 @@ internal sealed class PlayerClient
             msg = JsonSerializer.Serialize(erm, SourceGenerationContext.Default.EnterRoomMessage);
         }
 
-        if (string.IsNullOrEmpty(msg))
-        {
-            throw new KernelException("无法序列化消息内容");
-        }
-
         var msgData = EncodeLiveData(msg, action);
         await socket.SendAsync(new ArraySegment<byte>(msgData), WebSocketMessageType.Binary, true, cancellationToken).ConfigureAwait(false);
     }
