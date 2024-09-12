@@ -466,6 +466,21 @@ internal sealed class MyClient
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
+    public async Task<UserCard> GetUserCardAsync(string userId, CancellationToken cancellationToken)
+    {
+        var parameters = new Dictionary<string, string>
+        {
+            { "mid", userId },
+        };
+
+        var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Account.UserCard));
+        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, ApiType = BiliApiType.Web, RequireCookie = true });
+        var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseUserCardDetailResponse).ConfigureAwait(false);
+        return responseObj.Data?.ToUserCard()
+            ?? throw new KernelException("无法获取用户卡片数据");
+    }
+
     private async Task<T> GetAsync<T>(string url, JsonTypeInfo<T> converter, Dictionary<string, string>? parameters = default, CancellationToken cancellationToken = default)
     {
         await _authenticationService.EnsureTokenAsync(cancellationToken).ConfigureAwait(false);

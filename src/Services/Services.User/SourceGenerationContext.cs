@@ -68,6 +68,9 @@ namespace Richasy.BiliKernel.Services.User;
 [JsonSerializable(typeof(ViewLaterSetResponse))]
 [JsonSerializable(typeof(ViewLaterVideo))]
 [JsonSerializable(typeof(SendChatMessageContent))]
+[JsonSerializable(typeof(UserCardDetailResponse))]
+[JsonSerializable(typeof(UserCardDetail))]
+[JsonSerializable(typeof(UserLevelInfo))]
 [JsonSerializable(typeof(BiliDataResponse<MyInfo>))]
 [JsonSerializable(typeof(BiliDataResponse<Mine>))]
 [JsonSerializable(typeof(BiliDataResponse<List<RelatedTag>>))]
@@ -91,6 +94,7 @@ namespace Richasy.BiliKernel.Services.User;
 [JsonSerializable(typeof(BiliDataResponse<UgcSeasonDetailResponse>))]
 [JsonSerializable(typeof(BiliDataResponse<bool>))]
 [JsonSerializable(typeof(BiliDataResponse<ViewLaterSetResponse>))]
+[JsonSerializable(typeof(BiliDataResponse<UserCardDetailResponse>))]
 internal sealed partial class SourceGenerationContext : JsonSerializerContext
 {
 }
