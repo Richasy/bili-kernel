@@ -101,6 +101,11 @@ public static class BiliApis
         public const string Mine = _appBase + "/x/v2/account/mine";
 
         /// <summary>
+        /// 用户卡片信息.
+        /// </summary>
+        public const string UserCard = _apiBase + "/x/web-interface/card";
+
+        /// <summary>
         /// 用户空间.
         /// </summary>
         public const string Space = _appBase + "/x/v2/space";

@@ -180,4 +180,13 @@ internal static class UserAdapter
         var sourceContent = string.IsNullOrEmpty(item.Item.Title) ? item.Item.Description : item.Item.Title;
         return new NotifyMessage(item.Id.ToString(), NotifyMessageType.Reply, users, publishTime, item.Item.Business, message, sourceContent, item.Item.Uri);
     }
+
+    public static UserCard ToUserCard(this UserCardDetailResponse response)
+    {
+        var userProfile = UserAdapterBase.CreateUserProfile(Convert.ToInt64(response.Card.Mid), response.Card.Name, response.Card.Face, 96d);
+        var detailProfile = new UserDetailProfile(userProfile, response.Card.Sign, response.Card.Level.CurrentLevel, response.Card.Vip.Status >= 1, response.Card.IsSeniorMember == 1);
+        var relation = response.Following ? UserRelationStatus.Following : UserRelationStatus.Unfollow;
+        var communityInfo = new UserCommunityInformation(response.Card.Mid, response.Card.Attention, response.Card.Fans, likeCount: response.LikeCount, relation: relation);
+        return new UserCard(detailProfile, communityInfo);
+    }
 }

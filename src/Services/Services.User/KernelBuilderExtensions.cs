@@ -64,4 +64,13 @@ public static class KernelBuilderExtensions
         builder.Services.AddSingleton<IFavoriteService, FavoriteService>();
         return builder;
     }
+
+    /// <summary>
+    /// 添加用户服务.
+    /// </summary>
+    public static IKernelBuilder AddUserService(this IKernelBuilder builder)
+    {
+        builder.Services.AddSingleton<IUserService, UserService>();
+        return builder;
+    }
 }
