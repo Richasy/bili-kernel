@@ -61,4 +61,16 @@ public sealed class SearchService : ISearchService
             ? throw new KernelException("搜索关键字不能为空")
             : _client.GetSearchSuggestsAsync(keyword, cancellationToken);
     }
+
+    /// <inheritdoc/>
+    public Task<(IReadOnlyList<VideoInformation>? Videos, int TotalCount, bool HasMore)> SearchUserVideosAsync(string userId, string keyword, int pageNumber = 0, CancellationToken cancellationToken = default)
+        => string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(keyword)
+            ? throw new KernelException("用户Id和搜索关键字不能为空")
+            : _client.SearchUserVideosAsync(userId, keyword, pageNumber + 1, cancellationToken);
+
+    /// <inheritdoc/>
+    public Task<(IReadOnlyList<VideoInformation>? Videos, int TotalCount, bool HasMore)> SearchHistoryVideosAsync(string keyword, int pageNumber = 0, CancellationToken cancellationToken = default)
+        => string.IsNullOrWhiteSpace(keyword)
+            ? throw new KernelException("搜索关键字不能为空")
+            : _client.SearchHistoryVideosAsync(keyword, pageNumber + 1, cancellationToken);
 }
