@@ -148,6 +148,11 @@ public static class BiliApis
         public const string ClearHistory = _grpcBase + "/bilibili.app.interface.v1.History/Clear";
 
         /// <summary>
+        /// 搜索历史记录.
+        /// </summary>
+        public const string SearchHistory = _grpcBase + "/bilibili.app.interface.v1.History/Search";
+
+        /// <summary>
         /// 设置历史记录选项.
         /// </summary>
         public const string SetHistoryRecordOption = _apiBase + "/x/v2/history/shadow/set";

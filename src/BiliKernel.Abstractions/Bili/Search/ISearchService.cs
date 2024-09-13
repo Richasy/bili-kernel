@@ -41,4 +41,14 @@ public interface ISearchService
     /// 获取分区搜索结果.
     /// </summary>
     Task<(IReadOnlyList<SearchResultItem> Result, string? Offset)> GetPartitionSearchResultAsync(string keyword, SearchPartition partition, string? offset = default, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 搜索用户视频.
+    /// </summary>
+    Task<(IReadOnlyList<VideoInformation>? Videos, int TotalCount, bool HasMore)> SearchUserVideosAsync(string userId, string keyword, int pageNumber = 0, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 搜索历史视频.
+    /// </summary>
+    Task<(IReadOnlyList<VideoInformation>? Videos, int TotalCount, bool HasMore)> SearchHistoryVideosAsync(string keyword, int pageNumber = 0, CancellationToken cancellationToken = default);
 }

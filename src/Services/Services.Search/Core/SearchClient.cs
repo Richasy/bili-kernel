@@ -114,4 +114,41 @@ internal sealed class SearchClient
             ? responseObj.List.Select(p => p.ToSearchSuggest()).ToList().AsReadOnly()
             : default;
     }
+
+    public async Task<(IReadOnlyList<VideoInformation>?, int, bool)> SearchUserVideosAsync(string userId, string keyword, int pageNumber, CancellationToken cancellationToken)
+    {
+        var req = new SearchArchiveReq
+        {
+            Mid = Convert.ToInt64(userId),
+            Keyword = keyword,
+            Pn = pageNumber,
+            Ps = 20,
+        };
+
+        var request = BiliHttpClient.CreateRequest(new Uri(BiliApis.Account.SpaceVideoSearch), req);
+        _authenticator.AuthorizeGrpcRequest(request);
+        var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SearchArchiveReply.Parser).ConfigureAwait(false);
+        var videos = responseObj.Archives?.Select(p => p.ToVideoInformation()).Where(p => p is not null).ToList().AsReadOnly();
+        var hasNextPage = ((pageNumber - 1) * 20) + (videos?.Count ?? 0) < responseObj.Total;
+        return (videos, Convert.ToInt32(responseObj.Total), hasNextPage);
+    }
+
+    public async Task<(IReadOnlyList<VideoInformation>?, int, bool)> SearchHistoryVideosAsync(string keyword, int pageNumber, CancellationToken cancellationToken)
+    {
+        var req = new SearchReq
+        {
+            Keyword = keyword,
+            Pn = pageNumber,
+            Business = "archive",
+        };
+
+        var request = BiliHttpClient.CreateRequest(new Uri(BiliApis.Account.SearchHistory), req);
+        _authenticator.AuthorizeGrpcRequest(request);
+        var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SearchReply.Parser).ConfigureAwait(false);
+        var videos = responseObj.Items?.Where(p=>p.CardItemCase == CursorItem.CardItemOneofCase.CardUgc).Select(p => p.ToVideoInformation()).Where(p => p is not null).ToList().AsReadOnly();
+        var hasNextPage = responseObj.HasMore;
+        return (videos, Convert.ToInt32(responseObj.Page.Total), hasNextPage);
+    }
 }
