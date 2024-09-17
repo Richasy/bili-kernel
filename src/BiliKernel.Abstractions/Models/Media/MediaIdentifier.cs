@@ -70,8 +70,12 @@ internal sealed partial class MediaSerializeContext : JsonSerializerContext
 {
 }
 
-internal sealed class MediaIdentifierJsonConverter : JsonConverter<MediaIdentifier>
+/// <summary>
+/// 媒体标识的 JSON 转换器.
+/// </summary>
+public sealed class MediaIdentifierJsonConverter : JsonConverter<MediaIdentifier>
 {
+    /// <inheritdoc/>
     public override MediaIdentifier Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
@@ -120,7 +124,8 @@ internal sealed class MediaIdentifierJsonConverter : JsonConverter<MediaIdentifi
 
         return new MediaIdentifier(id, title, cover);
     }
-
+    
+    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, MediaIdentifier value, JsonSerializerOptions options)
     {
         writer.WriteStartObject();
