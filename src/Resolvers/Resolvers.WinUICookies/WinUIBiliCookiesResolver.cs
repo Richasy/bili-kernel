@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Richasy.BiliKernel.Bili.Authorization;
 using Windows.Storage;
 
@@ -27,7 +28,7 @@ public sealed class WinUIBiliCookiesResolver : IBiliCookiesResolver
         var container = GetContainer();
         if (container.Values.TryGetValue(CookiesKey, out var cookies))
         {
-            _cacheCookies = JsonSerializer.Deserialize<Dictionary<string, string>>(cookies.ToString());
+            _cacheCookies = JsonSerializer.Deserialize(cookies.ToString(), SourceGenerationContext.Default.DictionaryStringString);
         }
 
         return _cacheCookies;
@@ -54,9 +55,15 @@ public sealed class WinUIBiliCookiesResolver : IBiliCookiesResolver
     {
         _cacheCookies = cookies;
         var container = GetContainer();
-        container.Values[CookiesKey] = JsonSerializer.Serialize(cookies);
+        container.Values[CookiesKey] = JsonSerializer.Serialize(cookies, SourceGenerationContext.Default.DictionaryStringString);
     }
 
     private static ApplicationDataContainer GetContainer()
         => ApplicationData.Current.LocalSettings.CreateContainer("BiliKernel", ApplicationDataCreateDisposition.Always);
+}
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(Dictionary<string, string>))]
+internal sealed partial class SourceGenerationContext : JsonSerializerContext
+{
 }
