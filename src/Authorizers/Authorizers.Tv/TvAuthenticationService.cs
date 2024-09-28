@@ -54,10 +54,11 @@ public sealed class TVAuthenticationService : IAuthenticationService
             var qrCode = await _client.GetQRCodeAsync(cancellationToken).ConfigureAwait(false);
             var qrCodeGenerator = new QRCodeGenerator();
             var data = qrCodeGenerator.CreateQrCode(qrCode.Url, QRCodeGenerator.ECCLevel.Q);
-            var code = new QRCode(data);
+            var code = new PngByteQRCode(data);
             var image = code.GetGraphic(20);
             var ms = new System.IO.MemoryStream();
-            image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            await ms.WriteAsync(image, 0, image.Length).ConfigureAwait(false);
+            ms.Position = 0;
             await _qrCodeResolver.RenderAsync(ms.ToArray()).ConfigureAwait(false);
 
             // Step 2: 轮询扫码状态.

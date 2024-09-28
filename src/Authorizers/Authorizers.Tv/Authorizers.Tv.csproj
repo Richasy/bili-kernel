@@ -28,6 +28,7 @@
 
     <ItemGroup>
       <PackageReference Include="QRCoder" />
+      <PackageReference Include="System.Drawing.Common" />
     </ItemGroup>
 
 </Project>
