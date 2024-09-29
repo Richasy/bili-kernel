@@ -69,8 +69,8 @@ internal static class PgcAdapter
         var publishTime = DateTimeOffset.FromUnixTimeSeconds(episode.PublishTime).ToLocalTime().DateTime;
         var communityInfo = new VideoCommunityInformation(epid, episode.Stat.PlayCount, episode.Stat.DanmakuCount, episode.Stat.LikeCount, default, episode.Stat.CoinCount, episode.Stat.ReplyCount);
         var seasonType = episode.Report.SeasonType;
-        var width = episode.Dimension.width;
-        var height = episode.Dimension.height;
+        var width = episode.Dimension?.width ?? 1920;
+        var height = episode.Dimension?.height ?? 1080;
         var ratio = new MediaAspectRatio(width, height);
 
         var identifier = new MediaIdentifier(epid, title, cover);
