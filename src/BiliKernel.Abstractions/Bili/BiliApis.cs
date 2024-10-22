@@ -659,7 +659,7 @@ public static class BiliApis
         /// <summary>
         /// 获取视频字幕.
         /// </summary>
-        public const string Subtitle = _apiBase + "/x/player.so";
+        public const string Subtitle = _apiBase + "/x/player/wbi/v2";
 
         /// <summary>
         /// 获取互动视频选项.

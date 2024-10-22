@@ -3,8 +3,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Richasy.BiliKernel.Authenticator;
@@ -31,21 +29,15 @@ internal sealed class SubtitleClient
     {
         var parametes = new Dictionary<string, string>
         {
-            { "id", $"cid:{cid}" },
+            { "cid", cid },
             { "aid", aid },
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new System.Uri(BiliApis.Video.Subtitle));
-        _authenticator.AuthroizeRestRequest(request, parametes);
-        var text = await _httpClient.GetStringAsync(request, cancellationToken).ConfigureAwait(false);
-        if (string.IsNullOrEmpty(text) || !text.Contains("subtitle"))
-        {
-            throw new KernelException("获取字幕元数据失败");
-        }
-
-        var json = Regex.Match(text, @"<subtitle>(.*?)</subtitle>").Groups[1].Value;
-        var index = JsonSerializer.Deserialize(json, SourceGenerationContext.Default.SubtitleIndexResponse);
-        return index.Subtitles.Select(p => new SubtitleMeta(p.Id.ToString(), p.DisplayLanguage, p.Url)).ToList();
+        _authenticator.AuthroizeRestRequest(request, parametes, new BiliAuthorizeExecutionSettings { ForceNoToken = true, RequireCookie = true });
+        var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseSubtitleViewResponse).ConfigureAwait(false);
+        return responseObj.Data.Subtitle.Subtitles.Select(p => new SubtitleMeta(p.Id.ToString(), p.DisplayLanguage, p.Url)).ToList();
     }
 
     public async Task<IReadOnlyList<SubtitleInformation>> GetSubtitleDetailAsync(SubtitleMeta meta, CancellationToken cancellationToken)

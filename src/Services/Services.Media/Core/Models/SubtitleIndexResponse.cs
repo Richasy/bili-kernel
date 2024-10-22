@@ -5,6 +5,12 @@ using System.Text.Json.Serialization;
 
 namespace Richasy.BiliKernel.Services.Media.Core.Models;
 
+internal sealed class SubtitleViewResponse
+{
+    [JsonPropertyName("subtitle")]
+    public SubtitleIndexResponse Subtitle { get; set; }
+}
+
 /// <summary>
 /// 字幕索引响应结果.
 /// </summary>
