@@ -44,6 +44,12 @@ public static class BasicExtensions
     /// </summary>
     public static int ToDurationSeconds(this string durationText)
     {
+        if (durationText.Contains(' '))
+        {
+            var sp = durationText.Split(' ');
+            durationText = sp.FirstOrDefault(p => p.Contains(':'))?.Trim() ?? "00:00";
+        }
+
         var colonCount = durationText.Count(p => p == ':');
         var hourStr = string.Empty;
         if (colonCount == 1)
