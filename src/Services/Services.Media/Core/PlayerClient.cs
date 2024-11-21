@@ -71,7 +71,7 @@ internal sealed class PlayerClient
         // GRPC 接口中不包含合集信息，需要通过 Web 接口获取.
         if (responseObj.Arc.SeasonId != 0)
         {
-            var pageResponse = await GetWebVideoPageResponseAsync(videoId, cancellationToken).ConfigureAwait(false);
+            var pageResponse = await GetWebVideoPageResponseAsync(responseObj.Arc.Aid.ToString(), cancellationToken).ConfigureAwait(false);
             seasons = pageResponse.View.ugc_season?.sections?.Select(p => p.ToVideoSeason()).ToList();
         }
 

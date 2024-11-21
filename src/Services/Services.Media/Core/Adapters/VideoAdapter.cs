@@ -230,7 +230,7 @@ internal static class VideoAdapter
         var time = DateTimeOffset.FromUnixTimeSeconds(episode.arc.pubdate).ToLocalTime();
         var identifier = new MediaIdentifier(id, title, cover);
         var info = new VideoInformation(identifier, default, duration, publishTime: time, communityInformation: communityInfo);
-        info.AddExtensionIfNotNull(VideoExtensionDataId.Cid, cid);
+        info.AddExtensionIfNotNull(VideoExtensionDataId.Cid, episode.cid);
         info.AddExtensionIfNotNull(VideoExtensionDataId.MediaType, MediaType.Video);
         return info;
     }
