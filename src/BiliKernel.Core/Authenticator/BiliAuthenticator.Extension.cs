@@ -60,8 +60,11 @@ public sealed partial class BiliAuthenticator
 
     private static void InitializeDeviceParameters(Dictionary<string, string> parameters, BiliApiType apiType, bool onlyUseAppKey = false)
     {
-        var appKey = GetApiKey(apiType);
-        parameters.Add("appkey", appKey);
+        if(apiType != BiliApiType.None)
+        {
+            var appKey = GetApiKey(apiType);
+            parameters.Add("appkey", appKey);
+        }
 
         if (onlyUseAppKey)
         {
@@ -84,7 +87,7 @@ public sealed partial class BiliAuthenticator
                 }
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(apiType));
+                break;
         }
     }
 
@@ -93,17 +96,6 @@ public sealed partial class BiliAuthenticator
         var secret = GetApiSecret(device);
         var query = GenerateQuery(parameters);
         return (query + secret).Md5ComputeHash();
-    }
-
-    private static string GenerateRID(Dictionary<string, string> parameters)
-    {
-        if (!parameters.ContainsKey("wts"))
-        {
-            parameters.Add("wts", NowWithSeconds().ToString());
-        }
-
-        var query = GenerateQuery(parameters);
-        return (query + _wbi).Md5ComputeHash();
     }
 
     private static string GenerateQuery(Dictionary<string, string> parameters)
@@ -130,6 +122,17 @@ public sealed partial class BiliAuthenticator
         }
 
         return _buvid;
+    }
+
+    private static string GenerateRID(Dictionary<string, string> parameters)
+    {
+        if (!parameters.ContainsKey("wts"))
+        {
+            parameters.Add("wts", NowWithSeconds().ToString());
+        }
+
+        var query = GenerateQuery(parameters);
+        return (query + _wbi).Md5ComputeHash();
     }
 
     /// <summary>

@@ -35,7 +35,7 @@ internal sealed class VideoDiscoveryClient
     public async Task<IReadOnlyList<Partition>> GetVideoPartitionsAsync(CancellationToken cancellationToken)
     {
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(BiliApis.Partition.PartitionIndex));
-        _authenticator.AuthroizeRestRequest(request, settings: new BiliAuthorizeExecutionSettings { RequireToken = false });
+        _authenticator.AuthorizeRestRequest(request, settings: new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseListVideoPartition).ConfigureAwait(false);
         var items = responseObj.Data.Where(p => p.IsNeedToShow()).Select(p => p.ToPartition()).ToList();
@@ -75,7 +75,7 @@ internal sealed class VideoDiscoveryClient
         }
 
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(url));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var data = (await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseSubPartition).ConfigureAwait(false)).Data;
         var videos = data.NewVideos
@@ -125,7 +125,7 @@ internal sealed class VideoDiscoveryClient
         }
 
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(url));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         SubPartition data;
         if (!isDefaultOrder)
@@ -167,7 +167,7 @@ internal sealed class VideoDiscoveryClient
         };
 
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(BiliApis.Home.CuratedPlaylist));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { NeedCSRF = true, RequireCookie = true, ForceNoToken = true });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { NeedCSRF = true, RequireCookie = true, ForceNoToken = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseCuratedPlaylistResponse).ConfigureAwait(false);
         return responseObj.Data is null || responseObj.Data.Items is null || responseObj.Data.Items.Count == 0
@@ -187,7 +187,7 @@ internal sealed class VideoDiscoveryClient
         };
 
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(BiliApis.Home.Recommend));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObject = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseRecommendVideoResponse).ConfigureAwait(false);
         var nextOffset = responseObject.Data.Items.Last().Idx;

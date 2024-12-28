@@ -16,4 +16,9 @@ public enum BiliApiType
     /// 网页 API，需要用到 cookie.
     /// </summary>
     Web,
+
+    /// <summary>
+    /// 不添加 AppKey 和 Token.
+    /// </summary>
+    None,
 }

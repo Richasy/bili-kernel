@@ -40,7 +40,7 @@ internal sealed class PgcClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Pgc.TimeLine));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliResultResponsePgcTimeLineResponse).ConfigureAwait(false);
         var title = responseObj.Result.Title;
@@ -76,14 +76,14 @@ internal sealed class PgcClient
 
         var url = isFollow ? BiliApis.Pgc.Follow : BiliApis.Pgc.Unfollow;
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(url));
-        _authenticator.AuthroizeRestRequest(request, paramters);
+        _authenticator.AuthorizeRestRequest(request, paramters);
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
     private async Task<IReadOnlyList<Filter>> GetPgcIndexFiltersAsync(Dictionary<string, string> parameters, CancellationToken cancellationToken)
     {
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Pgc.IndexCondition));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponsePgcIndexConditionResponse).ConfigureAwait(false);
         var filters = responseObj.Data.FilterList.Select(p => p.ToFilter()).ToList();
@@ -109,7 +109,7 @@ internal sealed class PgcClient
         }
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Pgc.IndexResult));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponsePgcIndexResultResponse).ConfigureAwait(false);
         var seasons = responseObj.Data.List.Select(p => p.ToSeasonInformation()).ToList().AsReadOnly();

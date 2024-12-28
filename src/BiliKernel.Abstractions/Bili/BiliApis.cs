@@ -725,6 +725,16 @@ public static class BiliApis
         public const string SearchByType = _grpcBase + "/bilibili.polymer.app.search.v1.Search/SearchByType";
 
         /// <summary>
+        /// 全部搜索（网页）.
+        /// </summary>
+        public const string WebSearchAll = _apiBase + "/x/web-interface/wbi/search/all/v2";
+
+        /// <summary>
+        /// 按类型搜索（网页）.
+        /// </summary>
+        public const string WebSearchByType = _apiBase + "/x/web-interface/wbi/search/type";
+
+        /// <summary>
         /// 子模块搜索，包括PGC，用户和文章.
         /// </summary>
         /// <param name="proxy">代理服务器地址.</param>

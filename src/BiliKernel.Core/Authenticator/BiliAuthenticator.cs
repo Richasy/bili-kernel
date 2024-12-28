@@ -36,7 +36,7 @@ public sealed partial class BiliAuthenticator
     /// <param name="request">请求.</param>
     /// <param name="parameters">参数.</param>
     /// <param name="settings">请求设置.</param>
-    public void AuthroizeRestRequest(IFlurlRequest request, Dictionary<string, string>? parameters = default, BiliAuthorizeExecutionSettings? settings = default)
+    public void AuthorizeRestRequest(IFlurlRequest request, Dictionary<string, string>? parameters = default, BiliAuthorizeExecutionSettings? settings = default)
     {
         Verify.NotNull(request, nameof(request));
         var executionSettings = settings ?? new BiliAuthorizeExecutionSettings();
@@ -169,6 +169,11 @@ public sealed partial class BiliAuthenticator
     /// </summary>
     public async Task InitializeWbiAsync(CancellationToken cancellationToken = default)
     {
+        if (!string.IsNullOrEmpty(_wbi))
+        {
+            return;
+        }
+
         using var client = new FlurlClient();
         var request = new FlurlRequest(BiliApis.Passport.WebNav);
         request.Verb = System.Net.Http.HttpMethod.Get;

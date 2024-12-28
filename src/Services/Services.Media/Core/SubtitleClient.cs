@@ -34,7 +34,7 @@ internal sealed class SubtitleClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new System.Uri(BiliApis.Video.Subtitle));
-        _authenticator.AuthroizeRestRequest(request, parametes, new BiliAuthorizeExecutionSettings { ForceNoToken = true, RequireCookie = true });
+        _authenticator.AuthorizeRestRequest(request, parametes, new BiliAuthorizeExecutionSettings { ForceNoToken = true, RequireCookie = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseSubtitleViewResponse).ConfigureAwait(false);
         return responseObj.Data.Subtitle.Subtitles.Select(p => new SubtitleMeta(p.Id.ToString(), p.DisplayLanguage, p.Url)).ToList();

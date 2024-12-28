@@ -37,7 +37,7 @@ internal sealed class ArticleDiscoveryClient
     public async Task<Dictionary<int, string>> GetHotCategoriesAsync(CancellationToken cancellationToken)
     {
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Article.HotCategories));
-        _authenticator.AuthroizeRestRequest(request, settings: new BiliAuthorizeExecutionSettings { RequireToken = false });
+        _authenticator.AuthorizeRestRequest(request, settings: new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseListArticleCategory).ConfigureAwait(false);
         return responseObj.Data is null || responseObj.Data.Count == 0
@@ -48,7 +48,7 @@ internal sealed class ArticleDiscoveryClient
     public async Task<IReadOnlyList<Partition>> GetPartitionsAsync(CancellationToken cancellationToken)
     {
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Article.Categories));
-        _authenticator.AuthroizeRestRequest(request, settings: new BiliAuthorizeExecutionSettings { RequireToken = false });
+        _authenticator.AuthorizeRestRequest(request, settings: new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseListArticleCategory).ConfigureAwait(false);
         return responseObj.Data is null || responseObj.Data.Count == 0
@@ -64,7 +64,7 @@ internal sealed class ArticleDiscoveryClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Article.HotArticles));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseListArticle).ConfigureAwait(false);
         return responseObj.Data is null || responseObj.Data.Count == 0
@@ -94,7 +94,7 @@ internal sealed class ArticleDiscoveryClient
 
         var uri = partition is null ? BiliApis.Article.Recommend : BiliApis.Article.ArticleList;
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(uri));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         if (partition is null)
         {
@@ -141,7 +141,7 @@ internal sealed class ArticleDiscoveryClient
             { "id", article.Id },
         };
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Article.ArticleViewInfo));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseArticleViewResponse).ConfigureAwait(false);
         return responseObj.Data ?? throw new KernelException("无法获取文章元数据");

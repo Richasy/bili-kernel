@@ -32,7 +32,7 @@ internal sealed class ArticleOpeartionClient
             { "type", isLike ? "1" : "2" }
         };
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Article.LikeArticle));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { NeedCSRF = true });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { NeedCSRF = true });
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
@@ -44,7 +44,7 @@ internal sealed class ArticleOpeartionClient
         };
         var url = isFavorite ? BiliApis.Article.AddFavorite : BiliApis.Article.DeleteFavorite;
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(url));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { NeedCSRF = true });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { NeedCSRF = true });
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 }

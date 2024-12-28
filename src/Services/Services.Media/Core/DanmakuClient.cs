@@ -95,7 +95,7 @@ internal sealed class DanmakuClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Video.SendDanmaku));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
@@ -117,7 +117,7 @@ internal sealed class DanmakuClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Live.SendMessage));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 }

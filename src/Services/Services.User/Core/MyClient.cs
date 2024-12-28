@@ -109,7 +109,7 @@ internal sealed class MyClient
 
         await _authenticationService.EnsureTokenAsync(cancellationToken).ConfigureAwait(false);
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Account.ModifyRelation));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
@@ -142,7 +142,7 @@ internal sealed class MyClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Account.ChatMessages));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseChatMessageResponse).ConfigureAwait(false);
         var messages = responseObj.Data?.MessageList.Select(p => p.ToChatMessage(responseObj.Data.EmoteInfos)).ToList().AsReadOnly()
@@ -160,7 +160,7 @@ internal sealed class MyClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Account.ChatUpdate));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true });
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
@@ -183,7 +183,7 @@ internal sealed class MyClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Account.SendMessage));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true, NeedCSRF = true, });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true, NeedCSRF = true, });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseSendMessageResponse).ConfigureAwait(false);
         var msg = responseObj.Data?.ToChatMessage()
@@ -204,7 +204,7 @@ internal sealed class MyClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Account.ChatSessions));
-        _authenticator.AuthroizeRestRequest(request, queryParameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true });
+        _authenticator.AuthorizeRestRequest(request, queryParameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseChatSessionListResponse).ConfigureAwait(false);
         if (responseObj.Data?.SessionList is null)
@@ -234,7 +234,7 @@ internal sealed class MyClient
         };
 
         var userRequest = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Account.BatchUserInfo));
-        _authenticator.AuthroizeRestRequest(userRequest, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true, ApiType = BiliKernel.Models.BiliApiType.Web });
+        _authenticator.AuthorizeRestRequest(userRequest, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, NeedRID = true, RequireCookie = true, ApiType = BiliKernel.Models.BiliApiType.Web });
         var userResponse = await _httpClient.SendAsync(userRequest, cancellationToken).ConfigureAwait(false);
         var userResponseObj = await BiliHttpClient.ParseAsync(userResponse, SourceGenerationContext.Default.BiliDataResponseListBiliChatUser).ConfigureAwait(false);
         return userResponseObj.Data?.Select(p => p.ToUserProfile()).ToList().AsReadOnly()
@@ -259,7 +259,7 @@ internal sealed class MyClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(url));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         MessageCursor cursor = default;
         IReadOnlyList<NotifyMessage> messages = default;
@@ -312,7 +312,7 @@ internal sealed class MyClient
             { "pn", "1" },
         };
         var folderRequest = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Account.CollectList));
-        _authenticator.AuthroizeRestRequest(folderRequest, parameters, new BiliAuthorizeExecutionSettings() { ApiType = BiliApiType.Web, RequireCookie = true, NeedRID = true, ForceNoToken = true, });
+        _authenticator.AuthorizeRestRequest(folderRequest, parameters, new BiliAuthorizeExecutionSettings() { ApiType = BiliApiType.Web, RequireCookie = true, NeedRID = true, ForceNoToken = true, });
         var folderResponse = await _httpClient.SendAsync(folderRequest, cancellationToken).ConfigureAwait(false);
         var folderResponseObj = await BiliHttpClient.ParseAsync(folderResponse, SourceGenerationContext.Default.BiliDataResponseFavoriteDetailListResponse).ConfigureAwait(false);
         var defaultFolder = galleryResponse.Data.DefaultFavoriteList.ToVideoFavoriteFolderDetail();
@@ -404,7 +404,7 @@ internal sealed class MyClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Account.UgcSeasonDetail));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireCookie = true });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireCookie = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseUgcSeasonDetailResponse).ConfigureAwait(false);
         var videos = responseObj.Data.archives.Select(p => p.ToVideoInformation()).ToList().AsReadOnly();
@@ -425,7 +425,7 @@ internal sealed class MyClient
 
         await _authenticationService.EnsureTokenAsync(cancellationToken).ConfigureAwait(false);
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Account.UpdatePgcStatus));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
@@ -438,7 +438,7 @@ internal sealed class MyClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Account.UnFavoriteVideo));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
@@ -450,7 +450,7 @@ internal sealed class MyClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Account.UnFavoritePgc));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
@@ -462,7 +462,7 @@ internal sealed class MyClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Account.UnFavoriteArticle));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
@@ -474,7 +474,7 @@ internal sealed class MyClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Account.UserCard));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, ApiType = BiliApiType.Web, RequireCookie = true });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { ForceNoToken = true, ApiType = BiliApiType.Web, RequireCookie = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseUserCardDetailResponse).ConfigureAwait(false);
         return responseObj.Data?.ToUserCard()
@@ -485,7 +485,7 @@ internal sealed class MyClient
     {
         await _authenticationService.EnsureTokenAsync(cancellationToken).ConfigureAwait(false);
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(url));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         return await BiliHttpClient.ParseAsync(response, converter).ConfigureAwait(false);
     }

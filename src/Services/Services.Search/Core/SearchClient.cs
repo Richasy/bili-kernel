@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Bilibili.App.Interfaces.V1;
@@ -38,7 +39,7 @@ internal sealed class SearchClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Search.HotSearch));
-        _authenticator.AuthroizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false, ForceNoToken = true, NeedCSRF = true });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false, ForceNoToken = true, NeedCSRF = true });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseHotSearchResponse).ConfigureAwait(false);
         return responseObj.Data.List.Select(p => p.ToHotSearchItem()).ToList().AsReadOnly()
@@ -48,33 +49,47 @@ internal sealed class SearchClient
     public async Task<IReadOnlyList<SearchRecommendItem>> GetSearchRecommendsAsync(CancellationToken cancellationToken)
     {
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Search.RecommendSearch));
-        _authenticator.AuthroizeRestRequest(request, default, new BiliAuthorizeExecutionSettings { RequireToken = false });
+        _authenticator.AuthorizeRestRequest(request, default, new BiliAuthorizeExecutionSettings { RequireToken = false });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseSearchRecommendResponse).ConfigureAwait(false);
         return responseObj.Data.List.Select(p => p.ToSearchRecommendItem()).ToList().AsReadOnly()
             ?? throw new KernelException("无法获取到有效的搜索推荐");
     }
 
-    public async Task<(IReadOnlyList<VideoInformation>, IReadOnlyList<SearchPartition>?, string?)> GetComprehensiveSearchResultAsync(string keyword, string? offset, ComprehensiveSearchSortType sort, CancellationToken cancellationToken)
+    public async Task<(IReadOnlyList<VideoInformation>, int?)> GetComprehensiveSearchResultAsync(string keyword, int? page, ComprehensiveSearchSortType sort, CancellationToken cancellationToken)
     {
-        var req = new SearchAllRequest
+        var orderType = sort switch
         {
-            Keyword = keyword,
-            Pagination = new Bilibili.Pagination.Pagination
-            {
-                Next = offset ?? string.Empty,
-                PageSize = 20,
-            },
-            Order = (Sort)(int)sort,
+            ComprehensiveSearchSortType.Default => "totalrank",
+            ComprehensiveSearchSortType.Play => "click",
+            ComprehensiveSearchSortType.Danmaku => "dm",
+            ComprehensiveSearchSortType.Newest => "pubdate",
+            _ => throw new ArgumentOutOfRangeException(nameof(sort)),
         };
 
-        var request = BiliHttpClient.CreateRequest(new Uri(BiliApis.Search.SearchAll), req);
-        _authenticator.AuthorizeGrpcRequest(request, false);
-        var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var responseObj = await BiliHttpClient.ParseAsync(response, SearchAllResponse.Parser).ConfigureAwait(false);
-        var videos = responseObj.Item.Where(p => p.Av is not null).Select(p => p.ToVideoInformation()).ToList().AsReadOnly();
-        var partitions = responseObj.Nav?.Select(p => p.ToSearchPartition()).ToList().AsReadOnly();
-        return (videos, partitions, responseObj.Pagination?.Next);
+        page ??= 1;
+        var parameters = new Dictionary<string, string>
+        {
+            { "keyword", Uri.EscapeDataString(keyword) },
+            { "search_type", "video" },
+            { "order", orderType },
+            { "page", page.ToString() },
+        };
+
+        await _authenticator.InitializeWbiAsync(cancellationToken).ConfigureAwait(false);
+        var r = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Search.WebSearchByType));
+        _authenticator.AuthorizeRestRequest(r, parameters, new BiliAuthorizeExecutionSettings
+        {
+            ApiType = BiliApiType.None,
+            RequireCookie = true,
+            NeedRID = true,
+        });
+
+        var resp = await _httpClient.SendAsync(r, cancellationToken).ConfigureAwait(false);
+        var respText = await resp.GetStringAsync().ConfigureAwait(false);
+        var responseObj = JsonSerializer.Deserialize(respText, SourceGenerationContext.Default.BiliDataResponseSearchPartitionResponse);
+        var videos = responseObj.Data.result?.ConvertAll(p => p.ToVideoInformation()) ?? [];
+        return (videos.AsReadOnly(), responseObj.Data.numPages > page ? page + 1 : null);
     }
 
     public async Task<(IReadOnlyList<SearchResultItem>, string?)> GetPartitionSearchResultAsync(string keyword, SearchPartition partition, string? offset, CancellationToken cancellationToken)
@@ -147,7 +162,7 @@ internal sealed class SearchClient
         _authenticator.AuthorizeGrpcRequest(request);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SearchReply.Parser).ConfigureAwait(false);
-        var videos = responseObj.Items?.Where(p=>p.CardItemCase == CursorItem.CardItemOneofCase.CardUgc).Select(p => p.ToVideoInformation()).Where(p => p is not null).ToList().AsReadOnly();
+        var videos = responseObj.Items?.Where(p => p.CardItemCase == CursorItem.CardItemOneofCase.CardUgc).Select(p => p.ToVideoInformation()).Where(p => p is not null).ToList().AsReadOnly();
         var hasNextPage = responseObj.HasMore;
         return (videos, Convert.ToInt32(responseObj.Page.Total), hasNextPage);
     }

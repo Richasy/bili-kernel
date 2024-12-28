@@ -55,7 +55,7 @@ internal sealed class ViewLaterClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Account.ViewLaterAdd));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
@@ -68,7 +68,7 @@ internal sealed class ViewLaterClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Account.ViewLaterDelete));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
@@ -81,7 +81,7 @@ internal sealed class ViewLaterClient
 
         await _authenticationService.EnsureTokenAsync(cancellationToken).ConfigureAwait(false);
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Account.ViewLaterClear));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
@@ -89,7 +89,7 @@ internal sealed class ViewLaterClient
     {
         await _authenticationService.EnsureTokenAsync(cancellationToken).ConfigureAwait(false);
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(url));
-        _authenticator.AuthroizeRestRequest(request, paramters);
+        _authenticator.AuthorizeRestRequest(request, paramters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         return await BiliHttpClient.ParseAsync<T>(response, converter).ConfigureAwait(false);
     }

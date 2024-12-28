@@ -44,7 +44,7 @@ internal sealed class CommentClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new System.Uri(BiliApis.Community.LikeReply));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
@@ -55,7 +55,7 @@ internal sealed class CommentClient
             { "business", "reply" },
         };
         var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new System.Uri(BiliApis.Community.Emotes));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseEmoteResponse).ConfigureAwait(false);
         return responseObj.Data.Packages.Select(p => p.ToEmotePackage()).ToList()
@@ -137,7 +137,7 @@ internal sealed class CommentClient
         };
 
         var request = BiliHttpClient.CreateRequest(HttpMethod.Post, new Uri(BiliApis.Community.AddReply));
-        _authenticator.AuthroizeRestRequest(request, parameters);
+        _authenticator.AuthorizeRestRequest(request, parameters);
         await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
     }
 }

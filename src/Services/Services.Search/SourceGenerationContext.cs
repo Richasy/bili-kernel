@@ -13,6 +13,7 @@ namespace Richasy.BiliKernel;
 [JsonSerializable(typeof(WebSearchRecommendItem))]
 [JsonSerializable(typeof(BiliDataResponse<HotSearchResponse>))]
 [JsonSerializable(typeof(BiliDataResponse<SearchRecommendResponse>))]
+[JsonSerializable(typeof(BiliDataResponse<SearchPartitionResponse>))]
 internal sealed partial class SourceGenerationContext : JsonSerializerContext
 {
 }

@@ -39,11 +39,11 @@ public sealed class SearchService : ISearchService
         => _client.GetSearchRecommendsAsync(cancellationToken);
 
     /// <inheritdoc/>
-    public Task<(IReadOnlyList<VideoInformation> Videos, IReadOnlyList<SearchPartition>? Partitions, string? NextOffset)> GetComprehensiveSearchResultAsync(string keyword, string? offset = null, ComprehensiveSearchSortType sort = ComprehensiveSearchSortType.Default, CancellationToken cancellationToken = default)
+    public Task<(IReadOnlyList<VideoInformation> Videos, int? NextPage)> GetComprehensiveSearchResultAsync(string keyword, int? page = null, ComprehensiveSearchSortType sort = ComprehensiveSearchSortType.Default, CancellationToken cancellationToken = default)
     {
         return string.IsNullOrWhiteSpace(keyword)
             ? throw new KernelException("搜索关键字不能为空")
-            : _client.GetComprehensiveSearchResultAsync(keyword, offset, sort, cancellationToken);
+            : _client.GetComprehensiveSearchResultAsync(keyword, page, sort, cancellationToken);
     }
 
     /// <inheritdoc/>

@@ -38,6 +38,38 @@ internal static class VideoAdapter
         return info;
     }
 
+    public static VideoInformation ToVideoInformation(this SearchVideo video)
+    {
+        var aid = video.aid.ToString();
+        var bvid = video.bvid;
+        var title = video.title.Replace("<em class=\"keyword\">", string.Empty).Replace("</em>", string.Empty);
+        var cover = video.pic?.StartsWith("//") == true ? $"https:{video.pic}" : video.pic;
+        var identifier = new MediaIdentifier(aid, title, cover.ToVideoCover());
+        var user = UserAdapterBase.CreateUserProfile(video.mid, video.author, video.upic, 64d);
+        var communityInfo = new VideoCommunityInformation(aid, video.play, video.danmaku, video.like, video.favorites, commentCount: video.review);
+        var publishTime = DateTimeOffset.FromUnixTimeSeconds(video.pubdate);
+        var duration = 0;
+#pragma warning disable RCS1075 // Avoid empty catch clause that catches System.Exception
+        try
+        {
+            var durationSplit = video.duration.Split(':');
+            duration = durationSplit.Length >= 2
+                ? (int.Parse(durationSplit[0]) * 60) + int.Parse(durationSplit[1])
+                : int.Parse(durationSplit[0]);
+        }
+        catch (Exception)
+        {
+        }
+#pragma warning restore RCS1075 // Avoid empty catch clause that catches System.Exception
+
+        var info = new VideoInformation(identifier, new Models.User.PublisherProfile(user), duration, bvid, publishTime, communityInformation: communityInfo);
+        info.AddExtensionIfNotNull(VideoExtensionDataId.MediaType, MediaType.Video);
+        info.AddExtensionIfNotNull(VideoExtensionDataId.Description, video.desc);
+        info.AddExtensionIfNotNull(VideoExtensionDataId.TagName, video.typename);
+        info.AddExtensionIfNotNull(VideoExtensionDataId.TagId, video.typeid);
+        return info;
+    }
+
     public static VideoInformation ToVideoInformation(this CursorItem cursorItem)
     {
         var video = cursorItem.CardUgc;
