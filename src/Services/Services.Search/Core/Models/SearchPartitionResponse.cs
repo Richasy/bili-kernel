@@ -33,50 +33,25 @@ internal sealed class SearchVideo
     public string bvid { get; set; }
     public string title { get; set; }
     public string description { get; set; }
-    public string arcrank { get; set; }
     public string pic { get; set; }
     public int play { get; set; }
     public int video_review { get; set; }
     public int favorites { get; set; }
-    public string tag { get; set; }
     public int review { get; set; }
-    public int pubdate { get; set; }
-    public int senddate { get; set; }
+    public long pubdate { get; set; }
     public string duration { get; set; }
-    public bool badgepay { get; set; }
-    public string[] hit_columns { get; set; }
-    public string view_type { get; set; }
-    public int is_pay { get; set; }
-    public int is_union_video { get; set; }
-    public int rank_score { get; set; }
     public int like { get; set; }
     public string upic { get; set; }
-    public string corner { get; set; }
     public string cover { get; set; }
     public string desc { get; set; }
     public string url { get; set; }
-    public string rec_reason { get; set; }
     public int danmaku { get; set; }
     public int is_charge_video { get; set; }
     public int vt { get; set; }
     public int enable_vt { get; set; }
-    public string vt_display { get; set; }
     public string subtitle { get; set; }
-    public string episode_count_text { get; set; }
     public int release_status { get; set; }
-    public int is_intervene { get; set; }
-    public int area { get; set; }
-    public int style { get; set; }
     public string cate_name { get; set; }
-    public int is_live_room_inline { get; set; }
-    public int live_status { get; set; }
-    public string live_time { get; set; }
-    public int online { get; set; }
-    public int rank_index { get; set; }
-    public int rank_offset { get; set; }
-    public int roomid { get; set; }
-    public int short_id { get; set; }
-    public int spread_id { get; set; }
     public string tags { get; set; }
     public string uface { get; set; }
     public int uid { get; set; }
