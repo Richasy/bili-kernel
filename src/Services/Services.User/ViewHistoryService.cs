@@ -38,7 +38,7 @@ public sealed class ViewHistoryService : IViewHistoryService
     /// <inheritdoc/>
     public Task<ViewHistoryGroup> GetViewHistoryAsync(ViewHistoryTabType tabType, long offset, CancellationToken cancellationToken = default)
         => _viewHistoryClient.GetHistorySetAsync(tabType, offset, cancellationToken);
-    
+
     /// <inheritdoc/>
     public Task RemoveArticleHistoryItemAsync(ArticleInformation article, CancellationToken cancellationToken = default)
         => _viewHistoryClient.RemoveHistoryItemAsync(article.Identifier.Id, ViewHistoryTabType.Article, cancellationToken);

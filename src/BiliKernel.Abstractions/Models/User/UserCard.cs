@@ -34,7 +34,7 @@ public sealed class UserCard
 
     /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is UserCard card && EqualityComparer<UserDetailProfile>.Default.Equals(Profile, card.Profile);
-    
+
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Profile);
 }

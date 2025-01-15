@@ -67,7 +67,7 @@ public sealed class Partition
 
     /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is Partition partition && Id == partition.Id && Name == partition.Name;
-    
+
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id, Name);
 

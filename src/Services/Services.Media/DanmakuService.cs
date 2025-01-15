@@ -34,7 +34,7 @@ public sealed class DanmakuService : IDanmakuService
     /// <inheritdoc/>
     public Task<IReadOnlyList<DanmakuInformation>> GetSegmentDanmakusAsync(string aid, string cid, int segmentIndex, CancellationToken cancellationToken = default)
         => _client.GetSegmentDanmakusAsync(aid, cid, segmentIndex, cancellationToken);
-    
+
     /// <inheritdoc/>
     public Task SendLiveDanmakuAsync(string content, string roomId, string color, bool isStandardSize = true, DanmakuLocation location = DanmakuLocation.Scroll, CancellationToken cancellationToken = default)
         => _client.SendLiveDanmakuAsync(content, roomId, color, isStandardSize, location, cancellationToken);

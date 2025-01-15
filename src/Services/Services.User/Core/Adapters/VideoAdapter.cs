@@ -96,7 +96,7 @@ internal static class VideoAdapter
     {
         var publisher = media.Publisher.ToPublisherProfile();
         var cover = media.Cover.ToVideoCover();
-        var communityInfo = new VideoCommunityInformation(media.Id.ToString(), media.Stat.PlayCount, media.Stat.DanmakuCount, favoriteCount:media.Stat.FavoriteCount);
+        var communityInfo = new VideoCommunityInformation(media.Id.ToString(), media.Stat.PlayCount, media.Stat.DanmakuCount, favoriteCount: media.Stat.FavoriteCount);
         var collectTime = DateTimeOffset.FromUnixTimeSeconds(media.FavoriteTime).ToLocalTime();
         var identifier = new MediaIdentifier(media.Id.ToString(), media.Title, cover);
         var publishTime = DateTimeOffset.FromUnixTimeSeconds(media.PublishTime).ToLocalTime();

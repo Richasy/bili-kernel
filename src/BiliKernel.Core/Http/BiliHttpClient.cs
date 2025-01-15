@@ -1,15 +1,15 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
-using Flurl.Http;
-using Polly;
 using System;
 using System.Linq;
-using Google.Protobuf;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
+using System.Threading;
+using System.Threading.Tasks;
+using Flurl.Http;
+using Google.Protobuf;
+using Polly;
 
 namespace Richasy.BiliKernel.Http;
 

@@ -21,7 +21,7 @@ internal static class PgcAdapter
 
         var identifier = new MediaIdentifier(epId.ToString(), title, cover);
         var community = new VideoCommunityInformation(epId.ToString(), playCount, danmakuCount);
-        var info = new EpisodeInformation(identifier, duration, communityInformation:community);
+        var info = new EpisodeInformation(identifier, duration, communityInformation: community);
         info.AddExtensionIfNotNull(EpisodeExtensionDataId.Aid, aid);
         info.AddExtensionIfNotNull(EpisodeExtensionDataId.SeasonId, ssid);
         return info;

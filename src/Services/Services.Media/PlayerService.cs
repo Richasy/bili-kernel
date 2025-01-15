@@ -112,7 +112,7 @@ public sealed class PlayerService : IPlayerService
     /// <inheritdoc/>
     public Task ReportEpisodeProgressAsync(string aid, string cid, string episodeId, string seasonId, int progress, CancellationToken cancellationToken = default)
         => _client.ReportProgressAsync(aid, cid, episodeId, seasonId, progress, cancellationToken);
-    
+
     /// <inheritdoc/>
     public Task<VideoOperationInformation> GetEpisodeOperationInformationAsync(string episodeId, CancellationToken cancellationToken = default)
         => _client.GetEpisodeOpeartionInformationAsync(episodeId, cancellationToken);

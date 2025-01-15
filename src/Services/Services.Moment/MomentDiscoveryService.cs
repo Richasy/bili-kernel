@@ -50,7 +50,7 @@ public sealed class MomentDiscoveryService : IMomentDiscoveryService
     /// <inheritdoc/>
     public Task<(IReadOnlyList<MomentInformation> Moments, string Offset, bool HasMore)> GetUserComprehensiveMomentsAsync(UserProfile user, string? offset = null, CancellationToken cancellationToken = default)
         => _momentClient.GetUserComprehensiveMomentsAsync(user, offset, cancellationToken);
-    
+
     /// <inheritdoc/>
     public Task<(IReadOnlyList<MomentInformation> Moments, string Offset, bool HasMore)> GetUserVideoMomentsAsync(UserProfile user, string? offset = null, CancellationToken cancellationToken = default)
         => _momentClient.GetUserVideoMomentsAsync(user, offset, cancellationToken);

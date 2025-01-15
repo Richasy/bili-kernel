@@ -75,7 +75,7 @@ public sealed class VideoInformation : VideoBase
     /// </summary>
     public VideoCommunityInformation? CommunityInformation { get; set; }
 
-    
+
 
     /// <inheritdoc/>
     public override bool Equals(object? obj)

@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Text.RegularExpressions;
 using System;
+using System.Text.RegularExpressions;
+using Bilibili.App.Interfaces.V1;
 using Bilibili.Polymer.App.Search.V1;
 using Richasy.BiliKernel.Adapters;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Media;
-using Bilibili.App.Interfaces.V1;
 
 namespace Richasy.BiliKernel.Services.Search.Core;
 

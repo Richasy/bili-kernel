@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Linq;
 using System;
+using System.Linq;
 using Richasy.BiliKernel.Models.Appearance;
 
 namespace Richasy.BiliKernel;

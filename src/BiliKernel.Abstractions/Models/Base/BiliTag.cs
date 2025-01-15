@@ -27,10 +27,10 @@ public sealed class BiliTag
     /// 名称.
     /// </summary>
     public string Name { get; }
-    
+
     /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is BiliTag tag && Id == tag.Id;
-    
+
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);
 }

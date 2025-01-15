@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
-using Richasy.BiliKernel.Models.Subtitle;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
+using Richasy.BiliKernel.Models.Subtitle;
 
 namespace Richasy.BiliKernel.Bili.Media;
 

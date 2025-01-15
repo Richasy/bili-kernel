@@ -20,7 +20,7 @@ public interface IMomentOperationService
     /// 取消对动态的点赞.
     /// </summary>
     Task DislikeMomentAsync(MomentInformation moment, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// 将用户动态标记为已读.
     /// </summary>

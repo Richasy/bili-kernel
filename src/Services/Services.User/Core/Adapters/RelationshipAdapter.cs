@@ -14,12 +14,12 @@ internal static class RelationshipAdapter
         return response.IsSpecialFollow is 1
             ? UserRelationStatus.SpeciallyFollowed
             : response.Type switch
-                {
-                    2 => UserRelationStatus.Following,
-                    6 => UserRelationStatus.Friends,
-                    0 => UserRelationStatus.Unfollow,
-                    128 => UserRelationStatus.Blocked,
-                    _ => UserRelationStatus.Unknown,
-                };
+            {
+                2 => UserRelationStatus.Following,
+                6 => UserRelationStatus.Friends,
+                0 => UserRelationStatus.Unfollow,
+                128 => UserRelationStatus.Blocked,
+                _ => UserRelationStatus.Unknown,
+            };
     }
 }

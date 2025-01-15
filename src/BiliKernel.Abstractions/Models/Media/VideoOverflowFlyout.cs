@@ -24,7 +24,7 @@ public sealed class VideoOverflowFlyoutItem
     /// 标题.
     /// </summary>
     public string? Title { get; set; }
-    
+
     /// <summary>
     /// 标识.
     /// </summary>

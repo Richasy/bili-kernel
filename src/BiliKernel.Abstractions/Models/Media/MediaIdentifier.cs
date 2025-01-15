@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using System;
-using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Richasy.BiliKernel.Models.Appearance;
 
 namespace Richasy.BiliKernel.Models.Media;
@@ -124,7 +124,7 @@ public sealed class MediaIdentifierJsonConverter : JsonConverter<MediaIdentifier
 
         return new MediaIdentifier(id, title, cover);
     }
-    
+
     /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, MediaIdentifier value, JsonSerializerOptions options)
     {
