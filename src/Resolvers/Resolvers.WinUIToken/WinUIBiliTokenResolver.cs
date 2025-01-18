@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Richasy.BiliKernel.Bili.Authorization;
 using Richasy.BiliKernel.Models.Authorization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Windows.Storage;
 
 namespace Richasy.BiliKernel.Resolvers.WinUIToken;

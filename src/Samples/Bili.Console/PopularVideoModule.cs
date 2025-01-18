@@ -1,6 +1,9 @@
-﻿using Bili.Console.Models;
-using Richasy.BiliKernel;
+﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
+
+using Bili.Console.Models;
 using Richasy.BiliKernel.Bili.Media;
+using RichasyKernel;
 using Spectre.Console;
 
 namespace Bili.Console;

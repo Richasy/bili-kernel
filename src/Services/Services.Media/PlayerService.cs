@@ -1,15 +1,13 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System.Collections.Generic;
-using System.Net.WebSockets;
-using System.Threading;
-using System.Threading.Tasks;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili.Authorization;
 using Richasy.BiliKernel.Bili.Media;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models.Media;
 using Richasy.BiliKernel.Services.Media.Core;
+using System.Net.WebSockets;
 
 namespace Richasy.BiliKernel.Services.Media;
 

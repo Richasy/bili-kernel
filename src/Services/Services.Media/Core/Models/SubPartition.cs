@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Richasy.BiliKernel.Services.Media.Core;
@@ -8,7 +8,7 @@ namespace Richasy.BiliKernel.Services.Media.Core;
 /// <summary>
 /// 子分区类型定义.
 /// </summary>
-internal class SubPartition
+internal sealed class SubPartition
 {
     /// <summary>
     /// 推荐视频列表.

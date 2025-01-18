@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System.Collections.Generic;
-using System.Linq;
+using Richasy.BiliKernel.Bili.Authorization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Richasy.BiliKernel.Bili.Authorization;
 using Windows.Storage;
 
 namespace Richasy.BiliKernel.Resolvers.WinUICookies;

@@ -1,28 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+    <!-- THIS PROPERTY GROUP MUST COME FIRST -->
+    <AssemblyName>Richasy.BiliKernel.Resolvers.NativeToken</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+    <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
+    <NoWarn>NU1507</NoWarn>
+  </PropertyGroup>
 
-    <PropertyGroup>
-        <!-- THIS PROPERTY GROUP MUST COME FIRST -->
-        <AssemblyName>Richasy.BiliKernel.Resolvers.NativeToken</AssemblyName>
-        <RootNamespace>$(AssemblyName)</RootNamespace>
-        <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
-        <VersionSuffix>alpha</VersionSuffix>
-        <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
-        <NoWarn>NU1507</NoWarn>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <!-- NuGet Package Settings -->
-        <Title>哔哩核心 - 本机令牌存取器</Title>
-        <Description>会将登录令牌以 JSON 文件的形式存储在本地，并进行读取和缓存的哔哩核心子模块</Description>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\BiliKernel.Abstractions\BiliKernel.Abstractions.csproj" />
-        <ProjectReference Include="..\..\BiliKernel.Core\BiliKernel.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
-    </ItemGroup>
-
+  <Import Project="$(RepoRoot)/src/nuget-package.props" />
+  
+  <PropertyGroup>
+    <!-- NuGet Package Settings -->
+    <Title>哔哩核心 - 本机令牌存取器</Title>
+    <Description>会将登录令牌以 JSON 文件的形式存储在本地，并进行读取和缓存的哔哩核心子模块</Description>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\BiliKernel.Abstractions\BiliKernel.Abstractions.csproj" />
+    <ProjectReference Include="..\..\BiliKernel.Core\BiliKernel.Core.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+  </ItemGroup>
+  
 </Project>

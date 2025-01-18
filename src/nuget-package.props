@@ -1,0 +1,42 @@
+<Project>
+  <PropertyGroup>
+    <!-- Central version prefix - applies to all nuget packages. -->
+    <PackageVersion>0.0.1-preview1</PackageVersion>
+    <Configurations>Debug;Release</Configurations>
+    <IsPackable>true</IsPackable>
+
+    <!-- Do not validate reference assemblies -->
+    <NoWarn>$(NoWarn);CP1002</NoWarn>
+
+    <!-- Default description and tags. Packages can override. -->
+    <Authors>Richasy</Authors>
+    <Company>Richasy</Company>
+    <Product>Bili Kernel</Product>
+    <Description>哔哩哔哩 API 包装器.</Description>
+    <PackageTags>Richasy</PackageTags>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageIconUrl>icon.png</PackageIconUrl>
+    <PackageReadmeFile>NUGET.md</PackageReadmeFile>
+
+    <!-- Required license, copyright, and repo information. Packages can override. -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>© Richasy. All rights reserved.</Copyright>
+    <PackageProjectUrl>https://github.com/Richasy/bili-kernel</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Richasy/bili-kernel</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+    <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- Include the XML documentation file in the NuGet package. -->
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Include icon.png and NUGET.md in the project. -->
+    <None Include="$(RepoRoot)/src/icon.png" Link="icon.png" Pack="true" PackagePath="." />
+    <None Include="$(RepoRoot)/src/NUGET.md" Link="NUGET.md" Pack="true" PackagePath="." />
+  </ItemGroup>
+</Project>

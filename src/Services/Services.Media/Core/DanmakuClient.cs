@@ -1,11 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using Bilibili.Community.Service.Dm.V1;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
@@ -36,7 +31,7 @@ internal sealed class DanmakuClient
     {
         if (string.IsNullOrEmpty(aid) || string.IsNullOrEmpty(cid))
         {
-            throw new ArgumentNullException("aid 或者 cid 不能为空");
+            throw new ArgumentNullException(nameof(aid), "aid 或者 cid 不能为空");
         }
 
         var req = new DmSegMobileReq

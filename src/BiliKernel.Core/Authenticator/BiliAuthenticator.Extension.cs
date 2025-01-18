@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text.Json.Serialization;
 using Richasy.BiliKernel.Bili.Authorization;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
+using System.Net.NetworkInformation;
+using System.Text.Json.Serialization;
 
 namespace Richasy.BiliKernel.Authenticator;
 

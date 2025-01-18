@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
 using Microsoft.Extensions.DependencyInjection;
 using Richasy.BiliKernel.Bili.User;
 using Richasy.BiliKernel.Services.User;
+using RichasyKernel;
 
 namespace Richasy.BiliKernel;
 

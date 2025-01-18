@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
 using Bilibili.App.Interfaces.V1;
 using Bilibili.Polymer.App.Search.V1;

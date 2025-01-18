@@ -1,12 +1,14 @@
-﻿
-using System.Diagnostics;
+﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
+
 using Bili.Console.Models;
-using Richasy.BiliKernel;
 using Richasy.BiliKernel.Bili.User;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Media;
 using Richasy.BiliKernel.Models.User;
+using RichasyKernel;
 using Spectre.Console;
+using System.Diagnostics;
 
 namespace Bili.Console;
 
@@ -127,7 +129,7 @@ internal sealed class MyProfileModule : IFeatureModule
                 .UseConverter(p => p.Name));
         AnsiConsole.Clear();
         AnsiConsole.MarkupLine($"正在获取分组[green] {group.Name} [/]的详细信息...");
-        var (users, nextPage) = await profileService.GetMyFollowUserGroupDetailAsync(group.Id, 1, _cancellationToken).ConfigureAwait(false);
+        var (users, nextPage) = await profileService.GetMyFollowUserGroupDetailAsync(group.Id, 0, _cancellationToken).ConfigureAwait(false);
         AnsiConsole.Clear();
         AnsiConsole.MarkupLine($"[bold]分组[green] {group.Name} [/]的详细信息:[/]");
         var table = new Table();

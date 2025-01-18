@@ -1,10 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Bilibili.App.Show.Popular.V1;
 using Bilibili.App.Show.Rank.V1;
 using Richasy.BiliKernel.Authenticator;
@@ -13,6 +9,7 @@ using Richasy.BiliKernel.Bili.Authorization;
 using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Media;
+using RichasyKernel;
 
 namespace Richasy.BiliKernel.Services.Media.Core;
 
@@ -84,7 +81,7 @@ internal sealed class VideoDiscoveryClient
             .Select(p => p.ToVideoInformation());
 
         var offsetId = data.BottomOffsetId;
-        return videos.Count() == 0
+        return !videos.Any()
             ? throw new KernelException("无法获取到有效的视频列表，请稍后再试")
             : ((IReadOnlyList<VideoInformation> Videos, long Offset))(videos.ToList().AsReadOnly(), offsetId);
     }
@@ -149,7 +146,7 @@ internal sealed class VideoDiscoveryClient
         var offsetId = data.BottomOffsetId;
         var nextPageNumber = !isDefaultOrder ? pageNumber : 1;
 
-        return videos.Count() == 0
+        return !videos.Any()
             ? throw new KernelException("无法获取到有效的视频列表，请稍后再试")
             : ((IReadOnlyList<VideoInformation> Videos, long Offset, int NextPageNumber))(videos.ToList().AsReadOnly(), offsetId, nextPageNumber);
     }
@@ -183,7 +180,7 @@ internal sealed class VideoDiscoveryClient
             { "flush", "5" },
             { "column", "4" },
             { "device", "desktop" },
-            { "pull", (offset == 0).ToString().ToLower() },
+            { "pull", (offset == 0).ToString().ToLowerInvariant() },
         };
 
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(BiliApis.Home.Recommend));
@@ -218,7 +215,7 @@ internal sealed class VideoDiscoveryClient
                 && p.SmallCoverV5.Base.CardGoto == "av"
                 && !p.SmallCoverV5.Base.Uri.Contains("bangumi"));
         var nextOffset = videos.Last().SmallCoverV5.Base.Idx;
-        return videos.Count() == 0
+        return !videos.Any()
             ? throw new KernelException("热门视频数据为空")
             : ((IReadOnlyList<VideoInformation> Videos, long Offset))(videos.Select(p => p.ToVideoInformation()).ToList().AsReadOnly(), nextOffset);
     }

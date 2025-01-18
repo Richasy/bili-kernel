@@ -1,13 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
-using System.Threading;
-using System.Threading.Tasks;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
 using Richasy.BiliKernel.Bili.Authorization;
@@ -16,6 +9,9 @@ using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Article;
 using Richasy.BiliKernel.Models.Media;
 using Richasy.BiliKernel.Models.User;
+using RichasyKernel;
+using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 
 namespace Richasy.BiliKernel.Services.User.Core;
 
@@ -243,7 +239,7 @@ internal sealed class MyClient
 
     public async Task<(IReadOnlyList<NotifyMessage> Messages, long OffsetId, long OffsetTime, bool HasMore)> GetNotifyMessagesAsync(NotifyMessageType type, long offsetId, long offsetTime, CancellationToken cancellationToken)
     {
-        var timeName = type.ToString().ToLower() + "_time";
+        var timeName = type.ToString().ToLowerInvariant() + "_time";
         var url = type switch
         {
             NotifyMessageType.Like => BiliApis.Account.MessageLike,

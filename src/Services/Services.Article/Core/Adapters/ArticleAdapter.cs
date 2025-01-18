@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Linq;
-using System.Net;
 using Richasy.BiliKernel.Adapters;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Article;
 using Richasy.BiliKernel.Models.Base;
 using Richasy.BiliKernel.Models.User;
 using Richasy.BiliKernel.Services.Article.Core.Models;
+using System.Net;
 
 namespace Richasy.BiliKernel.Services.Article.Core;
 
@@ -81,7 +80,7 @@ internal static class ArticleAdapter
                             : WebUtility.HtmlEncode(node.word.words);
                         text += $"<p style=\"font-size:'{fontsize}'\">{innerText}</p>";
                     }
-                    else if(node.word is not null)
+                    else if (node.word is not null)
                     {
                         text += $"<p>{WebUtility.HtmlEncode(node.word.words)}</p>";
                     }

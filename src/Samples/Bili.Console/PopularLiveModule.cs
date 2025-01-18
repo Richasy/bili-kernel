@@ -1,6 +1,8 @@
-﻿
+﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
+
 using Richasy.BiliKernel.Bili.Media;
-using Richasy.BiliKernel;
+using RichasyKernel;
 using Spectre.Console;
 
 namespace Bili.Console;

@@ -1,6 +1,9 @@
-﻿using Richasy.BiliKernel;
+﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
+
 using Richasy.BiliKernel.Bili.Article;
 using Richasy.BiliKernel.Models.Article;
+using RichasyKernel;
 using Spectre.Console;
 
 namespace Bili.Console;

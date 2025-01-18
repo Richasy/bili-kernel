@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
+using Richasy.BiliKernel.Models.Appearance;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Richasy.BiliKernel.Models.Appearance;
 
 namespace Richasy.BiliKernel.Models.Media;
 

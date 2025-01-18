@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Flurl.Http;
 using Richasy.BiliKernel.Content;
+using RichasyKernel;
+using System.Text.Json;
 
 namespace Richasy.BiliKernel.Http;
 
@@ -53,7 +52,7 @@ public sealed partial class BiliHttpClient
         var responseObj = JsonSerializer.Deserialize(responseContent, BiliResponseContext.Default.BiliResponse);
         if (!responseObj.IsSuccess())
         {
-            throw new KernelException($"哔哩哔哩返回了一个异常响应: {responseObj.Message ?? "N/A"}", new System.Exception(responseContent));
+            throw new KernelException($"哔哩哔哩返回了一个异常响应: {responseObj.Message ?? "N/A"}", new Exception(responseContent));
         }
     }
 }

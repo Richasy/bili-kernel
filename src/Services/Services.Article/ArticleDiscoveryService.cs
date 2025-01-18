@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili.Article;
 using Richasy.BiliKernel.Bili.Authorization;
@@ -10,6 +8,7 @@ using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Article;
 using Richasy.BiliKernel.Services.Article.Core;
+using RichasyKernel;
 
 namespace Richasy.BiliKernel.Services.Article;
 

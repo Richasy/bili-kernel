@@ -1,18 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net.Http;
-using System.Net.WebSockets;
-using System.Text;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using Bilibili.App.Playeronline.V1;
 using Bilibili.App.Playurl.V1;
 using Bilibili.App.View.V1;
@@ -23,6 +11,13 @@ using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Media;
 using Richasy.BiliKernel.Services.Media.Core.Models;
+using RichasyKernel;
+using System.Diagnostics;
+using System.IO.Compression;
+using System.Net.WebSockets;
+using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace Richasy.BiliKernel.Services.Media.Core;
 
@@ -47,7 +42,7 @@ internal sealed class PlayerClient
         var idType = GetVideoIdType(video.Id, out var videoId);
         if (string.IsNullOrEmpty(idType))
         {
-            throw new ArgumentOutOfRangeException("无法识别的视频 ID");
+            throw new ArgumentOutOfRangeException(nameof(video), "无法识别的视频 ID");
         }
 
         var viewReq = new ViewReq();
@@ -83,7 +78,7 @@ internal sealed class PlayerClient
         var idType = GetVideoIdType(video.Id, out var videoId);
         if (string.IsNullOrEmpty(idType))
         {
-            throw new ArgumentOutOfRangeException("无法识别的视频 ID");
+            throw new ArgumentOutOfRangeException(nameof(video), "无法识别的视频 ID");
         }
 
         var queryParameters = new Dictionary<string, string>();
@@ -457,7 +452,8 @@ internal sealed class PlayerClient
         }
         else if (operation == 3)
         {
-            var online = BitConverter.ToInt32(body.Reverse().ToArray(), 0);
+            body.Reverse();
+            var online = BitConverter.ToInt32(body, 0);
             return [new LiveMessage(LiveMessageType.Online, online)];
         }
         else if (operation == 5)
@@ -577,7 +573,7 @@ internal sealed class PlayerClient
         }
         else
         {
-            id = id.ToLower().Replace("av", string.Empty);
+            id = id.ToLowerInvariant().Replace("av", string.Empty);
             if (long.TryParse(id, out _))
             {
                 newId = id;
@@ -604,23 +600,28 @@ internal sealed class PlayerClient
         using var ms = new MemoryStream(buffer);
 
         // 数据包长度
-        var b = BitConverter.GetBytes(buffer.Length).ToArray().Reverse().ToArray();
+        var b = BitConverter.GetBytes(buffer.Length).ToArray();
+        b.Reverse();
         ms.Write(b, 0, 4);
 
         // 数据包头部长度,固定16
-        b = BitConverter.GetBytes(16).Reverse().ToArray();
+        b = BitConverter.GetBytes(16);
+        b.Reverse();
         ms.Write(b, 2, 2);
 
         // 协议版本，0=JSON,1=Int32,2=Buffer
-        b = BitConverter.GetBytes(0).Reverse().ToArray();
+        b = BitConverter.GetBytes(0);
+        b.Reverse();
         ms.Write(b, 0, 2);
 
         // 操作类型
-        b = BitConverter.GetBytes(action).Reverse().ToArray();
+        b = BitConverter.GetBytes(action);
+        b.Reverse();
         ms.Write(b, 0, 4);
 
         // 数据包头部长度,固定1
-        b = BitConverter.GetBytes(1).Reverse().ToArray();
+        b = BitConverter.GetBytes(1);
+        b.Reverse();
         ms.Write(b, 0, 4);
 
         // 数据

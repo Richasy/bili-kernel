@@ -1,29 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+    <!-- THIS PROPERTY GROUP MUST COME FIRST -->
+    <AssemblyName>Richasy.BiliKernel.Services.Media</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+    <NoWarn>NU1507</NoWarn>
+    <Platforms>AnyCPU</Platforms>
+    <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
+  </PropertyGroup>
 
-    <PropertyGroup>
-        <!-- THIS PROPERTY GROUP MUST COME FIRST -->
-        <AssemblyName>Richasy.BiliKernel.Services.Media</AssemblyName>
-        <RootNamespace>$(AssemblyName)</RootNamespace>
-        <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
-        <VersionSuffix>alpha</VersionSuffix>
-        <NoWarn>NU1507</NoWarn>
-        <Platforms>AnyCPU</Platforms>
-        <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
-    </PropertyGroup>
+  <Import Project="$(RepoRoot)/src/nuget-package.props" />
 
-    <PropertyGroup>
-        <!-- NuGet Package Settings -->
-        <Title>哔哩核心 - 多媒体</Title>
-        <Description>用于获取 UGC / PGC 视频/直播等流媒体内容的哔哩核心子模块</Description>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\BiliKernel.Abstractions\BiliKernel.Abstractions.csproj" />
-        <ProjectReference Include="..\..\BiliKernel.Core\BiliKernel.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
-    </ItemGroup>
-
+  <PropertyGroup>
+    <!-- NuGet Package Settings -->
+    <Title>哔哩核心 - 多媒体</Title>
+    <Description>用于获取 UGC / PGC 视频/直播等流媒体内容的哔哩核心子模块</Description>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\BiliKernel.Abstractions\BiliKernel.Abstractions.csproj" />
+    <ProjectReference Include="..\..\BiliKernel.Core\BiliKernel.Core.csproj" />
+  </ItemGroup>
+  
 </Project>

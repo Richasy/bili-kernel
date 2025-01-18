@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 

@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using Bilibili.App.Playurl.V1;
 using Bilibili.App.View.V1;
 using Richasy.BiliKernel.Adapters;
@@ -11,6 +8,7 @@ using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Base;
 using Richasy.BiliKernel.Models.Media;
 using Richasy.BiliKernel.Services.Media.Core.Models;
+using System.Text.RegularExpressions;
 
 namespace Richasy.BiliKernel.Services.Media.Core;
 

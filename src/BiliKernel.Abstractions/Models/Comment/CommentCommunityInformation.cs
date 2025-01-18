@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
-
-using System;
+// Licensed under the MIT License.
 
 namespace Richasy.BiliKernel.Models.Comment;
 

@@ -1,15 +1,12 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
-using System.Threading;
-using System.Threading.Tasks;
 using Flurl.Http;
 using Google.Protobuf;
 using Polly;
+using RichasyKernel;
+using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 
 namespace Richasy.BiliKernel.Http;
 
@@ -139,7 +136,7 @@ public sealed partial class BiliHttpClient
         return parser.ParseFrom(bytes.Skip(5).ToArray());
     }
 
-    internal class PollyHandler(IAsyncPolicy<HttpResponseMessage> policy) : DelegatingHandler
+    internal sealed class PollyHandler(IAsyncPolicy<HttpResponseMessage> policy) : DelegatingHandler
     {
         private readonly IAsyncPolicy<HttpResponseMessage> _policy = policy;
 

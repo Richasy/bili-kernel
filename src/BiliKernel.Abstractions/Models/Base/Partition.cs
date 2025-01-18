@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
 using Richasy.BiliKernel.Models.Appearance;
 
 namespace Richasy.BiliKernel.Models;

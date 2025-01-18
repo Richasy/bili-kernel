@@ -1,8 +1,10 @@
-﻿using System.Diagnostics;
-using Richasy.BiliKernel;
-using Richasy.BiliKernel.Authorizers.TV;
+﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
+
 using Richasy.BiliKernel.Bili.Authorization;
+using RichasyKernel;
 using Spectre.Console;
+using System.Diagnostics;
 
 namespace Bili.Console;
 
@@ -41,7 +43,7 @@ internal sealed class AuthorizeModule : IFeatureModule
             if (shouldSignIn)
             {
                 AnsiConsole.MarkupLine("[bold yellow]请在弹出的窗口中扫码[/]");
-                var service = _kernel.GetRequiredService<IAuthenticationService>(nameof(TVAuthenticationService));
+                var service = _kernel.GetRequiredService<IAuthenticationService>();
                 await service.SignInAsync(cancellationToken: _cancellationToken).ConfigureAwait(false);
                 isSignedIn = await CheckAuthorizeStatusAsync().ConfigureAwait(false);
                 lastTip = isSignedIn ? "[bold green]登录成功[/]" : "[bold red]登录失败[/]";

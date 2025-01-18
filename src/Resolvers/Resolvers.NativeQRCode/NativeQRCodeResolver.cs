@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
 using Richasy.BiliKernel.Bili.Authorization;
+using System.Diagnostics;
 
 namespace Richasy.BiliKernel.Resolvers.NativeQRCode;
 
@@ -17,10 +16,12 @@ public sealed class NativeQRCodeResolver : IQRCodeResolver
     /// <inheritdoc/>
     public Task RenderAsync(byte[] qrImageData)
     {
-        // Step 1: Save the QR code image to the file system.
-        File.WriteAllBytes(QrCodeFileName, qrImageData);
-
-        // Step 2: Open the QR code image with the default image viewer.
-        return Task.Run(() => Process.Start(new ProcessStartInfo(QrCodeFileName) { UseShellExecute = true }));
+        return Task.Run(() =>
+        {
+            // Step 1: Save the QR code image to the file system.
+            File.WriteAllBytes(QrCodeFileName, qrImageData);
+            // Step 2: Open the QR code image with the default image viewer.
+            return Process.Start(new ProcessStartInfo(QrCodeFileName) { UseShellExecute = true });
+        });
     }
 }

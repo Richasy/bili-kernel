@@ -1,12 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using Bilibili.App.Interfaces.V1;
 using Bilibili.Polymer.App.Search.V1;
 using Richasy.BiliKernel.Authenticator;
@@ -15,6 +9,8 @@ using Richasy.BiliKernel.Http;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Media;
 using Richasy.BiliKernel.Models.Search;
+using RichasyKernel;
+using System.Text.Json;
 
 namespace Richasy.BiliKernel.Services.Search.Core;
 

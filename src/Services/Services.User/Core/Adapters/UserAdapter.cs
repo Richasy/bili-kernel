@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json.Nodes;
 using Richasy.BiliKernel.Adapters;
 using Richasy.BiliKernel.Models.User;
+using System.Text.Json.Nodes;
 
 namespace Richasy.BiliKernel.Services.User.Core;
 

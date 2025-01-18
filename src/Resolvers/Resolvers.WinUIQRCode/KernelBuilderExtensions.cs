@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Richasy.BiliKernel.Bili.Authorization;
 using Richasy.BiliKernel.Resolvers.WinUIQRCode;
+using RichasyKernel;
 
 namespace Richasy.BiliKernel;
 

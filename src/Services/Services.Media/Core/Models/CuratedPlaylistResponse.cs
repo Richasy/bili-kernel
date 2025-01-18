@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Richasy.BiliKernel.Services.Media.Core.Models;
@@ -8,7 +8,7 @@ namespace Richasy.BiliKernel.Services.Media.Core.Models;
 /// <summary>
 /// 推荐视频的响应.
 /// </summary>
-internal class CuratedPlaylistResponse
+internal sealed class CuratedPlaylistResponse
 {
     /// <summary>
     /// 推荐视频列表.
@@ -20,7 +20,7 @@ internal class CuratedPlaylistResponse
 /// <summary>
 /// 客户端精选视频.
 /// </summary>
-internal class CuratedPlaylistVideo
+internal sealed class CuratedPlaylistVideo
 {
     /// <summary>
     /// Avid.
@@ -98,7 +98,7 @@ internal class CuratedPlaylistVideo
 /// <summary>
 /// 网页推荐原因.
 /// </summary>
-internal class CuratedPlaylistReason
+internal sealed class CuratedPlaylistReason
 {
     /// <summary>
     /// 推荐原因.

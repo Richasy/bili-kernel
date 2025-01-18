@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Text.RegularExpressions;
 using Bilibili.App.Interfaces.V1;
 using Richasy.BiliKernel.Adapters;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Media;
+using System.Text.RegularExpressions;
 
 namespace Richasy.BiliKernel.Services.User.Core;
 

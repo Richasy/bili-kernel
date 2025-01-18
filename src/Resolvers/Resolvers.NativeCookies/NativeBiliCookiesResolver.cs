@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using Richasy.BiliKernel.Bili.Authorization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Richasy.BiliKernel.Bili.Authorization;
 
 namespace Richasy.BiliKernel.Resolvers.NativeCookies;
 
@@ -64,6 +62,6 @@ public sealed class NativeBiliCookiesResolver : IBiliCookiesResolver
 
 [JsonSourceGenerationOptions(WriteIndented = true)]
 [JsonSerializable(typeof(Dictionary<string, string>))]
-internal partial class CookieSerializeContext : JsonSerializerContext
+internal sealed partial class CookieSerializeContext : JsonSerializerContext
 {
 }

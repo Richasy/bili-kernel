@@ -1,5 +1,8 @@
-﻿using Richasy.BiliKernel;
+﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
+
 using Richasy.BiliKernel.Bili.Search;
+using RichasyKernel;
 using Spectre.Console;
 
 namespace Bili.Console;
@@ -54,17 +57,10 @@ internal sealed class SearchModule : IFeatureModule
 #endif
 
         var keyword = AnsiConsole.Ask<string>("请输入搜索关键字：");
-        var (videos, partitions, nextOffset) = await _searchService.GetComprehensiveSearchResultAsync(keyword, cancellationToken: _cancellationToken).ConfigureAwait(false);
+        var (videos, nextOffset) = await _searchService.GetComprehensiveSearchResultAsync(keyword, cancellationToken: _cancellationToken).ConfigureAwait(false);
         var partitionTable = new Table();
         partitionTable.AddColumn("名称");
         partitionTable.AddColumn("总个数");
-
-        foreach (var partition in partitions)
-        {
-            partitionTable.AddRow(partition.Title, partition.TotalItemCount.ToString());
-        }
-
-        AnsiConsole.Write(partitionTable);
 
         AnsiConsole.MarkupLine("视频列表");
         var videoTable = new Table();
@@ -78,13 +74,6 @@ internal sealed class SearchModule : IFeatureModule
         }
 
         AnsiConsole.Write(videoTable);
-
-        var firstPartition = partitions.FirstOrDefault(p => p.Id == 2);
-        if (firstPartition is not null)
-        {
-            var (subItems, subOffset) = await _searchService.GetPartitionSearchResultAsync(keyword, firstPartition, cancellationToken: _cancellationToken).ConfigureAwait(false);
-        }
-
 
         if (AnsiConsole.Confirm("是否返回？"))
         {

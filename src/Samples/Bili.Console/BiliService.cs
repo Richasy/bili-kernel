@@ -1,6 +1,10 @@
-﻿using Bili.Console.Models;
+﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
+
+using Bili.Console.Models;
 using Microsoft.Extensions.Hosting;
 using Richasy.BiliKernel;
+using RichasyKernel;
 using Spectre.Console;
 
 namespace Bili.Console;
@@ -17,9 +21,9 @@ internal sealed class BiliService : IHostedService
             .AddNativeTokenResolver()
             .AddNativeQRCodeResolver()
             .AddNativeCookiesResolver()
-            .AddHttpClient()
-            .AddBasicAuthenticator()
-            .AddTVAuthentication()
+            .AddBiliClient()
+            .AddBiliAuthenticator()
+            .AddTVAuthenticationService()
             .AddMyProfileService()
             .AddRelationshipService()
             .AddViewLaterService()

@@ -1,10 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Bilibili.App.Interfaces.V1;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Bili;
@@ -103,7 +99,7 @@ internal sealed class ViewHistoryClient
     {
         var parameters = new Dictionary<string, string>
         {
-            { "switch", stopRecord.ToString().ToLower() },
+            { "switch", stopRecord.ToString().ToLowerInvariant() },
         };
 
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Post, new Uri(BiliApis.Account.SetHistoryRecordOption));

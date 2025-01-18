@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using Richasy.BiliKernel.Adapters;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Appearance;
@@ -14,8 +11,6 @@ namespace Richasy.BiliKernel.Services.Media.Core;
 
 internal static class PgcAdapter
 {
-    private static readonly Regex _episodeRegex = new Regex(@"ep(\d+)");
-
     public static SeasonInformation ToSeasonInformation(this TimeLineEpisode item)
     {
         var title = item.Title;
@@ -198,7 +193,7 @@ internal static class PgcAdapter
                         title += count;
                     }
 
-                    if (section.Data?.Episodes?.Any() ?? false)
+                    if (section.Data?.Episodes?.Count > 0)
                     {
                         extras.Add(title, section.Data.Episodes.Select(p => p.ToEpisodeInformation()).ToList());
                     }

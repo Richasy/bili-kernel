@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Bilibili.Metadata;
 using Bilibili.Metadata.Device;
 using Bilibili.Metadata.Fawkes;
@@ -10,6 +8,7 @@ using Bilibili.Metadata.Locale;
 using Bilibili.Metadata.Network;
 using Bilibili.Metadata.Restriction;
 using Google.Protobuf;
+using System.Text;
 
 namespace Richasy.BiliKernel;
 
@@ -262,7 +261,7 @@ public sealed class GrpcConfig
         // 6. 最后, 按 `{random_trace_id}:{random_trace_id[16..32]}:0:0` 的顺序拼接起来, 即为 x-bili-trace-id
         var random_trace_id_final = new StringBuilder(64);
         _ = random_trace_id_final.Append(random_trace_id);
-        _ = random_trace_id_final.Append(":");
+        _ = random_trace_id_final.Append(':');
         _ = random_trace_id_final.Append(random_trace_id.ToString(16, 16));
         _ = random_trace_id_final.Append(":0:0");
         return random_trace_id_final.ToString();

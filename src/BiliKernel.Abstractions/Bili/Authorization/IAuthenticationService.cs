@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
-
-using System.Threading;
-using System.Threading.Tasks;
+// Licensed under the MIT License.
 
 namespace Richasy.BiliKernel.Bili.Authorization;
 

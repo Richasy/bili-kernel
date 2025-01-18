@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Linq;
 using Bilibili.Polymer.App.Search.V1;
 using Richasy.BiliKernel.Adapters;
 using Richasy.BiliKernel.Models.Media;

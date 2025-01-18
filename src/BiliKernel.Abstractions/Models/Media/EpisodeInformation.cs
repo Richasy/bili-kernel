@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
-
-using System;
-using System.Collections.Generic;
+// Licensed under the MIT License.
 
 namespace Richasy.BiliKernel.Models.Media;
 

@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
 using Bilibili.App.Archive.V1;
 using Bilibili.App.View.V1;

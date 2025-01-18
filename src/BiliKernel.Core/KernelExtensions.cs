@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Richasy.BiliKernel.Authenticator;
 using Richasy.BiliKernel.Http;
+using RichasyKernel;
 
 namespace Richasy.BiliKernel;
 
@@ -14,55 +14,24 @@ namespace Richasy.BiliKernel;
 public static class KernelExtensions
 {
     /// <summary>
-    /// 添加网络请求客户端.
+    /// 添加基础Bili客户端.
     /// </summary>
-    public static IKernelBuilder AddHttpClient(this IKernelBuilder builder)
+    /// <param name="builder">内核构建器.</param>
+    /// <returns></returns>
+    public static IKernelBuilder AddBiliClient(this IKernelBuilder builder)
     {
         builder.Services.AddSingleton<BiliHttpClient>();
         return builder;
     }
 
     /// <summary>
-    /// 添加基础认证器.
+    /// 添加Bili认证器.
     /// </summary>
-    public static IKernelBuilder AddBasicAuthenticator(this IKernelBuilder builder)
+    /// <param name="builder">内核构建器.</param>
+    /// <returns><see cref="IKernelBuilder"/>.</returns>
+    public static IKernelBuilder AddBiliAuthenticator(this IKernelBuilder builder)
     {
         builder.Services.AddSingleton<BiliAuthenticator>();
         return builder;
-    }
-
-    /// <summary>
-    /// 构建内核.
-    /// </summary>
-    /// <exception cref="InvalidOperationException"></exception>
-    public static Kernel Build(this IKernelBuilder builder)
-    {
-        Verify.NotNull(builder, nameof(builder));
-
-        if (builder is KernelBuilder kb && !kb.AllowBuild)
-        {
-            throw new InvalidOperationException("The builder has been built.");
-        }
-
-        var serviceProvider = EmptyServiceProvider.Instance;
-        if (builder.Services is { Count: > 0 } services)
-        {
-            Dictionary<Type, HashSet<object?>> typeToKeyMappings = [];
-            foreach (var serviceDescriptor in services)
-            {
-                if (!typeToKeyMappings.TryGetValue(serviceDescriptor.ServiceType, out var keys))
-                {
-                    typeToKeyMappings[serviceDescriptor.ServiceType] = keys = [];
-                }
-
-                keys.Add(serviceDescriptor.ServiceKey);
-            }
-            services.AddKeyedSingleton(Kernel.KernelServiceTypeToKeyMappings, typeToKeyMappings);
-            serviceProvider = services.BuildServiceProvider();
-        }
-
-        return serviceProvider.GetService(typeof(BiliAuthenticator)) == null
-            ? throw new InvalidOperationException("The BasicAuthenticator service is required.")
-            : new Kernel(serviceProvider);
     }
 }

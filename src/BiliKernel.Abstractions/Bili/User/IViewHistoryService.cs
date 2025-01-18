@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System.Threading;
-using System.Threading.Tasks;
 using Richasy.BiliKernel.Models;
 using Richasy.BiliKernel.Models.Article;
 using Richasy.BiliKernel.Models.Media;

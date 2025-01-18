@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using System.Text.Json.Serialization;
 using Richasy.BiliKernel.Content;
 using Richasy.BiliKernel.Services.Search.Core;
+using System.Text.Json.Serialization;
 
 namespace Richasy.BiliKernel;
 

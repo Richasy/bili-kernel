@@ -1,28 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+    <!-- THIS PROPERTY GROUP MUST COME FIRST -->
+    <AssemblyName>Richasy.BiliKernel.Resolvers.NativeCookies</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+    <NoWarn>NU1507</NoWarn>
+    <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
+  </PropertyGroup>
 
-    <PropertyGroup>
-        <!-- THIS PROPERTY GROUP MUST COME FIRST -->
-        <AssemblyName>Richasy.BiliKernel.Resolvers.NativeCookies</AssemblyName>
-        <RootNamespace>$(AssemblyName)</RootNamespace>
-        <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
-        <VersionSuffix>alpha</VersionSuffix>
-        <NoWarn>NU1507</NoWarn>
-        <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <!-- NuGet Package Settings -->
-        <Title>哔哩核心 - 本机 Cookie 存取器</Title>
-        <Description>会将登录 Cookie 存储在本地文件中，并进行读取和缓存的哔哩核心子模块</Description>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\BiliKernel.Abstractions\BiliKernel.Abstractions.csproj" />
-        <ProjectReference Include="..\..\BiliKernel.Core\BiliKernel.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
-    </ItemGroup>
-
+  <Import Project="$(RepoRoot)/src/nuget-package.props" />
+  
+  <PropertyGroup>
+    <!-- NuGet Package Settings -->
+    <Title>哔哩核心 - 本机 Cookie 存取器</Title>
+    <Description>会将登录 Cookie 存储在本地文件中，并进行读取和缓存的哔哩核心子模块</Description>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\BiliKernel.Abstractions\BiliKernel.Abstractions.csproj" />
+    <ProjectReference Include="..\..\BiliKernel.Core\BiliKernel.Core.csproj" />
+  </ItemGroup>
 </Project>

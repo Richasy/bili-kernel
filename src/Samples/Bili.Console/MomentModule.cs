@@ -1,12 +1,15 @@
-﻿#define COMPREHENSIVE
+﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
 
-using Richasy.BiliKernel;
+#define COMPREHENSIVE
+
 using Richasy.BiliKernel.Bili.Moment;
+using RichasyKernel;
+using Spectre.Console;
 
 #if USER
 using Richasy.BiliKernel.Models.User;
 #endif
-using Spectre.Console;
 
 namespace Bili.Console;
 
@@ -85,9 +88,9 @@ internal sealed class MomentModule : IFeatureModule
         AnsiConsole.Write(videoMomentTable);
 #endif
 
-            if (AnsiConsole.Confirm("是否返回？"))
-            {
-                await _backFunc(string.Empty).ConfigureAwait(false);
-            }
+        if (AnsiConsole.Confirm("是否返回？"))
+        {
+            await _backFunc(string.Empty).ConfigureAwait(false);
+        }
     }
 }

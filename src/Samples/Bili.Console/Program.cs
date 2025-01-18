@@ -1,4 +1,7 @@
-﻿using Bili.Console;
+﻿// Copyright (c) Richasy. All rights reserved.
+// Licensed under the MIT License.
+
+using Bili.Console;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Text;
