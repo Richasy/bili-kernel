@@ -82,7 +82,7 @@ internal sealed class SearchClient
         });
 
         var resp = await _httpClient.SendAsync(r, cancellationToken).ConfigureAwait(false);
-        var respText = await resp.GetStringAsync().ConfigureAwait(false);
+        var respText = await resp.Content.ReadAsStringAsync().ConfigureAwait(false);
         var responseObj = JsonSerializer.Deserialize(respText, SourceGenerationContext.Default.BiliDataResponseSearchPartitionResponse);
         var videos = responseObj.Data.result?.ConvertAll(p => p.ToVideoInformation()) ?? [];
         return (videos.AsReadOnly(), responseObj.Data.numPages > page ? page + 1 : null);

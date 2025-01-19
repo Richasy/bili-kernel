@@ -19,11 +19,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Flurl.Http" />
-    <PackageReference Include="Polly" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <ProjectReference Include="..\BiliKernel.Abstractions\BiliKernel.Abstractions.csproj" />
     <ProjectReference Include="..\BiliKernel.Grpc\BiliKernel.Grpc.csproj" />
   </ItemGroup>

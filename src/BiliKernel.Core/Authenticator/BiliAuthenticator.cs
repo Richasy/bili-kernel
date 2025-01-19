@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 // Licensed under the MIT License.
 
-using Flurl.Http;
 using Richasy.BiliKernel.Bili;
 using Richasy.BiliKernel.Bili.Authorization;
 using RichasyKernel;
@@ -33,31 +32,34 @@ public sealed partial class BiliAuthenticator
     /// <param name="request">请求.</param>
     /// <param name="parameters">参数.</param>
     /// <param name="settings">请求设置.</param>
-    public void AuthorizeRestRequest(IFlurlRequest request, Dictionary<string, string>? parameters = default, BiliAuthorizeExecutionSettings? settings = default)
+    public void AuthorizeRestRequest(HttpRequestMessage request, Dictionary<string, string>? parameters = default, BiliAuthorizeExecutionSettings? settings = default)
     {
         Verify.NotNull(request, nameof(request));
         var executionSettings = settings ?? new BiliAuthorizeExecutionSettings();
         if (executionSettings.RequireCookie && _cookieResolver != null)
         {
             var cookies = _cookieResolver.GetCookies();
-            request.WithCookies(cookies);
+            request.Headers.Add("Cookie", string.Join("; ", cookies.Select(p => $"{p.Key}={p.Value}")));
         }
 
-        if (request.Verb == HttpMethod.Post)
+        if (request.Method == HttpMethod.Post)
         {
             var queryParameters = AuthorizeRequestParameters(parameters, executionSettings);
             request.Content = new FormUrlEncodedContent(queryParameters);
         }
         else
         {
-            request.Url.Query = GenerateAuthorizedQueryString(parameters, executionSettings);
+            var uri = request.RequestUri;
+            var query = GenerateAuthorizedQueryString(parameters, executionSettings);
+            uri = new UriBuilder(uri) { Query = query }.Uri;
+            request.RequestUri = uri;
         }
     }
 
     /// <summary>
     /// 对 gRPC 请求进行授权.
     /// </summary>
-    public void AuthorizeGrpcRequest(IFlurlRequest request, bool requireToken = true)
+    public void AuthorizeGrpcRequest(HttpRequestMessage request, bool requireToken = true)
     {
         Verify.NotNull(request);
         var token = _tokenResolver?.GetToken();
@@ -76,25 +78,25 @@ public sealed partial class BiliAuthenticator
 
         if (!string.IsNullOrEmpty(accessToken))
         {
-            request.WithHeader("authorization", $"identify_v1 {accessToken}");
-            request.WithHeader("x-bili-mid", token.UserId.ToString());
+            request.Headers.Add("authorization", $"identify_v1 {accessToken}");
+            request.Headers.Add("x-bili-mid", token.UserId.ToString());
         }
 
-        request.WithHeader("user-agent", userAgent);
-        request.WithHeader("x-bili-device-bin", GrpcConfig.GetDeviceBin());
-        request.WithHeader("x-bili-fawkes-req-bin", GrpcConfig.GetFawkesreqBin());
-        request.WithHeader("x-bili-locale-bin", GrpcConfig.GetLocaleBin());
-        request.WithHeader("x-bili-metadata-bin", grpcConfig.GetMetadataBin());
-        request.WithHeader("x-bili-network-bin", GrpcConfig.GetNetworkBin());
-        request.WithHeader("x-bili-restriction-bin", GrpcConfig.GetRestrictionBin());
-        request.WithHeader("grpc-accept-encoding", "identity,deflate,gzip");
-        request.WithHeader("grpc-timeout", "20100m");
-        request.WithHeader("env", GrpcConfig.Envorienment);
-        request.WithHeader("Transfer-Encoding", "chunked");
-        request.WithHeader("TE", "trailers");
-        request.WithHeader("x-bili-aurora-eid", GrpcConfig.GetAuroraEid(token?.UserId ?? 0));
-        request.WithHeader("x-bili-trace-id", GrpcConfig.GetTraceId());
-        request.WithHeader("buvid", GetBuvid());
+        request.Headers.Add("user-agent", userAgent);
+        request.Headers.Add("x-bili-device-bin", GrpcConfig.GetDeviceBin());
+        request.Headers.Add("x-bili-fawkes-req-bin", GrpcConfig.GetFawkesreqBin());
+        request.Headers.Add("x-bili-locale-bin", GrpcConfig.GetLocaleBin());
+        request.Headers.Add("x-bili-metadata-bin", grpcConfig.GetMetadataBin());
+        request.Headers.Add("x-bili-network-bin", GrpcConfig.GetNetworkBin());
+        request.Headers.Add("x-bili-restriction-bin", GrpcConfig.GetRestrictionBin());
+        request.Headers.Add("grpc-accept-encoding", "identity,deflate,gzip");
+        request.Headers.Add("grpc-timeout", "20100m");
+        request.Headers.Add("env", GrpcConfig.Envorienment);
+        request.Headers.Add("Transfer-Encoding", "chunked");
+        request.Headers.Add("TE", "trailers");
+        request.Headers.Add("x-bili-aurora-eid", GrpcConfig.GetAuroraEid(token?.UserId ?? 0));
+        request.Headers.Add("x-bili-trace-id", GrpcConfig.GetTraceId());
+        request.Headers.Add("buvid", GetBuvid());
     }
 
     /// <summary>
@@ -171,16 +173,18 @@ public sealed partial class BiliAuthenticator
             return;
         }
 
-        using var client = new FlurlClient();
-        var request = new FlurlRequest(BiliApis.Passport.WebNav);
-        request.Verb = System.Net.Http.HttpMethod.Get;
+        using var client = new HttpClient(new HttpClientHandler
+        {
+            UseCookies = true,
+        });
+        var request = new HttpRequestMessage(HttpMethod.Get, BiliApis.Passport.WebNav);
         if (_cookieResolver != null)
         {
-            request.WithCookies(_cookieResolver.GetCookies());
+            request.Headers.Add("Cookie", _cookieResolver.GetCookieString());
         }
 
         var response = await client.SendAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
-        var responseText = await response.ResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+        var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         var result = JsonSerializer.Deserialize(responseText, SourceGenerationContext.Default.BiliDataResponseWebNavResponse);
         var img = result?.Data?.Img?.ImgUrl ?? string.Empty;
         var sub = result?.Data?.Img?.SubUrl ?? string.Empty;

@@ -386,6 +386,8 @@ dotnet_diagnostic.CA5351.severity = none
 
 dotnet_diagnostic.CA1849.severity = none
 
+dotnet_diagnostic.CA5399.severity = none
+
 # CA2201: 不要引发保留的异常类型
 dotnet_diagnostic.CA2201.severity = none
 
