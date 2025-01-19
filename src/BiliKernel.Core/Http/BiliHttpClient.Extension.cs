@@ -26,7 +26,7 @@ public sealed partial class BiliHttpClient
     private static async Task ThrowIfResponseInvalidAsync(HttpResponseMessage response)
     {
         response.EnsureSuccessStatusCode();
-        response.Headers.TryGetValues("Content-Type", out var contentTypes);
+        response.Content.Headers.TryGetValues("Content-Type", out var contentTypes);
         var contentType = contentTypes?.FirstOrDefault() ?? string.Empty;
         if (contentType.Contains("image"))
         {

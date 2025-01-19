@@ -3,7 +3,6 @@
 
 using Google.Protobuf;
 using RichasyKernel;
-using System.Net;
 using System.Security.Authentication;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
@@ -22,9 +21,8 @@ public sealed partial class BiliHttpClient : IDisposable
     {
         _client = new HttpClient(new HttpClientHandler
         {
-            AllowAutoRedirect = false,
+            AllowAutoRedirect = true,
             UseCookies = true,
-            AutomaticDecompression = (DecompressionMethods.Deflate | DecompressionMethods.GZip),
             SslProtocols = SslProtocols.None,
             ServerCertificateCustomValidationCallback = (_, _, _, _) => true
         }, disposeHandler: true);
