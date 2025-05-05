@@ -18,4 +18,5 @@ internal enum FeatureType
     Entertainment,
     Article,
     Favorite,
+    Test,
 }

@@ -37,6 +37,7 @@ internal sealed class BiliService : IHostedService
             .AddMessageService()
             .AddFavoriteService()
             .AddSearchService()
+            .AddPlayerService()
             .Build();
     }
 
@@ -88,6 +89,7 @@ internal sealed class BiliService : IHostedService
                 FeatureType.Message => "消息",
                 FeatureType.Favorite => "收藏夹",
                 FeatureType.Search => "搜索",
+                FeatureType.Test => "测试",
                 _ => throw new NotSupportedException(),
             };
         }
@@ -123,6 +125,7 @@ internal sealed class BiliService : IHostedService
                 FeatureType.Message => new MessageModule(_kernel, _cancellationToken, BackToFeatureSelectionAsync),
                 FeatureType.Favorite => new FavoriteModule(_kernel, _cancellationToken, BackToFeatureSelectionAsync),
                 FeatureType.Search => new SearchModule(_kernel, _cancellationToken, BackToFeatureSelectionAsync),
+                FeatureType.Test => new TestModule(_kernel, _cancellationToken, BackToFeatureSelectionAsync),
                 _ => throw new NotSupportedException(),
             };
 

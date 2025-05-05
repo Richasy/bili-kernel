@@ -737,6 +737,11 @@ internal sealed class PlayerClient
 
     private async Task<VideoPageResponse> GetWebVideoPageResponseAsync(string aid, CancellationToken cancellationToken)
     {
+        if (aid.StartsWith("bv", StringComparison.OrdinalIgnoreCase))
+        {
+            aid = AvBvConverter.Bv2Av(aid).ToString();
+        }
+
         var queryParameters = new Dictionary<string, string>
         {
             { "aid", aid },
