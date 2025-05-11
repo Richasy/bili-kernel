@@ -99,8 +99,8 @@ internal sealed class PlayerClient
 
     public async Task<DashMediaInformation> GetVideoPlayDetailWithRestAsync(MediaIdentifier video, long cid, CancellationToken cancellationToken)
     {
-        var videoId = video.Id;
-        if (videoId.StartsWith("bv", StringComparison.OrdinalIgnoreCase))
+        var idType = GetVideoIdType(video.Id, out var videoId);
+        if (idType == "bv")
         {
             videoId = AvBvConverter.Bv2Av(videoId).ToString();
         }
@@ -127,8 +127,14 @@ internal sealed class PlayerClient
 
     public async Task<DashMediaInformation> GetVideoPlayDetailWithGrpcAsync(MediaIdentifier video, long cid, CancellationToken cancellationToken)
     {
+        var idType = GetVideoIdType(video.Id, out var videoId);
+        if (idType == "bv")
+        {
+            videoId = AvBvConverter.Bv2Av(videoId).ToString();
+        }
+
         var req = new PlayViewReq();
-        req.Aid = Convert.ToInt64(video.Id);
+        req.Aid = Convert.ToInt64(videoId);
         req.Cid = cid;
         req.Fnver = 0;
         req.Fnval = 4048;
