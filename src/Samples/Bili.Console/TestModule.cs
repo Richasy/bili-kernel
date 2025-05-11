@@ -30,7 +30,9 @@ internal sealed class TestModule : IFeatureModule
         var video = new MediaIdentifier("BV1nb421B7cg", default, default);
         var info = await _playerService.GetVideoPageDetailAsync(video, _cancellationToken).ConfigureAwait(true);
         AnsiConsole.MarkupLine($"获取视频详情成功，标题为：[green]{info.Information.Identifier.Title}[/]");
-
+        var firstPart = info.Parts.FirstOrDefault();
+        var playInfo = await _playerService.GetVideoPlayDetailAsync(video, Convert.ToInt64(firstPart.Identifier.Id), _cancellationToken).ConfigureAwait(true);
+        AnsiConsole.MarkupLine($"获取视频播放信息成功，时长为：[green]{playInfo.Duration}[/]秒");
         if (AnsiConsole.Confirm("是否返回？"))
         {
             await _backFunc(string.Empty).ConfigureAwait(false);

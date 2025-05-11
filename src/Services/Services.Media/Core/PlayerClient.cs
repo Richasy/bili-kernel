@@ -99,6 +99,12 @@ internal sealed class PlayerClient
 
     public async Task<DashMediaInformation> GetVideoPlayDetailWithRestAsync(MediaIdentifier video, long cid, CancellationToken cancellationToken)
     {
+        var videoId = video.Id;
+        if (videoId.StartsWith("bv", StringComparison.OrdinalIgnoreCase))
+        {
+            videoId = AvBvConverter.Bv2Av(videoId).ToString();
+        }
+
         var queryParameters = new Dictionary<string, string>
         {
             { "fnver", "0" },
@@ -107,7 +113,7 @@ internal sealed class PlayerClient
             { "fnval", "4048" },
             { "qn", "64" },
             { "oType", "json" },
-            { "avid", video.Id },
+            { "avid", videoId },
             { "mid", _tokenResolver.GetToken().UserId.ToString() },
         };
 
