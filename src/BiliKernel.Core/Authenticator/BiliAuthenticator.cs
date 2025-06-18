@@ -59,7 +59,7 @@ public sealed partial class BiliAuthenticator
     /// <summary>
     /// 对 gRPC 请求进行授权.
     /// </summary>
-    public void AuthorizeGrpcRequest(HttpRequestMessage request, bool requireToken = true)
+    public void AuthorizeGrpcRequest(HttpRequestMessage request, bool requireToken = false)
     {
         Verify.NotNull(request);
         var token = _tokenResolver?.GetToken();

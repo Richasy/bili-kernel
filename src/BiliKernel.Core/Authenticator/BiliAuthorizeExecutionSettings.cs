@@ -15,7 +15,7 @@ public class BiliAuthorizeExecutionSettings
     /// </summary>
     public BiliAuthorizeExecutionSettings(
         BiliApiType apiType = BiliApiType.App,
-        bool useToken = true,
+        bool useToken = false,
         bool forceNoToken = false,
         bool useCookie = false,
         bool onlyUseAppKey = false,

@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 // Licensed under the MIT License.
 
-#define COMPREHENSIVE
+#define USER
 
 using Richasy.BiliKernel.Bili.Moment;
 using RichasyKernel;
