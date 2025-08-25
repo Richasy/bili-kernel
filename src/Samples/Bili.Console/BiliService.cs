@@ -38,6 +38,7 @@ internal sealed class BiliService : IHostedService
             .AddFavoriteService()
             .AddSearchService()
             .AddPlayerService()
+            .AddDanmakuService()
             .Build();
     }
 

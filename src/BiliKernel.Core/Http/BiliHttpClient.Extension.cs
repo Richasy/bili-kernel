@@ -32,7 +32,7 @@ public sealed partial class BiliHttpClient
         {
             return;
         }
-        else if (contentType.Contains("grpc"))
+        else if (contentType.Contains("grpc") || contentType.Contains("octet-stream"))
         {
             var bytes = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
             if (bytes.Length < 5)

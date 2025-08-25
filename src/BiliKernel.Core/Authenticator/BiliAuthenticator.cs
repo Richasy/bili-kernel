@@ -39,7 +39,10 @@ public sealed partial class BiliAuthenticator
         if (executionSettings.RequireCookie && _cookieResolver != null)
         {
             var cookies = _cookieResolver.GetCookies();
-            request.Headers.Add("Cookie", string.Join("; ", cookies.Select(p => $"{p.Key}={p.Value}")));
+            if (cookies?.Count > 0)
+            {
+                request.Headers.Add("Cookie", string.Join("; ", cookies.Select(p => $"{p.Key}={p.Value}")));
+            }
         }
 
         if (request.Method == HttpMethod.Post)

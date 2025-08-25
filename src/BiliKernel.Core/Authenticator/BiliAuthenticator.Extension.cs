@@ -58,7 +58,7 @@ public sealed partial class BiliAuthenticator
 
     private static void InitializeDeviceParameters(Dictionary<string, string> parameters, BiliApiType apiType, bool onlyUseAppKey = false)
     {
-        if (apiType != BiliApiType.None)
+        if (apiType != BiliApiType.None && !parameters.ContainsKey("appkey"))
         {
             var appKey = GetApiKey(apiType);
             parameters.Add("appkey", appKey);

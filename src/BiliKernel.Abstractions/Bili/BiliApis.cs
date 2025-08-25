@@ -619,12 +619,12 @@ public static class BiliApis
         /// <summary>
         /// 弹幕元数据.
         /// </summary>
-        public const string DanmakuMetaData = _grpcBase + "/bilibili.community.service.dm.v1.DM/DmView";
+        public const string DanmakuMetaData = _apiBase + "/x/v2/dm/web/view";
 
         /// <summary>
         /// 分段弹幕.
         /// </summary>
-        public const string SegmentDanmaku = _grpcBase + "/bilibili.community.service.dm.v1.DM/DmSegMobile";
+        public const string SegmentDanmaku = _apiBase + "/x/v2/dm/web/seg.so";
 
         /// <summary>
         /// 历史记录.

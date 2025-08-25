@@ -3,6 +3,7 @@
 
 using Bili.Console.Models;
 using Richasy.BiliKernel.Bili.Media;
+using Richasy.BiliKernel.Models.Media;
 using RichasyKernel;
 using Spectre.Console;
 
@@ -128,7 +129,7 @@ internal sealed class PopularVideoModule : IFeatureModule
 
         foreach (var item in videos)
         {
-            table.AddRow(item.Key, item.Value);
+            table.AddRow(item.Key.EscapeMarkup(), item.Value.EscapeMarkup());
         }
 
         AnsiConsole.Write(table);

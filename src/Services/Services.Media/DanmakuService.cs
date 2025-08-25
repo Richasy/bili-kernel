@@ -30,6 +30,10 @@ public sealed class DanmakuService : IDanmakuService
     }
 
     /// <inheritdoc/>
+    public Task<DanmakuMeta> GetDanmakuMetaAsync(string aid, string cid, CancellationToken cancellationToken = default)
+        => _client.GetDanmakuMetaAsync(aid, cid, cancellationToken);
+
+    /// <inheritdoc/>
     public Task<IReadOnlyList<DanmakuInformation>> GetSegmentDanmakusAsync(string aid, string cid, int segmentIndex, CancellationToken cancellationToken = default)
         => _client.GetSegmentDanmakusAsync(aid, cid, segmentIndex, cancellationToken);
 
