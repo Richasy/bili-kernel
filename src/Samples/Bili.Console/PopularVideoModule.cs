@@ -3,7 +3,6 @@
 
 using Bili.Console.Models;
 using Richasy.BiliKernel.Bili.Media;
-using Richasy.BiliKernel.Models.Media;
 using RichasyKernel;
 using Spectre.Console;
 

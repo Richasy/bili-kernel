@@ -53,7 +53,7 @@ internal sealed class DanmakuClient
         return new DanmakuMeta { SegmentCount = Convert.ToInt32(reply.DmSge?.Total ?? 0), Total = Convert.ToInt32(reply.Count) };
     }
 
-    public async Task<IReadOnlyList<DanmakuInformation>> GetSegmentDanmakusAsync(string aid, string cid, int segmentIndex, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<DanmakuInformation>> GetSegmentDanmakusWithWebAsync(string aid, string cid, int segmentIndex, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(aid) || string.IsNullOrEmpty(cid))
         {
@@ -80,6 +80,53 @@ internal sealed class DanmakuClient
                     RequireCookie = true,
                     ApiType = BiliApiType.Web,
                 });
+                var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+                reply = await BiliHttpClient.ParseAsync(response, DmSegMobileReply.Parser).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                retryCount++;
+                if (retryCount > 2)
+                {
+                    throw;
+                }
+            }
+        }
+        while (reply == null);
+
+        return reply.Elems.Select(p => new DanmakuInformation(
+            p.Id.ToString(),
+            p.Content,
+            p.Mode,
+            p.Progress / 1000.0,
+            (uint)p.Color,
+            p.Fontsize)).ToList();
+    }
+
+    public async Task<IReadOnlyList<DanmakuInformation>> GetSegmentDanmakusWithGrpcAsync(string aid, string cid, int segmentIndex, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(aid) || string.IsNullOrEmpty(cid))
+        {
+            throw new ArgumentNullException(nameof(aid), "aid 或者 cid 不能为空");
+        }
+
+        var req = new DmSegMobileReq
+        {
+            Pid = Convert.ToInt64(aid),
+            Oid = Convert.ToInt64(cid),
+            SegmentIndex = segmentIndex,
+            Type = 1,
+        };
+
+        DmSegMobileReply? reply = default;
+        var retryCount = 0;
+
+        do
+        {
+            try
+            {
+                var request = BiliHttpClient.CreateRequest(new Uri(BiliApis.Video.SegmentDanmaku), req);
+                _authenticator.AuthorizeGrpcRequest(request);
                 var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
                 reply = await BiliHttpClient.ParseAsync(response, DmSegMobileReply.Parser).ConfigureAwait(false);
             }

@@ -19,7 +19,12 @@ public interface IDanmakuService
     /// <summary>
     /// 获取分段弹幕.
     /// </summary>
-    Task<IReadOnlyList<DanmakuInformation>> GetSegmentDanmakusAsync(string aid, string cid, int segmentIndex, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<DanmakuInformation>> GetSegmentDanmakusWithGrpcAsync(string aid, string cid, int segmentIndex, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 获取分段弹幕（Web）.
+    /// </summary>
+    Task<IReadOnlyList<DanmakuInformation>> GetSegmentDanmakusWithWebAsync(string aid, string cid, int segmentIndex, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 发送视频弹幕.
