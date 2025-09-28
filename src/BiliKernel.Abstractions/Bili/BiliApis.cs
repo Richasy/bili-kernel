@@ -439,7 +439,7 @@ public static class BiliApis
         /// <summary>
         /// 分区详情.
         /// </summary>
-        public const string AreaDetail = _liveBase + "/xlive/app-interface/v2/second/getList";
+        public const string AreaDetail = _liveBase + "/room/v3/Area/getRoomList";
 
         /// <summary>
         /// 移动应用上的播放信息.
@@ -624,7 +624,12 @@ public static class BiliApis
         /// <summary>
         /// 分段弹幕.
         /// </summary>
-        public const string SegmentDanmaku = _apiBase + "/x/v2/dm/web/seg.so";
+        public const string WebSegmentDanmaku = _apiBase + "/x/v2/dm/web/seg.so";
+
+        /// <summary>
+        /// 分段弹幕.
+        /// </summary>
+        public const string GrpcSegmentDanmaku = _grpcBase + "/bilibili.community.service.dm.v1.DM/DmSegMobile";
 
         /// <summary>
         /// 历史记录.

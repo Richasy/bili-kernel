@@ -74,7 +74,7 @@ internal sealed class DanmakuClient
                     { "pid", aid },
                     { "segment_index", segmentIndex.ToString() },
                 };
-                var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Video.SegmentDanmaku));
+                var request = BiliHttpClient.CreateRequest(HttpMethod.Get, new Uri(BiliApis.Video.WebSegmentDanmaku));
                 _authenticator.AuthorizeRestRequest(request, queryParameters, new BiliAuthorizeExecutionSettings
                 {
                     RequireCookie = true,
@@ -125,7 +125,7 @@ internal sealed class DanmakuClient
         {
             try
             {
-                var request = BiliHttpClient.CreateRequest(new Uri(BiliApis.Video.SegmentDanmaku), req);
+                var request = BiliHttpClient.CreateRequest(new Uri(BiliApis.Video.GrpcSegmentDanmaku), req);
                 _authenticator.AuthorizeGrpcRequest(request);
                 var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
                 reply = await BiliHttpClient.ParseAsync(response, DmSegMobileReply.Parser).ConfigureAwait(false);

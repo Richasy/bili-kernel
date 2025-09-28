@@ -55,7 +55,7 @@ internal sealed class LiveDiscoveryClient
         }
 
         var request = BiliHttpClient.CreateRequest(System.Net.Http.HttpMethod.Get, new Uri(BiliApis.Live.AreaDetail));
-        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false });
+        _authenticator.AuthorizeRestRequest(request, parameters, new BiliAuthorizeExecutionSettings { RequireToken = false, ApiType = BiliApiType.App });
         var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var responseObj = await BiliHttpClient.ParseAsync(response, SourceGenerationContext.Default.BiliDataResponseLiveAreaDetailResponse).ConfigureAwait(false);
         var lives = responseObj.Data.List.Select(p => p.ToLiveInformation()).ToList().AsReadOnly();

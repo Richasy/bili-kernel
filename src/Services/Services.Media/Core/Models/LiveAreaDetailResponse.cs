@@ -62,7 +62,7 @@ internal sealed class LiveAreaDetailTag
     /// 排序.
     /// </summary>
     [JsonPropertyName("sort")]
-    public int? Sort { get; set; }
+    public string? Sort { get; set; }
 
     /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is LiveAreaDetailTag tag && Id == tag.Id;
